@@ -1,5 +1,6 @@
 import React from 'react';
-
+import { RxEnter } from "react-icons/rx";
+import { RxExit } from "react-icons/rx";
 function Attendance({ userData }) {
   console.log(userData);
   return (
@@ -16,7 +17,7 @@ function Attendance({ userData }) {
                   <div className="font-semibold text-lg text-center">Day</div>
                   <div className="font-semibold text-lg text-center">Date</div>
                   <div className="font-semibold text-lg text-center">Log-in</div>
-                  <div className="font-semibold text-lg text-center">Log-out</div>
+                  <div className="font-semibold text-lg text-center"><RxExit /></div>
                 </div>
                 <div className="grid gap-4">
                   {Object.keys(userData.attendance)
