@@ -58,28 +58,11 @@ const Navbar = () => {
             </li>
             <li
               className="ml-10 text-sm uppercase hover:border-b cursor-pointer"
-              onClick={() => navigateTo('/#about')}
+              onClick={() => navigateTo('/sign-in')}
             >
               Sign in
             </li>
-            <li
-              className="ml-10 text-sm uppercase hover:border-b cursor-pointer"
-              onClick={() => navigateTo('/sign-in')}
-            >
-              Skills
-            </li>
-            <li
-              className="ml-10 text-sm uppercase hover:border-b cursor-pointer"
-              onClick={() => navigateTo('/#projects')}
-            >
-              Projects
-            </li>
-            <li
-              className="ml-10 text-sm uppercase hover:border-b cursor-pointer"
-              onClick={() => navigateTo('/#contact')}
-            >
-              Contact
-            </li>
+
           </ul>
           <div onClick={handleNav} className="md:hidden">
             <AiOutlineMenu size={25} />
@@ -132,28 +115,10 @@ const Navbar = () => {
                 Home
               </li>
               <li
-                onClick={() => navigateTo('/#about')}
+                onClick={() => navigateTo('sign-in')}
                 className="py-4 text-sm cursor-pointer"
               >
                 About
-              </li>
-              <li
-                onClick={() => navigateTo('/sign-in')}
-                className="py-4 text-sm cursor-pointer"
-              >
-                Skills
-              </li>
-              <li
-                onClick={() => navigateTo('/#projects')}
-                className="py-4 text-sm cursor-pointer"
-              >
-                Projects
-              </li>
-              <li
-                onClick={() => navigateTo('/#contact')}
-                className="py-4 text-sm cursor-pointer"
-              >
-                Contact
               </li>
             </ul>
             <div className="py-4">
