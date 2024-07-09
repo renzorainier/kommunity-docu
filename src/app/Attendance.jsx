@@ -9,7 +9,7 @@ function Attendance({ userData }) {
       {userData && (
         <div className="w-full max-w-4xl bg-white text-gray-800 shadow-lg rounded-lg pt-2 overflow-hidden">
           <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="text-white font-bold text-3xl text-center mb-2">
+            <div className="text-white font-bold text-3xl text-center mb-2 border-b border-white my-4">
               Attendance Records
             </div>
             <div className="text-white text-lg text-center">
