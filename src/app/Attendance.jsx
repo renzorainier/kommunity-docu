@@ -1,6 +1,7 @@
 import React from "react";
 import { RxEnter } from "react-icons/rx";
 import { RxExit } from "react-icons/rx";
+import { TbCalendarMonth } from "react-icons/tb";
 function Attendance({ userData }) {
   console.log(userData);
   return (
@@ -17,8 +18,9 @@ function Attendance({ userData }) {
               <div>
                 <div className="grid grid-cols-4 gap-4  mb-4 bg-gray-200 p-4 rounded-lg">
                   <div className="font-semibold text-lg text-center">Day</div>
-                  <div className="font-semibold text-lg text-center">Date</div>
                   <div className="flex justify-center items-center font-semibold text-lg">
+                    <TbCalendarMonth style={{ fontSize: "1.5em" }} />
+                  </div>                  <div className="flex justify-center items-center font-semibold text-lg">
                     <RxEnter style={{ fontSize: "1.5em" }} />
                   </div>
                   <div className="flex justify-center items-center font-semibold text-lg">
