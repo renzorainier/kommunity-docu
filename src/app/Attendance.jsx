@@ -8,12 +8,16 @@ function Attendance({ userData }) {
     <main className="flex min-h-screen flex-col items-center justify-center pt-12">
       {userData && (
         <div className="w-full max-w-4xl bg-white text-gray-800 shadow-lg rounded-lg pt-2 overflow-hidden">
-          <div className="bg-gradient-to-r from-[#035172] to-[#0587be] px-6 py-4">
-            <div className="text-white font-bold text-3xl text-center">
-             Attendance Records
+          <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div className="text-white font-bold text-3xl text-center mb-2">
+              Attendance Records
             </div>
-            {userData.name}
+            <div className="text-white text-lg text-center">
+              {userData.name}
+            </div>
           </div>
+
+          {/* from-[#035172] to-[#0587be] */}
           <div className="px-6 py-4">
             {Object.keys(userData.attendance).length > 0 ? (
               <div>
@@ -21,7 +25,8 @@ function Attendance({ userData }) {
                   <div className="font-semibold text-lg text-center">Day</div>
                   <div className="flex justify-center items-center font-semibold text-lg">
                     <TbCalendarMonth style={{ fontSize: "1.5em" }} />
-                  </div>                  <div className="flex justify-center items-center font-semibold text-lg">
+                  </div>{" "}
+                  <div className="flex justify-center items-center font-semibold text-lg">
                     <RxEnter style={{ fontSize: "1.5em" }} />
                   </div>
                   <div className="flex justify-center items-center font-semibold text-lg">
