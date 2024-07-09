@@ -18,8 +18,8 @@ function Attendance({ userData }) {
                 <div className="grid grid-cols-4 gap-4  mb-4 bg-gray-200 p-4 rounded-lg">
                   <div className="font-semibold text-lg text-center">Day</div>
                   <div className="font-semibold text-lg text-center">Date</div>
-                  <div className="font-semibold text-lg text-center">
-                    Log-in
+                  <div className="flex justify-center items-center font-semibold text-lg">
+                    <RxEnter style={{ fontSize: "1.5em" }} />
                   </div>
                   <div className="flex justify-center items-center font-semibold text-lg">
                     <RxExit style={{ fontSize: "1.5em" }} />
