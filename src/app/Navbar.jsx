@@ -4,7 +4,7 @@ import { AiOutlineClose, AiOutlineMenu, AiOutlineMail } from "react-icons/ai";
 import { FaFacebook, FaGithub } from "react-icons/fa";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { useRouter } from "next/navigation";
-import teen from "./teen.png";
+import teen from "./logod.jpg";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
