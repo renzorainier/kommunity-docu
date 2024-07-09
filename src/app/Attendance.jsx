@@ -13,8 +13,8 @@ function Attendance({ userData }) {
             {Object.keys(userData.attendance).length > 0 ? (
               <div>
                 <div className="grid grid-cols-4 gap-4 bg-gray-200 p-4 rounded-lg">
-                  <div className="font-semibold text-lg text-center">Date</div>
                   <div className="font-semibold text-lg text-center">Day</div>
+                  <div className="font-semibold text-lg text-center">Date</div>
                   <div className="font-semibold text-lg text-center">Log-in</div>
                   <div className="font-semibold text-lg text-center">Log-out</div>
                 </div>
