@@ -15,8 +15,8 @@ function Attendance({ userData }) {
                 <div className="grid grid-cols-4 gap-4 bg-gray-200 p-4 rounded-lg">
                   <div className="font-semibold text-lg text-center">Date</div>
                   <div className="font-semibold text-lg text-center">Day</div>
-                  <div className="font-semibold text-lg text-center">Check-in</div>
-                  <div className="font-semibold text-lg text-center">Check-out</div>
+                  <div className="font-semibold text-lg text-center">Log-in</div>
+                  <div className="font-semibold text-lg text-center">Log-out</div>
                 </div>
                 <div className="grid gap-4">
                   {Object.keys(userData.attendance)
