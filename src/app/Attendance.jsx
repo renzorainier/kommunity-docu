@@ -23,7 +23,7 @@ function Attendance({ userData }) {
                     .sort((a, b) => new Date(b) - new Date(a)) // Sort keys in descending order
                     .map((date) => (
                       <div key={date} className="grid grid-cols-4 bg-gray-100 rounded-lg shadow-md p-4 hover:bg-gray-200 transition duration-300">
-                        <div className="text-sm text-center">{new Date(date).toLocaleDateString(undefined, { weekday: 'long' })}</div>
+                        <div className="text-sm text-center">{new Date(date).toLocaleDateString(undefined, { weekday: 'short' })}</div>
                         <div className="font-semibold text-lg text-center">{new Date(date).toLocaleDateString()}</div>
                         <div className="text-sm text-center">
                           {userData.attendance[date].checkIn
