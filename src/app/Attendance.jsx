@@ -45,7 +45,7 @@ function Attendance({ userData }) {
                             weekday: "short",
                           })}
                         </div>
-                        <div className=" text-lg text-center">
+                        <div className="  text-lg text-center">
                           {new Date(date).toLocaleDateString()}
                         </div>
                         <div className=" text-lg text-center">
