@@ -12,8 +12,9 @@ function Attendance({ userData }) {
           <div className="px-6 py-4">
             {Object.keys(userData.attendance).length > 0 ? (
               <div>
-                <div className="grid grid-cols-3 gap-4 bg-gray-200 p-4 rounded-lg">
+                <div className="grid grid-cols-4 gap-4 bg-gray-200 p-4 rounded-lg">
                   <div className="font-semibold text-lg text-center">Date</div>
+                  <div className="font-semibold text-lg text-center">Day</div>
                   <div className="font-semibold text-lg text-center">Check-in</div>
                   <div className="font-semibold text-lg text-center">Check-out</div>
                 </div>
@@ -21,7 +22,8 @@ function Attendance({ userData }) {
                   {Object.keys(userData.attendance)
                     .sort((a, b) => new Date(b) - new Date(a)) // Sort keys in descending order
                     .map((date) => (
-                      <div key={date} className="grid grid-cols-3 bg-gray-100 rounded-lg shadow-md p-4 hover:bg-gray-200 transition duration-300">
+                      <div key={date} className="grid grid-cols-4 bg-gray-100 rounded-lg shadow-md p-4 hover:bg-gray-200 transition duration-300">
+                        <div className="text-sm text-center">{new Date(date).toLocaleDateString(undefined, { weekday: 'long' })}</div>
                         <div className="font-semibold text-lg text-center">{new Date(date).toLocaleDateString()}</div>
                         <div className="text-sm text-center">
                           {userData.attendance[date].checkIn
