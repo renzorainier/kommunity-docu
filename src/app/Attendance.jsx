@@ -8,14 +8,16 @@ function Attendance({ userData }) {
     <main className="flex min-h-screen flex-col items-center justify-center pt-12">
       {userData && (
         <div className="w-full max-w-4xl bg-white text-gray-800 shadow-lg rounded-lg pt-2 overflow-hidden">
-          <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="text-white font-bold text-3xl text-center mb-2 border-b border-white my-4">
-              Attendance Records
-            </div>
-            <div className="text-white text-lg text-center">
-              {userData.name}
-            </div>
-          </div>
+        <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+  <div className="relative text-white font-bold text-3xl text-center mb-2 my-4">
+    Attendance Records
+    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/2 border-b border-white"></div>
+  </div>
+  <div className="text-white text-lg text-center">
+    {userData.name}
+  </div>
+</div>
+
 
           {/* from-[#035172] to-[#0587be] */}
           <div className="px-6 py-4">
