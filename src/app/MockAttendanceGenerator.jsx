@@ -8,7 +8,7 @@ const MockAttendanceGenerator = () => {
   const handleGenerateMockData = async () => {
     setIsGenerating(true);
 
-    const userId = "z4yeXSKFmagyBOI3g7jnRyoyaPW2";
+    const userId = "L91NFeOoaqVQOf3S0PmubDwktcF2";
     const today = new Date();
     const endDate = new Date();
     endDate.setMonth(today.getMonth() + 1); // One month from now
