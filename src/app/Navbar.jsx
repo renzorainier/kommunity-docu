@@ -100,7 +100,7 @@ const Navbar = () => {
                 <AiOutlineClose />
               </div>
             </div>
-            <div className="border-b border-[#e8c284] my-4">
+            <div className="border-b border-black my-4">
               <p className="w-[85%] md:w-[90%] py-4">
                 Join me build something legendary together
               </p>
