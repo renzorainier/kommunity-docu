@@ -41,7 +41,10 @@ export default function Main() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      {/* <button
+
+    <Attendance userData={userData}/>
+    <MockAttendanceGenerator/>
+    <button
         onClick={() => {
           signOut(auth);
           sessionStorage.removeItem('user');
@@ -49,9 +52,7 @@ export default function Main() {
         }}
       >
         Log out
-      </button> */}
-    <Attendance userData={userData}/>
-    <MockAttendanceGenerator/>[]
+      </button>
     </main>
   );
 }
