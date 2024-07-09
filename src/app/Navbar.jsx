@@ -35,7 +35,7 @@ const Navbar = () => {
     <div
       className={
         shadow
-          ? "fixed w-full h-14 shadow-xl shadow-[#e8c284] z-[100]"
+          ? "fixed w-full h-14 shadow-xl shadow-[#0587be] z-[100]"
           : "fixed w-full h-14  z-[100]"
       }
     >
@@ -95,7 +95,7 @@ const Navbar = () => {
 
               <div
                 onClick={handleNav}
-                className="rounded-full shadow-lg shadow-[#e8c284] p-3 cursor-pointer"
+                className="rounded-full shadow-lg shadow-[#0587be] p-3 cursor-pointer"
               >
                 <AiOutlineClose />
               </div>
