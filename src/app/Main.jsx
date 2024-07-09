@@ -41,7 +41,7 @@ export default function Main() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      <button
+      {/* <button
         onClick={() => {
           signOut(auth);
           sessionStorage.removeItem('user');
@@ -49,7 +49,7 @@ export default function Main() {
         }}
       >
         Log out
-      </button>
+      </button> */}
     <Attendance userData={userData}/>
     <MockAttendanceGenerator/>[]
     </main>
