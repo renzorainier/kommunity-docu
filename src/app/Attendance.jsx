@@ -17,7 +17,7 @@ function Attendance({ userData }) {
                   <div className="font-semibold text-lg text-center">Day</div>
                   <div className="font-semibold text-lg text-center">Date</div>
                   <div className="font-semibold text-lg text-center">Log-in</div>
-                  <div className="font-semibold text-lg text-center"><RxExit style={{ fontSize: "1.5em" }}/></div>
+                  <div className="font-semibold text-lg items-center text-center"><RxExit style={{ fontSize: "1.5em" }}/></div>
                 </div>
                 <div className="grid gap-4">
                   {Object.keys(userData.attendance)
