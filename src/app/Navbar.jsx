@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu, AiOutlineMail } from "react-icons/ai";
 import { FaFacebook, FaGithub } from "react-icons/fa";
 import { BsFillPersonLinesFill } from "react-icons/bs";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import teen from "./teen.png";
 
 const Navbar = () => {
