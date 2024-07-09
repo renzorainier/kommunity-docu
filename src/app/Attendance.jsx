@@ -40,7 +40,7 @@ function Attendance({ userData }) {
                       <div
                         key={date}
                         className="grid grid-cols-4 bg-gray-100 rounded-lg shadow-md p-4 hover:bg-gray-200 transition duration-300">
-                        <div className=" text-lg text-center">
+                        <div className=" font-semibold text-lg text-center">
                           {new Date(date).toLocaleDateString(undefined, {
                             weekday: "short",
                           })}
