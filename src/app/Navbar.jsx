@@ -60,11 +60,11 @@ const Navbar = () => {
               className="ml-10 text-sm uppercase hover:border-b cursor-pointer"
               onClick={() => navigateTo('/#about')}
             >
-              About
+              Sign in
             </li>
             <li
               className="ml-10 text-sm uppercase hover:border-b cursor-pointer"
-              onClick={() => navigateTo('/#skills')}
+              onClick={() => navigateTo('/sign-in')}
             >
               Skills
             </li>
