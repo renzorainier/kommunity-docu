@@ -12,7 +12,7 @@ function Attendance({ userData }) {
           <div className="px-6 py-4">
             {Object.keys(userData.attendance).length > 0 ? (
               <div>
-                <div className="grid grid-cols-3 gap-4 bg-gray-200 p-4 rounded-t-lg">
+                <div className="grid grid-cols-3 gap-4 bg-gray-200 p-4 rounded-lg">
                   <div className="font-semibold text-lg text-center">Date</div>
                   <div className="font-semibold text-lg text-center">Check-in</div>
                   <div className="font-semibold text-lg text-center">Check-out</div>
