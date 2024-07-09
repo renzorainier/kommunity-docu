@@ -75,11 +75,11 @@ const Navbar = () => {
           nav ? "md:hidden fixed left-0 top-0 w-full h-screen bg-black/70" : ""
         }
       >
-        <div
+           <div
           className={
             nav
-              ? "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-white  p-10 ease-in duration-500"
-              : "fixed left-[-100%] top-0 p-10 ease-in duration-500"
+              ? "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-gradient-to-tl from-[#FAF8F1] to-[#FAEAB1] p-10 transform translate-x-0 transition-transform duration-500 ease-out"
+              : "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-gradient-to-tl from-[#FAF8F1] to-[#FAEAB1] p-10 transform -translate-x-full transition-transform duration-500 ease-in"
           }
         >
           <div>
