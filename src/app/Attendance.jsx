@@ -17,25 +17,21 @@ function Attendance({ userData }) {
                   <div className="font-semibold text-lg text-center">Check-in</div>
                   <div className="font-semibold text-lg text-center">Check-out</div>
                 </div>
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid gap-4">
                   {Object.keys(userData.attendance)
                     .sort((a, b) => new Date(b) - new Date(a)) // Sort keys in descending order
                     .map((date) => (
-                      <div key={date} className="bg-gray-100 rounded-lg shadow-md p-4 hover:bg-gray-200 transition duration-300">
-                        <div className="flex justify-between">
-                          <div className="font-semibold text-lg text-center">{new Date(date).toLocaleDateString()}</div>
-                          <div className="flex space-x-4">
-                            <div className="text-sm text-center">
-                              {userData.attendance[date].checkIn
-                                ? new Date(userData.attendance[date].checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                                : 'N/A'}
-                            </div>
-                            <div className="text-sm text-center">
-                              {userData.attendance[date].checkOut
-                                ? new Date(userData.attendance[date].checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                                : 'N/A'}
-                            </div>
-                          </div>
+                      <div key={date} className="grid grid-cols-3 bg-gray-100 rounded-lg shadow-md p-4 hover:bg-gray-200 transition duration-300">
+                        <div className="font-semibold text-lg text-center">{new Date(date).toLocaleDateString()}</div>
+                        <div className="text-sm text-center">
+                          {userData.attendance[date].checkIn
+                            ? new Date(userData.attendance[date].checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                            : 'N/A'}
+                        </div>
+                        <div className="text-sm text-center">
+                          {userData.attendance[date].checkOut
+                            ? new Date(userData.attendance[date].checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                            : 'N/A'}
                         </div>
                       </div>
                     ))}
