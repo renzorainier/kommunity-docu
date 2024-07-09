@@ -40,14 +40,14 @@ const Navbar = () => {
       }
     >
       <div className="flex justify-between items-center w-full h-full px-2 2xl:px-16 bg-[#f3efde]">
-        <div>
+        {/* <div>
           <Image
             src={teen}
             width="70"
             height="70"
             alt="/"
           />
-        </div>
+        </div> */}
         <div>
           <ul className="hidden md:flex">
             <li
@@ -121,7 +121,7 @@ const Navbar = () => {
                 About
               </li>
             </ul>
-            <div className="py-4">
+            {/* <div className="py-4">
               <p className="uppercase tracking-widest text-[#C58940]">
                 Let us Connect
               </p>
@@ -139,7 +139,7 @@ const Navbar = () => {
                   <BsFillPersonLinesFill />
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
