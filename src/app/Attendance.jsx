@@ -42,7 +42,7 @@ function Attendance({ userData }) {
                         <div className="font-semibold text-lg text-center">
                           {new Date(date).toLocaleDateString()}
                         </div>
-                        <div className="text-sm text-center">
+                        <div className="font-semibold text-lg text-center">
                           {userData.attendance[date].checkIn
                             ? new Date(
                                 userData.attendance[date].checkIn
@@ -52,7 +52,7 @@ function Attendance({ userData }) {
                               })
                             : "N/A"}
                         </div>
-                        <div className="text-sm text-center">
+                        <div className="font-semibold text-lg text-center">
                           {userData.attendance[date].checkOut
                             ? new Date(
                                 userData.attendance[date].checkOut
