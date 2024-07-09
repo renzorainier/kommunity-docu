@@ -3,9 +3,9 @@ import React from 'react';
 function Attendance({ userData }) {
   console.log(userData);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center py-10">
+    <main className="flex min-h-screen flex-col items-center justify-center pt-12">
       {userData && (
-        <div className="w-full max-w-4xl bg-white text-gray-800 shadow-lg rounded-lg overflow-hidden">
+        <div className="w-full max-w-4xl bg-white text-gray-800 shadow-lg rounded-lg pt-2 overflow-hidden">
           <div className="bg-gradient-to-r from-purple-600 to-blue-500 px-6 py-4">
             <div className="text-white font-bold text-3xl text-center">{userData.name}'s Attendance</div>
           </div>
