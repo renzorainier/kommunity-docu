@@ -34,15 +34,15 @@ function Attendance({ userData }) {
                       <div
                         key={date}
                         className="grid grid-cols-4 bg-gray-100 rounded-lg shadow-md p-4 hover:bg-gray-200 transition duration-300">
-                        <div className="font-semibold text-lg text-center">
+                        <div className=" text-lg text-center">
                           {new Date(date).toLocaleDateString(undefined, {
                             weekday: "short",
                           })}
                         </div>
-                        <div className="font-semibold text-lg text-center">
+                        <div className=" text-lg text-center">
                           {new Date(date).toLocaleDateString()}
                         </div>
-                        <div className="font-semibold text-lg text-center">
+                        <div className=" text-lg text-center">
                           {userData.attendance[date].checkIn
                             ? new Date(
                                 userData.attendance[date].checkIn
@@ -52,7 +52,7 @@ function Attendance({ userData }) {
                               })
                             : "N/A"}
                         </div>
-                        <div className="font-semibold text-lg text-center">
+                        <div className=" text-lg text-center">
                           {userData.attendance[date].checkOut
                             ? new Date(
                                 userData.attendance[date].checkOut
