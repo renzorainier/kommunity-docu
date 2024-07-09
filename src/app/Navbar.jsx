@@ -138,7 +138,7 @@ const Navbar = () => {
                 About
               </li>
               <li
-                onClick={() => navigateTo('/#skills')}
+                onClick={() => navigateTo('/sign-in')}
                 className="py-4 text-sm cursor-pointer"
               >
                 Skills
