@@ -51,7 +51,7 @@ export default function Main() {
         Log out
       </button> */}
     <Attendance userData={userData}/>
-    {/* <MockAttendanceGenerator/>[] */}
+    <MockAttendanceGenerator/>[]
     </main>
   );
 }
