@@ -47,7 +47,7 @@ const SignIn = () => {
         />
         <button
           onClick={handleSignIn}
-          className="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-500"
+          className="w-full p-3 bg-[#0587be] rounded text-white hover:bg-indigo-500"
           disabled={loading}
         >
           {loading ? 'Signing In...' : 'Sign In'}
