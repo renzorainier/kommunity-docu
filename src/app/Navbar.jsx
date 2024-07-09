@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu, AiOutlineMail } from "react-icons/ai";
 import { FaFacebook, FaGithub } from "react-icons/fa";
 import { BsFillPersonLinesFill } from "react-icons/bs";
-import teen from "./../public/assets/teen.png"
+import teen from "./../public/teen.png"
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
