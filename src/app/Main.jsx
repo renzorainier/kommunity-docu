@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -6,8 +6,11 @@ import { auth, db } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import Attendance from "./Attendance.jsx"
+import MockAttendanceGenerator from "./MockAttendanceGenerator.jsx"
 
-export default function Home() {
+
+export default function Main() {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
   const router = useRouter();
@@ -32,11 +35,12 @@ export default function Home() {
       };
 
       fetchUserData();
+
     }
   }, [user, userSession, router]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between">
       <button
         onClick={() => {
           signOut(auth);
@@ -46,13 +50,8 @@ export default function Home() {
       >
         Log out
       </button>
-      {userData && (
-        <div>
-          <h1>Welcome, {userData.email}</h1>
-          {/* Display other user-specific data here */}
-          <pre>{JSON.stringify(userData, null, 2)}</pre>
-        </div>
-      )}
+    <Attendance userData={userData}/>
+    <MockAttendanceGenerator/>[]
     </main>
   );
 }
