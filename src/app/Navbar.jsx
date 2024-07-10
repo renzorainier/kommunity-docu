@@ -5,6 +5,8 @@ import { FaFacebook, FaGithub } from "react-icons/fa";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 import teen from "./img.png";
+import { signOut } from 'firebase/auth';
+import { auth, db } from '@/app/firebase/config';
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -58,9 +60,13 @@ const Navbar = () => {
             </li>
             <li
               className="ml-10 text-sm uppercase hover:border-b cursor-pointer"
-              onClick={() => navigateTo('/sign-in')}
+              onClick={() => {
+                signOut(auth);
+                sessionStorage.removeItem('user');
+                router.push('/sign-in');
+              }}
             >
-              Sign in
+              Sign Out
             </li>
 
           </ul>
@@ -118,7 +124,7 @@ const Navbar = () => {
                 onClick={() => navigateTo('sign-in')}
                 className="py-4 text-sm cursor-pointer"
               >
-                About
+                Sign Out
               </li>
             </ul>
             {/* <div className="py-4">
