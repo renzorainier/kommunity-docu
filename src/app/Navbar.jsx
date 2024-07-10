@@ -108,7 +108,7 @@ const Navbar = () => {
             </div>
             <div className="border-b border-black my-4">
               <p className="w-[85%] md:w-[90%] py-4">
-                MetroView Baptist Academy
+                Metroview Baptist Academy
               </p>
             </div>
           </div>
