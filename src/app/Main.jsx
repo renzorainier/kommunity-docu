@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
@@ -12,17 +10,28 @@ import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 export default function Main() {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
-  const [userSession, setUserSession] = useState(null);
+  const [userSession, setUserSession] = useState(null); // Track user session in component state
   const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      // Retrieve session user from sessionStorage
       const sessionUser = sessionStorage.getItem('user');
-      setUserSession(sessionUser);
+      setUserSession(sessionUser); // Set initial state of userSession
     }
   }, []);
 
   useEffect(() => {
+    // Update userSession state when user state changes
+    if (user) {
+      setUserSession(user.uid); // Store user's UID in session storage
+    } else {
+      setUserSession(null); // Clear userSession when user logs out
+    }
+  }, [user]);
+
+  useEffect(() => {
+    // Check userSession for existing session data
     if (!user && !userSession) {
       router.push('/sign-in');
     } else if (user) {
@@ -51,7 +60,8 @@ export default function Main() {
       <button
         onClick={() => {
           signOut(auth);
-          sessionStorage.removeItem('user');
+          sessionStorage.removeItem('user'); // Clear session data on logout
+          setUserSession(null); // Clear userSession state
           router.push('/sign-in');
         }}
       >
