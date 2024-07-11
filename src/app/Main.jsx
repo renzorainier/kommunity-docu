@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
@@ -10,28 +12,26 @@ import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 export default function Main() {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
-  const [userSession, setUserSession] = useState(null); // Manage user session state
+  const [userSession, setUserSession] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    // Check if running in the client-side (browser) environment
     if (typeof window !== 'undefined') {
       const sessionUser = sessionStorage.getItem('user');
-      setUserSession(sessionUser); // Set user session state from sessionStorage
+      setUserSession(sessionUser);
     }
   }, []);
 
   useEffect(() => {
-    // Check if either user is authenticated or user session exists in sessionStorage
     if (!user && !userSession) {
-      router.push('/sign-in'); // Redirect to sign-in page if not authenticated
+      router.push('/sign-in');
     } else if (user) {
       const fetchUserData = async () => {
         try {
           const userDocRef = doc(db, 'users', user.uid);
           const userDoc = await getDoc(userDocRef);
           if (userDoc.exists()) {
-            setUserData(userDoc.data()); // Set user data state if user document exists
+            setUserData(userDoc.data());
           } else {
             console.error('No user data found');
           }
@@ -40,23 +40,19 @@ export default function Main() {
         }
       };
 
-      fetchUserData(); // Fetch user data on user authentication
+      fetchUserData();
     }
-  }, [user, userSession, router]); // Depend on user, userSession, and router
+  }, [user, userSession, router]);
 
-  // Render main content
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      {/* Render components based on user data */}
       <Attendance userData={userData} />
       <MockAttendanceGenerator />
-
-      {/* Log out button */}
       <button
         onClick={() => {
-          signOut(auth); // Sign out user from Firebase auth
-          sessionStorage.removeItem('user'); // Remove user session from sessionStorage
-          router.push('/sign-in'); // Redirect to sign-in page after logout
+          signOut(auth);
+          sessionStorage.removeItem('user');
+          router.push('/sign-in');
         }}
       >
         Log out
