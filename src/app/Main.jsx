@@ -12,17 +12,18 @@ import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 export default function Main() {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
-  const [userSession, setUserSession] = useState(null);
+  const [userSession, setUserSession] = useState(null); // State to store session data
   const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const sessionUser = sessionStorage.getItem('user');
-      setUserSession(sessionUser);
+      setUserSession(sessionUser); // Set userSession state with session data
     }
   }, []);
 
   useEffect(() => {
+    // Check if user and session are not present, redirect to sign-in
     if (!user && !userSession) {
       router.push('/sign-in');
     } else if (user) {
@@ -46,17 +47,24 @@ export default function Main() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      <Attendance userData={userData} />
-      <MockAttendanceGenerator />
-      <button
-        onClick={() => {
-          signOut(auth);
-          sessionStorage.removeItem('user');
-          router.push('/sign-in');
-        }}
-      >
-        Log out
-      </button>
+      {/* Render components based on userData availability */}
+      {userData ? (
+        <>
+          <Attendance userData={userData} />
+          <MockAttendanceGenerator />
+          <button
+            onClick={() => {
+              signOut(auth);
+              sessionStorage.removeItem('user');
+              router.push('/sign-in');
+            }}
+          >
+            Log out
+          </button>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
     </main>
   );
 }
