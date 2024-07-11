@@ -12,57 +12,56 @@ import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 export default function Main() {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
-  const [initialLoad, setInitialLoad] = useState(true); // Track initial load
+  const [userSession, setUserSession] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const sessionUser = sessionStorage.getItem('user');
-      if (sessionUser) {
-        setUserData(JSON.parse(sessionUser)); // Load user data from session storage
-      }
-      setInitialLoad(false); // Update initial load status
+      setUserSession(sessionUser);
     }
   }, []);
 
   useEffect(() => {
-    if (!user && !userData && !initialLoad) {
-      router.push('/sign-in'); // Redirect to sign-in if no user data and not loading initially
-    } else if (user) {
-      const fetchUserData = async () => {
-        try {
-          const userDocRef = doc(db, 'users', user.uid);
-          const userDoc = await getDoc(userDocRef);
-          if (userDoc.exists()) {
-            const userData = userDoc.data();
-            setUserData(userData); // Set user data
-            sessionStorage.setItem('user', JSON.stringify(userData)); // Save user data to session storage
-          } else {
-            console.error('No user data found');
-          }
-        } catch (error) {
-          console.error('Error fetching user data:', error);
+    // Function to fetch user data from Firestore
+    const fetchUserData = async () => {
+      try {
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          setUserData(userDoc.data());
+        } else {
+          console.error('No user data found');
         }
-      };
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
 
+    // Check if there's a logged-in user or a session user
+    if (!user && !userSession) {
+      router.push('/sign-in'); // Redirect to sign-in if no user is logged in
+    } else if (user) {
+      // Fetch user data if user is logged in
       fetchUserData();
     }
-  }, [user, userData, initialLoad, router]);
+  }, [user, userSession, router]);
 
-  const handleSignOut = () => {
-    signOut(auth);
-    sessionStorage.removeItem('user'); // Clear session storage on logout
-    setUserData(null); // Clear user data state
-    router.push('/sign-in');
+  // Handle logout function
+  const handleLogout = () => {
+    signOut(auth); // Sign out from Firebase Auth
+    sessionStorage.removeItem('user'); // Remove session storage
+    router.push('/sign-in'); // Redirect to sign-in page
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
+      {/* Display attendance and other components */}
       <Attendance userData={userData} />
       <MockAttendanceGenerator />
-      <button onClick={handleSignOut}>
-        Log out
-      </button>
+
+      {/* Logout button */}
+      <button onClick={handleLogout}>Log out</button>
     </main>
   );
 }
