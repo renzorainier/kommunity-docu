@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
-import { useRouter } from 'next/navigation'; // Changed from 'next/navigation.js'
+import { useRouter } from 'next/navigation'; 
 import { signOut } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore'; // Changed import to include onSnapshot
 import Attendance from './Attendance.jsx';
 import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 
@@ -17,21 +17,18 @@ export default function Main() {
     if (!user && !userSession) {
       router.push('/sign-in');
     } else if (user) {
-      const fetchUserData = async () => {
-        try {
-          const userDocRef = doc(db, 'users', user.uid);
-          const userDoc = await getDoc(userDocRef);
-          if (userDoc.exists()) {
-            setUserData(userDoc.data());
-          } else {
-            console.error('No user data found');
-          }
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
-      };
+      const userDocRef = doc(db, 'users', user.uid);
 
-      fetchUserData();
+      // Set up listener for real-time updates
+      const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          setUserData(docSnapshot.data());
+        } else {
+          console.error('No user data found');
+        }
+      });
+
+      return () => unsubscribe(); // Cleanup function to unsubscribe when component unmounts
     }
   }, [user, userSession, router]);
 
@@ -53,6 +50,7 @@ export default function Main() {
     </main>
   );
 }
+
 
 
 
