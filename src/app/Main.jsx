@@ -10,37 +10,28 @@ import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 export default function Main() {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
-  const [userSession, setUserSession] = useState(null); // Track user session in component state
+  const [userSession, setUserSession] = useState(null); // Manage user session state
   const router = useRouter();
 
   useEffect(() => {
+    // Check if running in the client-side (browser) environment
     if (typeof window !== 'undefined') {
-      // Retrieve session user from sessionStorage
       const sessionUser = sessionStorage.getItem('user');
-      setUserSession(sessionUser); // Set initial state of userSession
+      setUserSession(sessionUser); // Set user session state from sessionStorage
     }
   }, []);
 
   useEffect(() => {
-    // Update userSession state when user state changes
-    if (user) {
-      setUserSession(user.uid); // Store user's UID in session storage
-    } else {
-      setUserSession(null); // Clear userSession when user logs out
-    }
-  }, [user]);
-
-  useEffect(() => {
-    // Check userSession for existing session data
+    // Check if either user is authenticated or user session exists in sessionStorage
     if (!user && !userSession) {
-      router.push('/sign-in');
+      router.push('/sign-in'); // Redirect to sign-in page if not authenticated
     } else if (user) {
       const fetchUserData = async () => {
         try {
           const userDocRef = doc(db, 'users', user.uid);
           const userDoc = await getDoc(userDocRef);
           if (userDoc.exists()) {
-            setUserData(userDoc.data());
+            setUserData(userDoc.data()); // Set user data state if user document exists
           } else {
             console.error('No user data found');
           }
@@ -49,20 +40,23 @@ export default function Main() {
         }
       };
 
-      fetchUserData();
+      fetchUserData(); // Fetch user data on user authentication
     }
-  }, [user, userSession, router]);
+  }, [user, userSession, router]); // Depend on user, userSession, and router
 
+  // Render main content
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
+      {/* Render components based on user data */}
       <Attendance userData={userData} />
       <MockAttendanceGenerator />
+
+      {/* Log out button */}
       <button
         onClick={() => {
-          signOut(auth);
-          sessionStorage.removeItem('user'); // Clear session data on logout
-          setUserSession(null); // Clear userSession state
-          router.push('/sign-in');
+          signOut(auth); // Sign out user from Firebase auth
+          sessionStorage.removeItem('user'); // Remove user session from sessionStorage
+          router.push('/sign-in'); // Redirect to sign-in page after logout
         }}
       >
         Log out
