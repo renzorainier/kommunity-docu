@@ -1,8 +1,7 @@
-'use client';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
-import { useRouter } from 'next/navigation.js';
+import { useRouter } from 'next/router'; // Changed from 'next/navigation.js'
 import { signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import Attendance from './Attendance.jsx';
@@ -12,7 +11,7 @@ export default function Main() {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
   const router = useRouter();
-  const userSession = sessionStorage.getItem('user');
+  const userSession = typeof window !== 'undefined' ? sessionStorage.getItem('user') : null;
 
   useEffect(() => {
     if (!user && !userSession) {
@@ -43,7 +42,9 @@ export default function Main() {
       <button
         onClick={() => {
           signOut(auth);
-          sessionStorage.removeItem('user');
+          if (typeof window !== 'undefined') {
+            sessionStorage.removeItem('user');
+          }
           router.push('/sign-in');
         }}
       >
