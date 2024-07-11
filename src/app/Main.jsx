@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
-import { useRouter } from 'next/router'; // Changed from 'next/navigation.js'
+import { useRouter } from 'next/navigation'; // Changed from 'next/navigation.js'
 import { signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import Attendance from './Attendance.jsx';
