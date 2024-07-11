@@ -12,27 +12,31 @@ import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 export default function Main() {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
-  const [userSession, setUserSession] = useState(null); // State to store session data
+  const [initialLoad, setInitialLoad] = useState(true); // Track initial load
   const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const sessionUser = sessionStorage.getItem('user');
-      setUserSession(sessionUser); // Set userSession state with session data
+      if (sessionUser) {
+        setUserData(JSON.parse(sessionUser)); // Load user data from session storage
+      }
+      setInitialLoad(false); // Update initial load status
     }
   }, []);
 
   useEffect(() => {
-    // Check if user and session are not present, redirect to sign-in
-    if (!user && !userSession) {
-      router.push('/sign-in');
+    if (!user && !userData && !initialLoad) {
+      router.push('/sign-in'); // Redirect to sign-in if no user data and not loading initially
     } else if (user) {
       const fetchUserData = async () => {
         try {
           const userDocRef = doc(db, 'users', user.uid);
           const userDoc = await getDoc(userDocRef);
           if (userDoc.exists()) {
-            setUserData(userDoc.data());
+            const userData = userDoc.data();
+            setUserData(userData); // Set user data
+            sessionStorage.setItem('user', JSON.stringify(userData)); // Save user data to session storage
           } else {
             console.error('No user data found');
           }
@@ -43,28 +47,22 @@ export default function Main() {
 
       fetchUserData();
     }
-  }, [user, userSession, router]);
+  }, [user, userData, initialLoad, router]);
+
+  const handleSignOut = () => {
+    signOut(auth);
+    sessionStorage.removeItem('user'); // Clear session storage on logout
+    setUserData(null); // Clear user data state
+    router.push('/sign-in');
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      {/* Render components based on userData availability */}
-      {userData ? (
-        <>
-          <Attendance userData={userData} />
-          <MockAttendanceGenerator />
-          <button
-            onClick={() => {
-              signOut(auth);
-              sessionStorage.removeItem('user');
-              router.push('/sign-in');
-            }}
-          >
-            Log out
-          </button>
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
+      <Attendance userData={userData} />
+      <MockAttendanceGenerator />
+      <button onClick={handleSignOut}>
+        Log out
+      </button>
     </main>
   );
 }
