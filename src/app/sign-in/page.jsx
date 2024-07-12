@@ -58,18 +58,18 @@ const SignIn = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 mb-4 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mb-4 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0587be]"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 mb-4 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mb-4 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0587be]"
           />
           <button
             onClick={handleSignIn}
-            className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
+            className="w-full p-3 bg-[#035172] text-white rounded hover:bg-[#0587be] transition duration-300"
             disabled={loading}>
             {loading ? "Signing In..." : "Sign In"}
           </button>
