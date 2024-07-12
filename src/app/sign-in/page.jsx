@@ -38,27 +38,27 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="bg-gray-800 p-10 rounded-lg shadow-xl w-96">
-        <h1 className="text-white text-2xl mb-5">Sign In</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 p-4">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Sign In</h1>
         {error && <p className="text-red-500 mb-4">Error Logging in</p>}
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
+          className="w-full p-3 mb-4 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
+          className="w-full p-3 mb-4 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
           onClick={handleSignIn}
-          className="w-full p-3 bg-[#0587be] rounded text-white hover:bg-indigo-500"
+          className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
           disabled={loading}
         >
           {loading ? 'Signing In...' : 'Sign In'}
@@ -69,8 +69,6 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
-
 
 
 
