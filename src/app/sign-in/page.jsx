@@ -5,10 +5,13 @@ import { useState, useEffect } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"; // Make sure to install react-icons if you haven't already
 import teen from "../img.png";
+
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
   const router = useRouter();
@@ -39,6 +42,10 @@ const SignIn = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#035172] to-[#0587be] p-4">
       <div className="bg-white rounded-lg shadow-lg flex flex-col md:flex-row w-full max-w-4xl">
@@ -56,13 +63,25 @@ const SignIn = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="w-full p-3 mb-4 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0587be]"
           />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 mb-4 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0587be]"
-          />
+          <div className="w-full mb-4 relative">
+            <input
+              type={passwordVisible ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-3 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0587be]"
+            />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute inset-y-0 right-3 flex items-center text-gray-600">
+              {passwordVisible ? (
+                <AiFillEyeInvisible size={24} />
+              ) : (
+                <AiFillEye size={24} />
+              )}
+            </button>
+          </div>
           <button
             onClick={handleSignIn}
             className="w-full p-3 bg-[#035172] text-white rounded hover:bg-[#0587be] transition duration-300"
