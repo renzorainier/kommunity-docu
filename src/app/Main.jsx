@@ -33,7 +33,7 @@ export default function Main() {
   }, [user, userSession, router]);
 
   return (
-    <main className="flex min-h-screen flex-col bg-gradient-to-r from-[#035172] to-[#0587be] items-center justify-between">
+    <main className="flex min-h-screen flex-col items-center justify-between">
       <Attendance userData={userData} />
       <MockAttendanceGenerator />
       <button
