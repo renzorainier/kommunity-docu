@@ -39,36 +39,44 @@ const SignIn = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 p-4">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Sign In</h1>
-        {error && <p className="text-red-500 mb-4">Error Logging in</p>}
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 mb-4 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 mb-4 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          onClick={handleSignIn}
-          className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
-          disabled={loading}
-        >
-          {loading ? 'Signing In...' : 'Sign In'}
-        </button>
+      <div className="bg-white rounded-lg shadow-lg flex flex-col md:flex-row w-full max-w-4xl">
+        <div className="md:w-1/2 p-8 flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-l-lg">
+          <img src="/your-image-path.jpg" alt="Sign In" className="w-3/4 mb-4 rounded-lg" />
+          <h2 className="text-4xl font-bold mb-2">Welcome Back!</h2>
+          <p className="text-lg">Please sign in to continue</p>
+        </div>
+        <div className="md:w-1/2 p-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Sign In</h1>
+          {error && <p className="text-red-500 mb-4">Error Logging in</p>}
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-3 mb-4 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 mb-4 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            onClick={handleSignIn}
+            className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
+            disabled={loading}
+          >
+            {loading ? 'Signing In...' : 'Sign In'}
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default SignIn;
+
 
 
 
