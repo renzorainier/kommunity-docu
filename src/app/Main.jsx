@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import { signOut } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore'; // Changed import to include onSnapshot
 import Attendance from './Attendance.jsx';
@@ -33,7 +33,7 @@ export default function Main() {
   }, [user, userSession, router]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
+    <main className="flex min-h-screen flex-col bg-gradient-to-r from-[#035172] to-[#0587be] items-center justify-between">
       <Attendance userData={userData} />
       <MockAttendanceGenerator />
       <button
