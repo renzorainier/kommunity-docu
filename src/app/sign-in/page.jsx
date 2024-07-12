@@ -46,10 +46,8 @@ const SignIn = () => {
           <div>
             <Image src={teen} width="260" height="260" alt="/" />
           </div>
-
         </div>
-        <div className="md:w-1/2 p-8">
-  
+        <div className="md:w-1/2 p-8 flex flex-col justify-center items-center">
           {error && <p className="text-red-500 mb-4">Error Logging in</p>}
           <input
             type="email"
