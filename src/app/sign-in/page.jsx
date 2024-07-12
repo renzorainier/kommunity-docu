@@ -14,7 +14,7 @@ const SignIn = () => {
   useEffect(() => {
     const savedEmail = localStorage.getItem('email');
     const savedPassword = localStorage.getItem('password');
-    
+
     if (savedEmail && savedPassword) {
       signInWithEmailAndPassword(savedEmail, savedPassword);
     }
