@@ -5,7 +5,7 @@ import { TbCalendarMonth } from "react-icons/tb";
 function Attendance({ userData }) {
   console.log(userData);
   return (
-    <main className="flex min-h-screen bg-gradient-to-r from-[#035172] to-[#0587be] flex-col items-center justify-center pt-12">
+    <main className="flex min-h-screen flex-col items-center justify-center pt-12">
       {userData && (
         <div className="w-full max-w-4xl bg-white text-gray-800 shadow-lg rounded-lg pt-2 overflow-hidden">
           <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
