@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation.js';
 import { signOut } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore'; // Changed import to include onSnapshot
 import Attendance from './Attendance.jsx';
