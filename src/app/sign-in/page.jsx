@@ -1,19 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth } from '@/app/firebase/config';
-import { useRouter } from 'next/navigation';
-
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "@/app/firebase/config";
+import { useRouter } from "next/navigation";
+import teen from "../img.png";
 const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
   const router = useRouter();
 
   useEffect(() => {
-    const savedEmail = localStorage.getItem('email');
-    const savedPassword = localStorage.getItem('password');
+    const savedEmail = localStorage.getItem("email");
+    const savedPassword = localStorage.getItem("password");
 
     if (savedEmail && savedPassword) {
       signInWithEmailAndPassword(savedEmail, savedPassword);
@@ -22,10 +24,10 @@ const SignIn = () => {
 
   useEffect(() => {
     if (user) {
-      localStorage.setItem('email', email);
-      localStorage.setItem('password', password);
-      sessionStorage.setItem('user', true);
-      router.push('/');
+      localStorage.setItem("email", email);
+      localStorage.setItem("password", password);
+      sessionStorage.setItem("user", true);
+      router.push("/");
     }
   }, [user, email, password, router]);
 
@@ -41,12 +43,15 @@ const SignIn = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 p-4">
       <div className="bg-white rounded-lg shadow-lg flex flex-col md:flex-row w-full max-w-4xl">
         <div className="md:w-1/2 p-8 flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-l-lg">
-          <img src="/your-image-path.jpg" alt="Sign In" className="w-3/4 mb-4 rounded-lg" />
-          <h2 className="text-4xl font-bold mb-2">Welcome Back!</h2>
-          <p className="text-lg">Please sign in to continue</p>
+          <div>
+            <Image src={teen} width="40" height="40" alt="/" />
+          </div>
+
         </div>
         <div className="md:w-1/2 p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Sign In</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+            Sign In
+          </h1>
           {error && <p className="text-red-500 mb-4">Error Logging in</p>}
           <input
             type="email"
@@ -65,9 +70,8 @@ const SignIn = () => {
           <button
             onClick={handleSignIn}
             className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
-            disabled={loading}
-          >
-            {loading ? 'Signing In...' : 'Sign In'}
+            disabled={loading}>
+            {loading ? "Signing In..." : "Sign In"}
           </button>
         </div>
       </div>
@@ -76,9 +80,6 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
-
-
 
 // 'use client';
 
