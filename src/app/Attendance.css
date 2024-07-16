@@ -1,0 +1,35 @@
+
+html {
+  position: relative;
+  overflow-x: hidden !important;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  background: #f2f7fd;
+}
+
+a, a:hover {
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.js-scroll-list-item {
+  opacity: 0;
+  transform: scale(0.7);
+  transition: all .5s ease-in-out;
+}
+
+.js-scroll-list-item.item-focus {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.js-scroll-list-item.item-next + .js-scroll-list-item {
+  opacity: 1;
+  transform: scale(1);
+}

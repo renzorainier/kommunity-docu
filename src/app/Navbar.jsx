@@ -1,12 +1,10 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import { AiOutlineClose, AiOutlineMenu, AiOutlineMail } from "react-icons/ai";
-import { FaFacebook, FaGithub } from "react-icons/fa";
-import { BsFillPersonLinesFill } from "react-icons/bs";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import teen from "./img.png";
 import { signOut } from 'firebase/auth';
-import { auth, db } from '@/app/firebase/config';
+import { auth } from '@/app/firebase/config';
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -20,6 +18,14 @@ const Navbar = () => {
   const navigateTo = (path) => {
     router.push(path);
     setNav(false);
+  };
+
+  const handleSignOut = () => {
+    signOut(auth);
+    localStorage.removeItem('email');
+    localStorage.removeItem('password');
+    sessionStorage.removeItem('user');
+    router.push('/sign-in');
   };
 
   useEffect(() => {
@@ -37,8 +43,8 @@ const Navbar = () => {
     <div
       className={
         shadow
-          ? "fixed w-full h-14  shadow-xl shadow-gray-400 z-[100]"
-          : "fixed w-full h-14   z-[100]"
+          ? "fixed w-full h-14 shadow-xl shadow-gray-400 z-[100]"
+          : "fixed w-full h-14 z-[100]"
       }
     >
       <div className="flex justify-between items-center w-full h-full px-5 2xl:px-16 bg-white">
@@ -60,15 +66,10 @@ const Navbar = () => {
             </li>
             <li
               className="ml-10 text-sm uppercase hover:border-b cursor-pointer"
-              onClick={() => {
-                signOut(auth);
-                sessionStorage.removeItem('user');
-                router.push('/sign-in');
-              }}
+              onClick={handleSignOut}
             >
               Sign Out
             </li>
-
           </ul>
           <div onClick={handleNav} className="md:hidden">
             <AiOutlineMenu size={25} />
@@ -81,7 +82,7 @@ const Navbar = () => {
           nav ? "md:hidden fixed left-0 top-0 w-full h-screen bg-black/70" : ""
         }
       >
-           <div
+        <div
           className={
             nav
               ? "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-white p-10 transform translate-x-0 transition-transform duration-500 ease-out"
@@ -121,31 +122,12 @@ const Navbar = () => {
                 Home
               </li>
               <li
-                onClick={() => navigateTo('sign-in')}
+                onClick={handleSignOut}
                 className="py-4 text-sm cursor-pointer"
               >
                 Sign Out
               </li>
             </ul>
-            {/* <div className="py-4">
-              <p className="uppercase tracking-widest text-[#C58940]">
-                Let us Connect
-              </p>
-              <div className="flex items-center justify-between my-4 w-full sm:w-[80%]">
-                <div className="rounded-full shadow-lg shadow-[#e8c284] p-3 cursor-pointer hover:scale-105 ease-in duration-500">
-                  <FaFacebook />
-                </div>
-                <div className="rounded-full shadow-lg shadow-[#e8c284]  p-3 cursor-pointer hover:scale-105 ease-in duration-500">
-                  <FaGithub />
-                </div>
-                <div className="rounded-full shadow-lg shadow-[#e8c284] p-3 cursor-pointer hover:scale-105 ease-in duration-500">
-                  <AiOutlineMail />
-                </div>
-                <div className="rounded-full shadow-lg shadow-[#e8c284] p-3 cursor-pointer hover:scale-105 ease-in duration-500">
-                  <BsFillPersonLinesFill />
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
