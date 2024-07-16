@@ -33,20 +33,10 @@ export default function Main() {
   }, [user, userSession, router]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
+    <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
       <Attendance userData={userData} />
-      <MockAttendanceGenerator />
-      <button
-        onClick={() => {
-          signOut(auth);
-          if (typeof window !== 'undefined') {
-            sessionStorage.removeItem('user');
-          }
-          router.push('/sign-in');
-        }}
-      >
-        Log out
-      </button>
+      {/* <MockAttendanceGenerator /> */}
+
     </main>
   );
 }

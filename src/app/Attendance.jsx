@@ -53,7 +53,7 @@ function Attendance({ userData }) {
             if (weekNumber !== currentWeek) {
               currentWeek = weekNumber;
               weekHeader = (
-                <div key={`week-${index}`} className="text-lg font-semibold mt-4">
+                <div key={`week-${index}`} className="text-lg text-white font-semibold mt-4">
                   Week {currentWeek}
                 </div>
               );
@@ -61,7 +61,7 @@ function Attendance({ userData }) {
             return (
               <React.Fragment key={`attendance-${index}`}>
                 {weekHeader}
-                <div className="grid grid-cols-4 gap-2 rounded-lg shadow-md p-4 js-scroll-list-item transition duration-300 hover:shadow-lg">
+                <div className="grid mb-2 bg-white grid-cols-4 gap-2 rounded-lg shadow-md shadow-[#0587be] p-4 js-scroll-list-item transition duration-300 hover:shadow-lg">
                   <div className={`font-semibold text-lg rounded-lg text-white text-center py-2 ${
                     recordDate.getDay() === 1 ? 'bg-[#025172]' : // Monday
                     recordDate.getDay() === 2 ? 'bg-[#03597E]' : // Tuesday
@@ -82,7 +82,7 @@ function Attendance({ userData }) {
                         })
                       : 'N/A'}
                   </div>
-                  <div className="text-lg text-center py-2">
+                  <div className="text-lg textE-center py-2">
                     {userData.attendance[date].checkOut
                       ? new Date(userData.attendance[date].checkOut).toLocaleTimeString([], {
                           hour: '2-digit',
@@ -93,7 +93,7 @@ function Attendance({ userData }) {
                 </div>
               </React.Fragment>
             );
-//wala lanf
+//wala lanff
 
           })}
       </div>
@@ -115,10 +115,10 @@ function Attendance({ userData }) {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center pt-12">
+    <main className="flex min-h-screen bg-[#031525] flex-col items-center justify-center pt-12">
       {userData ? (
         <div
-          className="w-full max-w-4xl bg-white text-gray-800 shadow-lg rounded-lg pt-2 overflow-hidden"
+          className="w-full max-w-4xl text-gray-800 shadow-lg rounded-lg pt-2 overflow-hidden"
           ref={wrapperRef}
         >
           <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -126,7 +126,7 @@ function Attendance({ userData }) {
             <div className="text-white text-lg text-center">{userData.name}</div>
           </div>
 
-          <div className="px-6 py-4">{renderAttendanceRecords()}</div>
+          <div className="px-6 py-4 bg-[#031525]">{renderAttendanceRecords()}</div>
         </div>
       ) : (
         <p>Loading...</p>
