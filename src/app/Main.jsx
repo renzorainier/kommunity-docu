@@ -35,7 +35,7 @@ export default function Main() {
   return (
     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
       <Attendance userData={userData} />
-      {/* <MockAttendanceGenerator /> */}
+      <MockAttendanceGenerator />
 
     </main>
   );
