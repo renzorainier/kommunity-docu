@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import teen from "./img.png";
 import { signOut } from 'firebase/auth';
 import { auth } from '@/app/firebase/config';
+import Attendance from './Attendance.jsx';
+import Finance from './Finance.jsx';
 
-const Navbar = () => {
+const Navbar = ({userData}) => {
   const [nav, setNav] = useState(false);
   const [shadow, setShadow] = useState(false);
   const router = useRouter();
@@ -130,6 +132,9 @@ const Navbar = () => {
             </ul>
           </div>
         </div>
+      </div>
+      <div>
+      <Attendance userData={userData} />
       </div>
     </div>
   );

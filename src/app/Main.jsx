@@ -1,62 +1,17 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '@/app/firebase/config';
-import { useRouter } from 'next/navigation';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { useUserData } from './UserDataContext';
-import Attendance from './Attendance.jsx';
-import Finance from './Finance.jsx';
-import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
-
-export default function Main() {
-  const [user] = useAuthState(auth);
-  const { setUserData } = useUserData();
-  const router = useRouter();
-  const userSession = typeof window !== 'undefined' ? sessionStorage.getItem('user') : null;
-
-  useEffect(() => {
-    if (!user && !userSession) {
-      router.push('/sign-in');
-    } else if (user) {
-      const userDocRef = doc(db, 'users', user.uid);
-
-      // Set up listener for real-time updates
-      const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
-        if (docSnapshot.exists()) {
-          const data = docSnapshot.data();
-          setUserData(data);
-          console.log(docSnapshot.data());
-          router.push('/attendance'); // Navigate to the Attendance page after setting the data
-        } else {
-          console.error('No user data found');
-          router.push('/error'); // Redirect to error page if no user data found
-        }
-      });
-
-      return () => unsubscribe(); // Cleanup function to unsubscribe when component unmounts
-    }
-  }, [user, userSession, router, setUserData]);
-
-  return (
-    <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
-      <h1>Loading...</h1>
-    </main>
-  );
-}
-
 // import { useEffect, useState } from 'react';
 // import { useAuthState } from 'react-firebase-hooks/auth';
 // import { auth, db } from '@/app/firebase/config';
 // import { useRouter } from 'next/navigation';
 // import { doc, onSnapshot } from 'firebase/firestore';
+// import { useUserData } from './UserDataContext';
 // import Attendance from './Attendance.jsx';
 // import Finance from './Finance.jsx';
 // import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 
 // export default function Main() {
 //   const [user] = useAuthState(auth);
-//   const [userData, setUserData] = useState(null);
+//   const { setUserData } = useUserData();
 //   const router = useRouter();
 //   const userSession = typeof window !== 'undefined' ? sessionStorage.getItem('user') : null;
 
@@ -69,8 +24,10 @@ export default function Main() {
 //       // Set up listener for real-time updates
 //       const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
 //         if (docSnapshot.exists()) {
-//           setUserData(docSnapshot.data());
+//           const data = docSnapshot.data();
+//           setUserData(data);
 //           console.log(docSnapshot.data());
+//           router.push('/attendance'); // Navigate to the Attendance page after setting the data
 //         } else {
 //           console.error('No user data found');
 //           router.push('/error'); // Redirect to error page if no user data found
@@ -79,20 +36,66 @@ export default function Main() {
 
 //       return () => unsubscribe(); // Cleanup function to unsubscribe when component unmounts
 //     }
-//   }, [user, userSession, router]);
+//   }, [user, userSession, router, setUserData]);
 
 //   return (
 //     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
-//       <Attendance userData={userData} />
-
-//       <Finance userData={userData} />
-
-
-//       {/* {userData && userData.finance && <Finance financeData={userData.finance} />}
-//       <MockAttendanceGenerator /> */}
+//       <h1>Loading...</h1>
 //     </main>
 //   );
 // }
+
+import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, db } from '@/app/firebase/config';
+import { useRouter } from 'next/navigation';
+import { doc, onSnapshot } from 'firebase/firestore';
+import Attendance from './Attendance.jsx';
+import Finance from './Finance.jsx';
+import Navbar from './Navbar.jsx'
+import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
+
+export default function Main() {
+  const [user] = useAuthState(auth);
+  const [userData, setUserData] = useState(null);
+  const router = useRouter();
+  const userSession = typeof window !== 'undefined' ? sessionStorage.getItem('user') : null;
+
+  useEffect(() => {
+    if (!user && !userSession) {
+      router.push('/sign-in');
+    } else if (user) {
+      const userDocRef = doc(db, 'users', user.uid);
+
+      // Set up listener for real-time updates
+      const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          setUserData(docSnapshot.data());
+          console.log(docSnapshot.data());
+        } else {
+          console.error('No user data found');
+          router.push('/error'); // Redirect to error page if no user data found
+        }
+      });
+
+      return () => unsubscribe(); // Cleanup function to unsubscribe when component unmounts
+    }
+  }, [user, userSession, router]);
+
+  return (
+    <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
+      <Navbar userData={userData} />
+
+      {/* <Attendance userData={userData} /> */}
+
+      {/* <Finance userData={userData} /> */}
+
+
+      {/* {userData && userData.finance && <Finance financeData={userData.finance} />}
+      <MockAttendanceGenerator /> */}
+    </main>
+  );
+}
 
 
 
