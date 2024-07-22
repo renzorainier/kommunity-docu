@@ -5,9 +5,9 @@ const Attendance = () => {
 
 
 
-  // if (!userData) {
-  //   return <p>Loading...</p>;
-  // }
+  if (!userData) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>

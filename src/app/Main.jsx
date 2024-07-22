@@ -26,7 +26,8 @@ export default function Main() {
         if (docSnapshot.exists()) {
           const data = docSnapshot.data();
           setUserData(data);
-          console.log(docSnapshot.data());          router.push('/attendance'); // Navigate to the Attendance page after setting the data
+          console.log(docSnapshot.data());
+          router.push('/attendance'); // Navigate to the Attendance page after setting the data
         } else {
           console.error('No user data found');
           router.push('/error'); // Redirect to error page if no user data found
