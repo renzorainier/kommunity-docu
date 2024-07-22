@@ -36,7 +36,7 @@ function Finance({ userData }) {
     <main className="max-w-4xl mx-auto p-6 min-h-screen">
       {userData ? (
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Finance Information</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Account Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div className="bg-blue-100 p-6 rounded-lg shadow-sm text-center">
               <div className="text-sm font-medium text-gray-500">To Pay</div>
