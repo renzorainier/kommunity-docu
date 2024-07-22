@@ -93,8 +93,6 @@ function Attendance({ userData }) {
                 </div>
               </React.Fragment>
             );
-//wala lanff
-
           })}
       </div>
     );
@@ -129,7 +127,10 @@ function Attendance({ userData }) {
           <div className="px-6 py-4 bg-[#031525]">{renderAttendanceRecords()}</div>
         </div>
       ) : (
-        <p>Loading...</p>
+        <div className="flex flex-col items-center">
+          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-16 w-16 mb-4"></div>
+          <p className="text-white text-lg">Loading...</p>
+        </div>
       )}
     </main>
   );

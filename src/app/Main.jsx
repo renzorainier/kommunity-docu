@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
-import { useRouter } from 'next/navigation.js';
-import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 import { doc, onSnapshot } from 'firebase/firestore'; // Changed import to include onSnapshot
 import Attendance from './Attendance.jsx';
+import Finance from './Finance.jsx';
 import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 
 export default function Main() {
@@ -23,8 +23,10 @@ export default function Main() {
       const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
         if (docSnapshot.exists()) {
           setUserData(docSnapshot.data());
+          console.log(docSnapshot.data());
         } else {
           console.error('No user data found');
+          router.push('/error'); // Redirect to error page if no user data found
         }
       });
 
@@ -35,12 +37,11 @@ export default function Main() {
   return (
     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
       <Attendance userData={userData} />
+      <Finance userData={userData} />
       <MockAttendanceGenerator />
-
     </main>
   );
 }
-
 
 
 

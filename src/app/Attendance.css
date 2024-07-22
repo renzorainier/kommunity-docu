@@ -33,3 +33,18 @@ a, a:hover {
   opacity: 1;
   transform: scale(1);
 }
+
+
+.loader {
+  border-top-color: #0587be;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
