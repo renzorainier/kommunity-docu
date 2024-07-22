@@ -3,8 +3,11 @@ import Main from "./Main.jsx";
 import Navbar from "./Navbar.jsx";
 import Head from "next/head.js";
 import React from "react";
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [activeComponent, setActiveComponent] = useState('attendance'); // State for toggling components
+
   return (
     <>
       <Head>
@@ -21,8 +24,8 @@ export default function Home() {
       </Head>
 
       <div>
-        {/* <Navbar /> */}
-        <Main />
+        <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
+        <Main activeComponent={activeComponent}/>
       </div>
     </>
   );
