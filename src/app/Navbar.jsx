@@ -8,7 +8,7 @@ import { auth } from '@/app/firebase/config';
 import Attendance from './Attendance.jsx';
 import Finance from './Finance.jsx';
 
-const Navbar = ({userData}) => {
+const Navbar = () => {
   const [nav, setNav] = useState(false);
   const [shadow, setShadow] = useState(false);
   const router = useRouter();
@@ -134,7 +134,7 @@ const Navbar = ({userData}) => {
         </div>
       </div>
       <div>
-      <Attendance userData={userData} />
+      {/* <Attendance userData={userData} /> */}
       </div>
     </div>
   );

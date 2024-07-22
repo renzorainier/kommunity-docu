@@ -52,7 +52,7 @@ import { useRouter } from 'next/navigation';
 import { doc, onSnapshot } from 'firebase/firestore';
 import Attendance from './Attendance.jsx';
 import Finance from './Finance.jsx';
-import Navbar from './Navbar.jsx'
+// import Navbar from './Navbar.jsx'
 import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 
 export default function Main() {
@@ -84,9 +84,9 @@ export default function Main() {
 
   return (
     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
-      <Navbar userData={userData} />
+      {/* <Navbar userData={userData} /> */}
 
-      {/* <Attendance userData={userData} /> */}
+      <Attendance userData={userData} />
 
       {/* <Finance userData={userData} /> */}
 
