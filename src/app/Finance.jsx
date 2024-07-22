@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import './Finance.css'; // If needed for additional styles
 
-function Finance({ financeData }) {
+function Finance({ userData }) {
   const { ref: wrapperRef, inView: wrapperInView } = useInView({
     triggerOnce: true,
   });

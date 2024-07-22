@@ -37,6 +37,10 @@ export default function Main() {
   return (
     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
       <Attendance userData={userData} />
+
+      <Finance userData={userData} />
+
+
       {/* {userData && userData.finance && <Finance financeData={userData.finance} />}
       <MockAttendanceGenerator /> */}
     </main>
