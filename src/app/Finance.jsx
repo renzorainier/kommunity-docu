@@ -21,7 +21,7 @@ function Finance({ userData }) {
             return (
               <div key={`transaction-${index}`} className="flex justify-between items-center py-2 border-b border-gray-200 last:border-none">
                 <div className="text-gray-700">{transactionDate.toLocaleDateString()}</div>
-                <div className="text-green-600">${transaction.amount}</div>
+                <div className="text-green-600">₱{transaction.amount}</div>
                 <div className="text-gray-500">Added: {transaction.dateAdded}</div>
               </div>
             );
@@ -38,15 +38,15 @@ function Finance({ userData }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div className="bg-blue-50 p-4 rounded-lg shadow-sm text-center">
               <div className="text-sm font-medium text-gray-500">To Pay</div>
-              <div className="text-lg font-semibold text-gray-800">${userData.finance.toPay}</div>
+              <div className="text-lg font-semibold text-gray-800">₱{userData.finance.toPay}</div>
             </div>
             <div className="bg-green-50 p-4 rounded-lg shadow-sm text-center">
               <div className="text-sm font-medium text-gray-500">Total Paid</div>
-              <div className="text-lg font-semibold text-gray-800">${userData.finance.totalPaid}</div>
+              <div className="text-lg font-semibold text-gray-800">₱{userData.finance.totalPaid}</div>
             </div>
             <div className="bg-yellow-50 p-4 rounded-lg shadow-sm text-center">
               <div className="text-sm font-medium text-gray-500">Tuition</div>
-              <div className="text-lg font-semibold text-gray-800">${userData.finance.tuition}</div>
+              <div className="text-lg font-semibold text-gray-800">₱{userData.finance.tuition}</div>
             </div>
           </div>
           <div>
