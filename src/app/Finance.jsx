@@ -20,9 +20,9 @@ function Finance({ userData }) {
 
             return (
               <div key={`transaction-${index}`} className="transaction-item">
-                <div>{transactionDate.toLocaleDateString()}</div>
-                <div>{transaction.amount.toFixed(2)}</div>
-                <div>{transaction.dateAdded}</div>
+                <div>Date: {transactionDate.toLocaleDateString()}</div>
+                <div>Amount: ${transaction.amount}</div>
+                <div>Date Added: {transaction.dateAdded}</div>
               </div>
             );
           })}
@@ -36,10 +36,9 @@ function Finance({ userData }) {
         <div>
           <div>
             <h2>Finance Information</h2>
-            <div>Balance: ${(userData.finance.totalPaid - userData.finance.toPay).toFixed(2)}</div>
-            <div>Tuition: ${userData.finance.tuition.toFixed(2)}</div>
-            <div>Total Paid: ${userData.finance.totalPaid.toFixed(2)}</div>
-            <div>To Pay: ${userData.finance.toPay.toFixed(2)}</div>
+            <div>To Pay: ${userData.finance.toPay}</div>
+            <div>Total Paid: ${userData.finance.totalPaid}</div>
+            <div>Tuition: ${userData.finance.tuition}</div>
           </div>
           <div>
             <h3>Transaction Records</h3>
