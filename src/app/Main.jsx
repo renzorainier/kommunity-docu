@@ -13,6 +13,7 @@ import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 export default function Main() {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
+  const [showAttendance, setShowAttendance] = useState(true); // State for toggling components
   const router = useRouter();
   const userSession = typeof window !== 'undefined' ? sessionStorage.getItem('user') : null;
 
@@ -41,13 +42,23 @@ export default function Main() {
     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
       {/* <Navbar userData={userData} /> */}
 
-      <Attendance userData={userData} />
+      <div className="flex space-x-4 mt-4">
+        <button
+          onClick={() => setShowAttendance(true)}
+          className={`px-4 py-2 rounded ${showAttendance ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+        >
+          Show Attendance
+        </button>
+        <button
+          onClick={() => setShowAttendance(false)}
+          className={`px-4 py-2 rounded ${!showAttendance ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+        >
+          Show Finance
+        </button>
+      </div>
 
-      <Finance userData={userData} />
-
-
-      {/* {userData && userData.finance && <Finance financeData={userData.finance} />}
-      <MockAttendanceGenerator /> */}
+      {showAttendance ? <Attendance userData={userData} /> : <Finance userData={userData} />}
+      {/* <MockAttendanceGenerator /> */}
     </main>
   );
 }
