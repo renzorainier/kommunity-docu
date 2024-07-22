@@ -22,7 +22,6 @@ function Finance({ userData }) {
               <div key={`transaction-${index}`} className="flex justify-between items-center py-2 border-b border-gray-200 last:border-none">
                 <div className="text-gray-700">{transactionDate.toLocaleDateString()}</div>
                 <div className="text-green-600">₱{transaction.amount}</div>
-                <div className="text-gray-500">Added: {transaction.dateAdded}</div>
               </div>
             );
           })}
