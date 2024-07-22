@@ -24,7 +24,7 @@ export default function Home() {
       </Head>
 
       <div>
-        {/* <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} /> */}
+        <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
         <Main activeComponent={activeComponent} />
       </div>
     </>
