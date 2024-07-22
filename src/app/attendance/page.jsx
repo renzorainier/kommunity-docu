@@ -1,3 +1,4 @@
+'use client';
 import { useUserData } from '@/app/UserDataContext';
 
 const Attendance = () => {
