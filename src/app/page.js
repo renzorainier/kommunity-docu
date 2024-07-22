@@ -1,9 +1,9 @@
-"use client";
-import Main from "./Main.jsx";
-import Navbar from "./Navbar.jsx";
-import Head from "next/head.js";
-import React from "react";
-import { useEffect, useState } from 'react';
+'use client';
+
+import { useState } from 'react';
+import Main from './Main.jsx';
+import Navbar from './Navbar.jsx';
+import Head from 'next/head.js';
 
 export default function Home() {
   const [activeComponent, setActiveComponent] = useState('attendance'); // State for toggling components
@@ -25,7 +25,7 @@ export default function Home() {
 
       <div>
         <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
-        <Main activeComponent={activeComponent}/>
+        <Main activeComponent={activeComponent} />
       </div>
     </>
   );

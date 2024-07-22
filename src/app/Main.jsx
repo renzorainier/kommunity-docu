@@ -10,10 +10,9 @@ import Finance from './Finance.jsx';
 import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 // Import more components as needed
 
-export default function Main({activeComponent}) {
+export default function Main({ activeComponent }) {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
-  const [activeComponent, setActiveComponent] = useState('attendance'); // State for toggling components
   const router = useRouter();
   const userSession = typeof window !== 'undefined' ? sessionStorage.getItem('user') : null;
 
@@ -40,30 +39,6 @@ export default function Main({activeComponent}) {
 
   return (
     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
-      {/* <Navbar userData={userData} /> */}
-
-      <div className="flex space-x-4 mt-4">
-        <button
-          onClick={() => setActiveComponent('attendance')}
-          className={`px-4 py-2 rounded ${activeComponent === 'attendance' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-        >
-          Show Attendance
-        </button>
-        <button
-          onClick={() => setActiveComponent('finance')}
-          className={`px-4 py-2 rounded ${activeComponent === 'finance' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-        >
-          Show Finance
-        </button>
-        <button
-          onClick={() => setActiveComponent('mockAttendance')}
-          className={`px-4 py-2 rounded ${activeComponent === 'mockAttendance' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-        >
-          Show Mock Attendance
-        </button>
-        {/* Add more buttons for other components */}
-      </div>
-
       {activeComponent === 'attendance' && <Attendance userData={userData} />}
       {activeComponent === 'finance' && <Finance userData={userData} />}
       {activeComponent === 'mockAttendance' && <MockAttendanceGenerator />}
