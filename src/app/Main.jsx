@@ -1,8 +1,8 @@
-// Main.jsx
+'use client';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useUserData } from './UserDataContext';
 import Attendance from './Attendance.jsx';
