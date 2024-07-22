@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
-import { doc, onSnapshot } from 'firebase/firestore'; // Changed import to include onSnapshot
+import { doc, onSnapshot } from 'firebase/firestore';
 import Attendance from './Attendance.jsx';
 import Finance from './Finance.jsx';
 import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
@@ -37,13 +37,11 @@ export default function Main() {
   return (
     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
       <Attendance userData={userData} />
-      <Finance userData={userData} />
+      {userData && userData.finance && <Finance financeData={userData.finance} />}
       <MockAttendanceGenerator />
     </main>
   );
 }
-
-
 
 
 
