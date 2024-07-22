@@ -3,9 +3,11 @@ import { useUserData } from '@/app/UserDataContext';
 const Attendance = () => {
   const { userData } = useUserData();
 
-  if (!userData) {
-    return <p>Loading...</p>;
-  }
+
+
+  // if (!userData) {
+  //   return <p>Loading...</p>;
+  // }
 
   return (
     <div>
