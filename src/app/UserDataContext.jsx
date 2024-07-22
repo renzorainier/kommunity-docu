@@ -1,5 +1,5 @@
 'use client';
-// UserDataContext.js
+// UserDataContext.jsx
 import { createContext, useContext, useState } from 'react';
 
 const UserDataContext = createContext();
