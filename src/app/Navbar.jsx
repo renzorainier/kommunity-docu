@@ -1,10 +1,10 @@
-import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { useRouter } from "next/navigation";
-import teen from "./img.png";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import Image from "next/image";
 import { signOut } from 'firebase/auth';
 import { auth } from '@/app/firebase/config';
+import teen from "./img.png";
 
 const Navbar = ({ activeComponent, setActiveComponent }) => {
   const [nav, setNav] = useState(false);
@@ -37,6 +37,8 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
       }
     };
     window.addEventListener("scroll", handleShadow);
+
+    return () => window.removeEventListener("scroll", handleShadow); // Cleanup listener
   }, []);
 
   return (
@@ -59,29 +61,23 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
         <div>
           <ul className="hidden md:flex">
             <li
-              className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${activeComponent === 'home' ? 'border-b' : ''}`}
-              onClick={() => navigateTo('/')}
-            >
-              Home
-            </li>
-            <li
               className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${activeComponent === 'attendance' ? 'border-b' : ''}`}
-              onClick={() => setActiveComponent('attendance')}
+              onClick={() => {
+                setActiveComponent('attendance');
+                handleNav(); // Close the nav menu
+              }}
             >
               Attendance
             </li>
             <li
               className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${activeComponent === 'finance' ? 'border-b' : ''}`}
-              onClick={() => setActiveComponent('finance')}
+              onClick={() => {
+                setActiveComponent('finance');
+                handleNav(); // Close the nav menu
+              }}
             >
               Finance
             </li>
-            {/* <li
-              className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${activeComponent === 'mockAttendance' ? 'border-b' : ''}`}
-              onClick={() => setActiveComponent('mockAttendance')}
-            >
-              Mock Attendance
-            </li> */}
             <li
               className="ml-10 text-sm uppercase hover:border-b cursor-pointer"
               onClick={handleSignOut}
@@ -134,29 +130,23 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
           <div className="py-4 flex flex-col">
             <ul className="uppercase">
               <li
-                onClick={() => navigateTo('/')}
-                className="py-4 text-sm cursor-pointer"
-              >
-                Home
-              </li>
-              <li
-                onClick={() => setActiveComponent('attendance')}
-                className="py-4 text-sm cursor-pointer"
+                onClick={() => {
+                  setActiveComponent('attendance');
+                  handleNav(); // Close the nav menu
+                }}
+                className={`py-4 text-sm cursor-pointer ${activeComponent === 'attendance' ? 'border-b' : ''}`}
               >
                 Attendance
               </li>
               <li
-                onClick={() => setActiveComponent('finance')}
-                className="py-4 text-sm cursor-pointer"
+                onClick={() => {
+                  setActiveComponent('finance');
+                  handleNav(); // Close the nav menu
+                }}
+                className={`py-4 text-sm cursor-pointer ${activeComponent === 'finance' ? 'border-b' : ''}`}
               >
                 Finance
               </li>
-              {/* <li
-                onClick={() => setActiveComponent('mockAttendance')}
-                className="py-4 text-sm cursor-pointer"
-              >
-                Mock Attendance
-              </li> */}
               <li
                 onClick={handleSignOut}
                 className="py-4 text-sm cursor-pointer"
