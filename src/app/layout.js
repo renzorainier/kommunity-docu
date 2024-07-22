@@ -23,7 +23,6 @@ export default function RootLayout({ children }) {
 }
 
 
-
 // import "./globals.css";
 // import { Urbanist } from 'next/font/google'
 
