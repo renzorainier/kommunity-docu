@@ -1,4 +1,3 @@
-// UserDataContext.js
 import { createContext, useContext, useState } from 'react';
 
 const UserDataContext = createContext();

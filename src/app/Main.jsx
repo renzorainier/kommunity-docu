@@ -4,7 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
 import { useRouter } from 'next/router';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { useUserData } from '@/app/UserDataContext';
+import { useUserData } from './UserDataContext';
 import Attendance from './Attendance.jsx';
 import Finance from './Finance.jsx';
 import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
