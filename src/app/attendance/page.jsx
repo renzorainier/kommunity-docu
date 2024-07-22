@@ -1,4 +1,4 @@
-import { useUserData } from './UserDataContext';
+import { useUserData } from '@/app/UserDataContext';
 
 const Attendance = () => {
   const { userData } = useUserData();
