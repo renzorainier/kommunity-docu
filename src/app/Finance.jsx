@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import './Finance.css'; // Ensure you create this CSS file for the styles
+
 
 function Finance({ userData }) {
   useEffect(() => {
