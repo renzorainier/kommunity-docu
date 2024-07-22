@@ -24,7 +24,7 @@ function Finance({ userData }) {
                 className="flex justify-between items-center py-2 border-b border-gray-200 last:border-none"
               >
                 <div className="text-gray-700">{transactionDate.toLocaleDateString()}</div>
-                <div className="text-green-600 font-medium">₱{transaction.amount}</div>
+                <div className="text-green-600 font-medium">₱{transaction.amount.toLocaleString()}</div>
               </div>
             );
           })}
@@ -40,15 +40,15 @@ function Finance({ userData }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div className="bg-blue-100 p-6 rounded-lg shadow-sm text-center">
               <div className="text-sm font-medium text-gray-500">To Pay</div>
-              <div className="text-xl font-bold text-gray-800">₱{userData.finance.toPay}</div>
+              <div className="text-xl font-bold text-gray-800">₱{userData.finance.toPay.toLocaleString()}</div>
             </div>
             <div className="bg-green-100 p-6 rounded-lg shadow-sm text-center">
               <div className="text-sm font-medium text-gray-500">Total Paid</div>
-              <div className="text-xl font-bold text-gray-800">₱{userData.finance.totalPaid}</div>
+              <div className="text-xl font-bold text-gray-800">₱{userData.finance.totalPaid.toLocaleString()}</div>
             </div>
             <div className="bg-yellow-100 p-6 rounded-lg shadow-sm text-center">
               <div className="text-sm font-medium text-gray-500">Tuition</div>
-              <div className="text-xl font-bold text-gray-800">₱{userData.finance.tuition}</div>
+              <div className="text-xl font-bold text-gray-800">₱{userData.finance.tuition.toLocaleString()}</div>
             </div>
           </div>
           <div>
