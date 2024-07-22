@@ -33,7 +33,7 @@ function Finance({ userData }) {
   };
 
   return (
-    <main className="max-w-4xl mx-auto p-6 bg-gray-50 min-h-screen">
+    <main className="max-w-4xl mx-auto p-6 min-h-screen">
       {userData ? (
         <div className="bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-6">Finance Information</h2>
