@@ -41,7 +41,7 @@ export default function Main({ activeComponent }) {
     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
       {activeComponent === 'attendance' && <Attendance userData={userData} />}
       {activeComponent === 'finance' && <Finance userData={userData} />}
-      {activeComponent === 'mockAttendance' && <MockAttendanceGenerator />}
+      {/* {activeComponent === 'mockAttendance' && <MockAttendanceGenerator />} */}
       {/* Add more conditional renderings for other components */}
     </main>
   );
