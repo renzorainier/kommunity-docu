@@ -1,7 +1,7 @@
 // layout.js
 import "./globals.css";
 import { Urbanist } from 'next/font/google';
-import { UserDataProvider } from '/UserDataContext.jsx';
+import { UserDataProvider } from './UserDataContext.jsx';
 
 const inter = Urbanist({ subsets: ['latin'] });
 
