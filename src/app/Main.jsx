@@ -1,3 +1,5 @@
+
+//working before sync 27
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -7,41 +9,34 @@ import { useRouter } from 'next/navigation';
 import { doc, onSnapshot } from 'firebase/firestore';
 import Attendance from './Attendance.jsx';
 import Finance from './Finance.jsx';
+import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
 // Import more components as needed
 
 export default function Main({ activeComponent }) {
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
   const router = useRouter();
-  const userSession = typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem('user')) : null;
+  const userSession = typeof window !== 'undefined' ? sessionStorage.getItem('user') : null;
 
   useEffect(() => {
-    const handleUserCheck = () => {
-      if (!user && !userSession) {
-        router.push('/sign-in');
-        return;
-      }
+    if (!user && !userSession) {
+      router.push('/sign-in');
+    } else if (user) {
+      const userDocRef = doc(db, 'users', user.uid);
 
-      if (user) {
-        sessionStorage.setItem('user', JSON.stringify(user));
-        const userDocRef = doc(db, 'users', user.uid);
+      // Set up listener for real-time updates
+      const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          setUserData(docSnapshot.data());
+          console.log(docSnapshot.data());
+        } else {
+          console.error('No user data found');
+          router.push('/error'); // Redirect to error page if no user data found
+        }
+      });
 
-        // Set up listener for real-time updates
-        const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
-          if (docSnapshot.exists()) {
-            setUserData(docSnapshot.data());
-            console.log(docSnapshot.data());
-          } else {
-            console.error('No user data found');
-            router.push('/error'); // Redirect to error page if no user data found
-          }
-        });
-
-        return () => unsubscribe(); // Cleanup function to unsubscribe when component unmounts
-      }
-    };
-
-    handleUserCheck();
+      return () => unsubscribe(); // Cleanup function to unsubscribe when component unmounts
+    }
   }, [user, userSession, router]);
 
   return (
@@ -53,56 +48,6 @@ export default function Main({ activeComponent }) {
     </main>
   );
 }
-
-//working before sync 27
-// 'use client';
-
-// import { useEffect, useState } from 'react';
-// import { useAuthState } from 'react-firebase-hooks/auth';
-// import { auth, db } from '@/app/firebase/config';
-// import { useRouter } from 'next/navigation';
-// import { doc, onSnapshot } from 'firebase/firestore';
-// import Attendance from './Attendance.jsx';
-// import Finance from './Finance.jsx';
-// import MockAttendanceGenerator from './MockAttendanceGenerator.jsx';
-// // Import more components as needed
-
-// export default function Main({ activeComponent }) {
-//   const [user] = useAuthState(auth);
-//   const [userData, setUserData] = useState(null);
-//   const router = useRouter();
-//   const userSession = typeof window !== 'undefined' ? sessionStorage.getItem('user') : null;
-
-//   useEffect(() => {
-//     if (!user && !userSession) {
-//       router.push('/sign-in');
-//     } else if (user) {
-//       const userDocRef = doc(db, 'users', user.uid);
-
-//       // Set up listener for real-time updates
-//       const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
-//         if (docSnapshot.exists()) {
-//           setUserData(docSnapshot.data());
-//           console.log(docSnapshot.data());
-//         } else {
-//           console.error('No user data found');
-//           router.push('/error'); // Redirect to error page if no user data found
-//         }
-//       });
-
-//       return () => unsubscribe(); // Cleanup function to unsubscribe when component unmounts
-//     }
-//   }, [user, userSession, router]);
-
-//   return (
-//     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
-//       {activeComponent === 'attendance' && <Attendance userData={userData} />}
-//       {activeComponent === 'finance' && <Finance userData={userData} />}
-//       {/* {activeComponent === 'mockAttendance' && <MockAttendanceGenerator />} */}
-//       {/* Add more conditional renderings for other components */}
-//     </main>
-//   );
-// }
 
 
 // import { useEffect, useState } from 'react';
