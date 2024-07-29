@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 
 function Finance({ userData }) {
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
 
   const renderTransactionRecords = () => {
     if (Object.keys(userData.finance.transactions).length === 0) {
