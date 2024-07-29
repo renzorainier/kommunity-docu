@@ -1,5 +1,66 @@
+'use client';
 
-//working  before t
+import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, db } from '@/app/firebase/config';
+import { useRouter } from 'next/navigation';
+import { doc, onSnapshot } from 'firebase/firestore';
+import Attendance from './Attendance.jsx';
+import Finance from './Finance.jsx';
+import UserPhotos from './UserPhotos'; // Import the new component
+
+// Import more components as needed
+
+export default function Main({ activeComponent }) {
+  const [user] = useAuthState(auth);
+  const [userData, setUserData] = useState(null);
+  const router = useRouter();
+  const userSession = useMemo(() => (typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem('user')) : null), []);
+
+  const handleUserCheck = useCallback(() => {
+    if (!user && !userSession) {
+      router.push('/sign-in');
+      return;
+    }
+
+    if (user) {
+      sessionStorage.setItem('user', JSON.stringify(user));
+      const userDocRef = doc(db, 'users', user.uid);
+
+      // Set up listener for real-time updates
+      const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          setUserData(docSnapshot.data());
+          console.log(docSnapshot.data()); // Initial log when listener is set up
+          console.log(user);
+        } else {
+          console.error('No user data found');
+          router.push('/error'); // Redirect to error page if no user data found
+        }
+      });
+
+      return () => unsubscribe(); // Cleanup function to unsubscribe when component unmounts
+    }
+  }, [user, userSession, router]);
+
+  useEffect(() => {
+    handleUserCheck();
+  }, [handleUserCheck]);
+
+  return (
+    <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
+      {user && <UserPhotos userId={user.uid} />}
+      {activeComponent === 'attendance' && <Attendance userData={userData} />}
+      {activeComponent === 'finance' && <Finance userData={userData} />}
+      {/* {activeComponent === 'mockAttendance' && <MockAttendanceGenerator />} */}
+      {/* Add more conditional renderings for other components */}
+    </main>
+  );
+}
+
+
+
+//working 29 before the user photos
 // 'use client';
 
 // import { useEffect, useState, useCallback, useMemo } from 'react';
