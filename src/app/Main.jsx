@@ -30,6 +30,7 @@ export default function Main({ activeComponent }) {
         if (docSnapshot.exists()) {
           setUserData(docSnapshot.data());
           console.log(docSnapshot.data()); // Initial log when listener is set up
+        console.log(user);
         } else {
           console.error('No user data found');
           router.push('/error'); // Redirect to error page if no user data found
