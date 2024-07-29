@@ -30,7 +30,7 @@ export default function Main({ activeComponent }) {
         const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
           if (docSnapshot.exists()) {
             setUserData(docSnapshot.data());
-            console.log(docSnapshot.data());
+            console.log(docSnapshot);
           } else {
             console.error('No user data found');
             router.push('/error'); // Redirect to error page if no user data found
