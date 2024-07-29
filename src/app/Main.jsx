@@ -54,6 +54,62 @@ export default function Main({ activeComponent }) {
   );
 }
 
+//keeps on console logging butt works 29
+// 'use client';
+
+// import { useEffect, useState } from 'react';
+// import { useAuthState } from 'react-firebase-hooks/auth';
+// import { auth, db } from '@/app/firebase/config';
+// import { useRouter } from 'next/navigation';
+// import { doc, onSnapshot } from 'firebase/firestore';
+// import Attendance from './Attendance.jsx';
+// import Finance from './Finance.jsx';
+// // Import more components as needed
+
+// export default function Main({ activeComponent }) {
+//   const [user] = useAuthState(auth);
+//   const [userData, setUserData] = useState(null);
+//   const router = useRouter();
+//   const userSession = typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem('user')) : null;
+
+//   useEffect(() => {
+//     const handleUserCheck = () => {
+//       if (!user && !userSession) {
+//         router.push('/sign-in');
+//         return;
+//       }
+
+//       if (user) {
+//         sessionStorage.setItem('user', JSON.stringify(user));
+//         const userDocRef = doc(db, 'users', user.uid);
+
+//         // Set up listener for real-time updates
+//         const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+//           if (docSnapshot.exists()) {
+//             setUserData(docSnapshot.data());
+//             console.log(docSnapshot.data());
+//           } else {
+//             console.error('No user data found');
+//             router.push('/error'); // Redirect to error page if no user data found
+//           }
+//         });
+
+//         return () => unsubscribe(); // Cleanup function to unsubscribe when component unmounts
+//       }
+//     };
+
+//     handleUserCheck();
+//   }, [user, userSession, router]);
+
+//   return (
+//     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
+//       {activeComponent === 'attendance' && <Attendance userData={userData} />}
+//       {activeComponent === 'finance' && <Finance userData={userData} />}
+//       {/* {activeComponent === 'mockAttendance' && <MockAttendanceGenerator />} */}
+//       {/* Add more conditional renderings for other components */}
+//     </main>
+//   );
+// }
 
 //working before sync 27
 // 'use client';
