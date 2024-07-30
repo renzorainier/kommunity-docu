@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { doc, onSnapshot } from 'firebase/firestore';
 import Attendance from './Attendance.jsx';
 import Finance from './Finance.jsx';
-import UserPhotos from './UserPhotos'; // Import the new component
+import Profile from './Profile.jsx'; // Import the new component
 
 // Import more components as needed
 
@@ -49,7 +49,7 @@ export default function Main({ activeComponent }) {
 
   return (
     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
-      {user && <UserPhotos userData={userData} userId={user.uid} />}
+      {activeComponent === 'profile' && <Profile userData={userData} userId={user.uid} />}
       {activeComponent === 'attendance' && <Attendance userData={userData} />}
       {activeComponent === 'finance' && <Finance userData={userData} />}
     </main>
