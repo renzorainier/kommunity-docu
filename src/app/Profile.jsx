@@ -52,7 +52,7 @@ const Profile = ({ userId, userData }) => {
           )}
         </div>
         <div className="bg-white p-6 rounded-lg text-gray-800">
-          <h2 className="text-2xl font-semibold mb-4 text-center border-b-2 border-[#035172] pb-2">
+          <h2 className="text-2xl font-semibold mb-4 text-center ">
             Student Information
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-base">
