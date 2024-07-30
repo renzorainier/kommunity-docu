@@ -39,6 +39,14 @@ const UserPhotos = ({ userId, userData }) => {
           ))
         )}
       </div>
+      <div className="user-info">
+        <h2>User Information</h2>
+        <p><strong>Adviser:</strong> {userData.adviser}</p>
+        <p><strong>Name:</strong> {userData.name}</p>
+        <p><strong>Level:</strong> {userData.level}</p>
+        <p><strong>Schedule:</strong> {userData.schedule}</p>
+        <p><strong>Gender:</strong> {userData.isMale ? 'Male' : 'Female'}</p>
+      </div>
     </div>
   );
 };
