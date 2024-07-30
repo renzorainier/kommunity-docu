@@ -36,7 +36,7 @@ const Profile = ({ userId, userData }) => {
   }, [userId]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-6 bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen p-6">
       <div className="max-w-4xl w-full p-8 bg-white shadow-lg rounded-lg">
         <div className="flex justify-center items-center mb-8 relative">
           {error || !imageUrl ? (
