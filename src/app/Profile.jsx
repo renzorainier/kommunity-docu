@@ -51,7 +51,7 @@ const Profile = ({ userId, userData }) => {
             </div>
           )}
         </div>
-        <div className="bg-white p-4 rounded-lg shadow-md text-gray-800">
+        <div className="bg-white p-4 rounded-lg  text-gray-800">
   <h2 className="text-xl font-semibold mb-3 text-center border-b-2 border-[#035172] pb-1">
     Student Information
   </h2>
