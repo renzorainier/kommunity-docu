@@ -49,7 +49,7 @@ export default function Main({ activeComponent }) {
 
   return (
     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
-      {user && <UserPhotos userId={user.uid} />}
+      {user && <UserPhotos userData={userData} userId={user.uid} />}
       {activeComponent === 'attendance' && <Attendance userData={userData} />}
       {activeComponent === 'finance' && <Finance userData={userData} />}
       {/* {activeComponent === 'mockAttendance' && <MockAttendanceGenerator />} */}
