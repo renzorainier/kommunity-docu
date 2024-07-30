@@ -36,7 +36,7 @@ const Profile = ({ userId, userData }) => {
   }, [userId]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-6">
+    <div className="flex items-center justify-center min-h-screen p-6 bg-gray-100">
       <div className="max-w-4xl w-full p-8 bg-white shadow-lg rounded-lg">
         <div className="flex justify-center items-center mb-8 relative">
           {error || !imageUrl ? (
@@ -51,30 +51,25 @@ const Profile = ({ userId, userData }) => {
             </div>
           )}
         </div>
-        <div className="bg-white p-4 rounded-lg  text-gray-800">
-          <h2 className="text-xl font-semibold mb-3 text-center border-b-2 border-[#035172] pb-1">
+        <div className="bg-white p-6 rounded-lg text-gray-800">
+          <h2 className="text-2xl font-semibold mb-4 text-center border-b-2 border-[#035172] pb-2">
             Student Information
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-base">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-base">
             <p className="flex items-center">
-              <strong className="w-32 text-[#035172]">Name:</strong>{" "}
-              {userData.name}
+              <strong className="w-32 text-[#035172]">Name:</strong> {userData.name}
             </p>
             <p className="flex items-center">
-              <strong className="w-32 text-[#035172]">Grade Level:</strong>{" "}
-              {userData.level.charAt(0).toUpperCase() + userData.level.slice(1)}
+              <strong className="w-32 text-[#035172]">Grade Level:</strong> {userData.level.charAt(0).toUpperCase() + userData.level.slice(1)}
             </p>
             <p className="flex items-center">
-              <strong className="w-32 text-[#035172]">Schedule:</strong>{" "}
-              {userData.schedule}
+              <strong className="w-32 text-[#035172]">Schedule:</strong> {userData.schedule}
             </p>
             <p className="flex items-center">
-              <strong className="w-32 text-[#035172]">Adviser:</strong>{" "}
-              {userData.adviser}
+              <strong className="w-32 text-[#035172]">Adviser:</strong> {userData.adviser}
             </p>
             <p className="flex items-center">
-              <strong className="w-32 text-[#035172]">Gender:</strong>{" "}
-              {userData.isMale ? "Male" : "Female"}
+              <strong className="w-32 text-[#035172]">Gender:</strong> {userData.isMale ? "Male" : "Female"}
             </p>
           </div>
         </div>
