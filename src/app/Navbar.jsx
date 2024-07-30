@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Image from "next/image";
-import { signOut } from 'firebase/auth';
-import { auth } from '@/app/firebase/config';
+import { signOut } from "firebase/auth";
+import { auth } from "@/app/firebase/config";
 import teen from "./img.png";
 
 const Navbar = ({ activeComponent, setActiveComponent }) => {
@@ -22,10 +22,10 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
 
   const handleSignOut = () => {
     signOut(auth);
-    localStorage.removeItem('email');
-    localStorage.removeItem('password');
-    sessionStorage.removeItem('user');
-    router.push('/sign-in');
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    sessionStorage.removeItem("user");
+    router.push("/sign-in");
   };
 
   useEffect(() => {
@@ -47,50 +47,49 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
         shadow
           ? "fixed w-full h-14 shadow-xl shadow-[#031525] z-[100]"
           : "fixed w-full h-14 z-[100]"
-      }
-    >
+      }>
       <div className="flex justify-between items-center w-full h-full px-5 2xl:px-16 bg-white">
         <div>
-          <Image
-            src={teen}
-            width="40"
-            height="40"
-            alt="/"
-          />
+          <Image src={teen} width="40" height="40" alt="/" />
         </div>
         <div>
           <ul className="hidden md:flex">
             <li
-              className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${activeComponent === 'attendance' ? 'border-b' : ''}`}
+              className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${
+                activeComponent === "attendance" ? "border-b" : ""
+              }`}
               onClick={() => {
-                setActiveComponent('attendance');
+                setActiveComponent("attendance");
                 handleNav(); // Close the nav menu
-              }}
-            >
+              }}>
               Attendance
             </li>
             <li
-              className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${activeComponent === 'finance' ? 'border-b' : ''}`}
+              className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${
+                activeComponent === "finance" ? "border-b" : ""
+              }`}
               onClick={() => {
-                setActiveComponent('finance');
+                setActiveComponent("finance");
                 handleNav(); // Close the nav menu
-              }}
-            >
+              }}>
               Finance
             </li>
             <li
-              className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${activeComponent === 'profile' ? 'border-b' : ''}`}
+              className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${
+                activeComponent === "profile" ? "border-b" : ""
+              }`}
               onClick={() => {
-                setActiveComponent('profile');
+                setActiveComponent("profile");
                 handleNav(); // Close the nav menu
-              }}
-            >
+              }}>
               Profile
             </li>
             <li
               className="ml-10 text-sm uppercase hover:border-b cursor-pointer"
-              onClick={handleSignOut}
-            >
+              onClick={() => {
+                setActiveComponent("attendance");
+                handleSignOut();
+              }}>
               Sign Out
             </li>
           </ul>
@@ -103,30 +102,22 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
       <div
         className={
           nav ? "md:hidden fixed left-0 top-0 w-full h-screen bg-black/70" : ""
-        }
-      >
+        }>
         <div
           className={
             nav
               ? "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-white p-10 transform translate-x-0 transition-transform duration-500 ease-out"
               : "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-white p-10 transform -translate-x-full transition-transform duration-500 ease-in"
-          }
-        >
+          }>
           <div>
             <div className="flex w-full items-center justify-between">
               <div>
-                <Image
-                  src={teen}
-                  width="70"
-                  height="70"
-                  alt="/"
-                />
+                <Image src={teen} width="70" height="70" alt="/" />
               </div>
 
               <div
                 onClick={handleNav}
-                className="rounded-full shadow-lg shadow-[#035172] p-3 cursor-pointer"
-              >
+                className="rounded-full shadow-lg shadow-[#035172] p-3 cursor-pointer">
                 <AiOutlineClose />
               </div>
             </div>
@@ -140,35 +131,40 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
             <ul className="uppercase">
               <li
                 onClick={() => {
-                  setActiveComponent('attendance');
+                  setActiveComponent("attendance");
                   handleNav(); // Close the nav menu
                 }}
-                className={`py-4 text-sm cursor-pointer ${activeComponent === 'attendance' ? 'border-b' : ''}`}
-              >
+                className={`py-4 text-sm cursor-pointer ${
+                  activeComponent === "attendance" ? "border-b" : ""
+                }`}>
                 Attendance
               </li>
               <li
                 onClick={() => {
-                  setActiveComponent('finance');
+                  setActiveComponent("finance");
                   handleNav(); // Close the nav menu
                 }}
-                className={`py-4 text-sm cursor-pointer ${activeComponent === 'finance' ? 'border-b' : ''}`}
-              >
+                className={`py-4 text-sm cursor-pointer ${
+                  activeComponent === "finance" ? "border-b" : ""
+                }`}>
                 Finance
               </li>
               <li
                 onClick={() => {
-                  setActiveComponent('profile');
+                  setActiveComponent("profile");
                   handleNav(); // Close the nav menu
                 }}
-                className={`py-4 text-sm cursor-pointer ${activeComponent === 'profile' ? 'border-b' : ''}`}
-              >
+                className={`py-4 text-sm cursor-pointer ${
+                  activeComponent === "profile" ? "border-b" : ""
+                }`}>
                 Profile
               </li>
               <li
-                onClick={handleSignOut}
-                className="py-4 text-sm cursor-pointer"
-              >
+                onClick={() => {
+                  setActiveComponent("attendance");
+                  handleSignOut();
+                }}
+                className="py-4 text-sm cursor-pointer">
                 Sign Out
               </li>
             </ul>
@@ -180,23 +176,6 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
 };
 
 export default Navbar;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import Image from "next/image";
 // import React, { useState, useEffect } from "react";
@@ -341,13 +320,6 @@ export default Navbar;
 // };
 
 // export default Navbar;
-
-
-
-
-
-
-
 
 // import Image from "next/image";
 // import Link from "next/link";
