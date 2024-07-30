@@ -79,6 +79,15 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
               Finance
             </li>
             <li
+              className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${activeComponent === 'profile' ? 'border-b' : ''}`}
+              onClick={() => {
+                setActiveComponent('profile');
+                handleNav(); // Close the nav menu
+              }}
+            >
+              Profile
+            </li>
+            <li
               className="ml-10 text-sm uppercase hover:border-b cursor-pointer"
               onClick={handleSignOut}
             >
@@ -148,6 +157,15 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
                 Finance
               </li>
               <li
+                onClick={() => {
+                  setActiveComponent('profile');
+                  handleNav(); // Close the nav menu
+                }}
+                className={`py-4 text-sm cursor-pointer ${activeComponent === 'profile' ? 'border-b' : ''}`}
+              >
+                Profile
+              </li>
+              <li
                 onClick={handleSignOut}
                 className="py-4 text-sm cursor-pointer"
               >
@@ -162,7 +180,6 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
 };
 
 export default Navbar;
-
 
 
 
