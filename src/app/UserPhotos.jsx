@@ -4,7 +4,7 @@ import { storage } from './firebase'; // Adjust the path as needed
 import { CgProfile } from "react-icons/cg";
 
 const UserPhotos = ({ userId, userData }) => {
-  const [imageUrls, setImageUrls] = useState([]);
+  const [imageUrl, setImageUrl] = useState('');
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -16,11 +16,10 @@ const UserPhotos = ({ userId, userData }) => {
             setError(true);
             return;
           }
-          const fetchImageUrls = response.items.map((item) =>
-            getDownloadURL(item).then((url) => url).catch(() => setError(true))
-          );
-          Promise.all(fetchImageUrls)
-            .then((urls) => setImageUrls(urls))
+          // Get the first image URL
+          const firstItem = response.items[0];
+          getDownloadURL(firstItem)
+            .then((url) => setImageUrl(url))
             .catch(() => setError(true));
         })
         .catch(() => setError(true));
@@ -31,12 +30,10 @@ const UserPhotos = ({ userId, userData }) => {
     <div>
       <h2>Your Photos</h2>
       <div className="photos-grid">
-        {error || imageUrls.length === 0 ? (
+        {error || !imageUrl ? (
           <CgProfile size={100} />
         ) : (
-          imageUrls.map((url) => (
-            <img src={url} alt="User Uploaded" key={url} className="photo" />
-          ))
+          <img src={imageUrl} alt="User Uploaded" className="photo" />
         )}
       </div>
       <div className="user-info">
