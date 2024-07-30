@@ -34,24 +34,21 @@ const Profile = ({ userId, userData }) => {
 
     fetchImage();
   }, [userId]);
-  
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-[#031525] to-[#025172] p-6">
+    <div className="flex items-center justify-center min-h-screen p-6">
       <div className="max-w-4xl w-full p-8 bg-white shadow-lg rounded-lg">
-        <div className="flex justify-center items-center mb-8">
+        <div className="flex justify-center items-center mb-8 relative">
           {error || !imageUrl ? (
             <CgProfile size={120} className="text-gray-400" />
           ) : (
-            <div className="relative">
-              <div className="absolute inset-0 w-48 h-48 rounded-full bg-gradient-to-r from-[#f09433] via-[#e6683c] to-[#dc2743] p-1">
-                <div className="w-full h-full bg-white rounded-full p-1">
-                  <img
-                    src={imageUrl}
-                    alt="User Uploaded"
-                    className="w-full h-full rounded-full object-cover"
-                  />
-                </div>
-              </div>
+            <div className="relative w-48 h-48">
+              <div className="absolute inset-0 rounded-full border-4 border-gradient-to-r from-[#035172] to-[#0587be]"></div>
+              <img
+                src={imageUrl}
+                alt="User Uploaded"
+                className="w-full h-full rounded-full object-cover shadow-md relative z-10"
+              />
             </div>
           )}
         </div>
