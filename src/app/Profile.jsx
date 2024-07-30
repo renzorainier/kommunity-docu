@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { ref, getDownloadURL, listAll } from 'firebase/storage';
-import { storage } from './firebase'; // Adjust the path as needed
+import React, { useState, useEffect } from "react";
+import { ref, getDownloadURL, listAll } from "firebase/storage";
+import { storage } from "./firebase"; // Adjust the path as needed
 import { CgProfile } from "react-icons/cg";
 
 const Profile = ({ userId, userData }) => {
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -43,27 +43,41 @@ const Profile = ({ userId, userData }) => {
             <CgProfile size={120} className="text-gray-400" />
           ) : (
             <div className="w-48 h-48 rounded-full bg-gradient-to-r from-[#035172] to-[#0587be] p-2">
-              <img src={imageUrl} alt="User Uploaded" className="w-full h-full rounded-full object-cover shadow-md" />
+              <img
+                src={imageUrl}
+                alt="User Uploaded"
+                className="w-full h-full rounded-full object-cover shadow-md"
+              />
             </div>
           )}
         </div>
-        <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-6 rounded-lg shadow-inner text-white">
-          <h2 className="text-2xl font-bold mb-4 text-center">Student Information</h2>
+        <div className="bg-white p-6 rounded-lg shadow-md text-gray-800">
+          <h2 className="text-2xl font-bold mb-4 text-center border-b-2 border-[#035172] pb-2">
+            Student Information
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-lg">
-            <p><strong>Name:</strong> {userData.name}</p>
-            <p><strong>Grade Level:</strong> {userData.level.charAt(0).toUpperCase() + userData.level.slice(1)}</p>
-            <p><strong>Schedule:</strong> {userData.schedule}</p>
-            <p><strong>Adviser:</strong> {userData.adviser}</p>
-            <p><strong>Gender:</strong> {userData.isMale ? 'Male' : 'Female'}</p>
+            <p className="flex items-center">
+              <strong className="w-40">Name:</strong> {userData.name}
+            </p>
+            <p className="flex items-center">
+              <strong className="w-40">Grade Level:</strong>{" "}
+              {userData.level.charAt(0).toUpperCase() + userData.level.slice(1)}
+            </p>
+            <p className="flex items-center">
+              <strong className="w-40">Schedule:</strong> {userData.schedule}
+            </p>
+            <p className="flex items-center">
+              <strong className="w-40">Adviser:</strong> {userData.adviser}
+            </p>
+            <p className="flex items-center">
+              <strong className="w-40">Gender:</strong>{" "}
+              {userData.isMale ? "Male" : "Female"}
+            </p>
           </div>
         </div>
       </div>
     </div>
   );
-
-
-
 };
 
 export default Profile;
-
