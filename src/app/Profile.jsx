@@ -45,9 +45,9 @@ const Profile = ({ userId, userData }) => {
             <img src={imageUrl} alt="User Uploaded" className="w-48 h-48 rounded-full object-cover shadow-md" />
           )}
         </div>
-        <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-8 rounded-lg shadow-inner">
-          <h2 className="text-3xl font-bold text-white mb-6 text-center">Student Information</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-white">
+        <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-8 rounded-lg shadow-inner text-white">
+          <h2 className="text-2xl font-semibold mb-6">Student Information</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <p><strong>Name:</strong> {userData.name}</p>
             <p><strong>Grade Level:</strong> {userData.level}</p>
             <p><strong>Schedule:</strong> {userData.schedule}</p>
@@ -58,7 +58,6 @@ const Profile = ({ userId, userData }) => {
       </div>
     </div>
   );
-
 
 };
 
