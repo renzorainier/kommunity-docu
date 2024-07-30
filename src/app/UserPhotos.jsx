@@ -3,7 +3,7 @@ import { ref, getDownloadURL, listAll } from 'firebase/storage';
 import { storage } from './firebase'; // Adjust the path as needed
 import { CgProfile } from "react-icons/cg";
 
-const Profile = ({ userId, userData }) => {
+const UserPhotos = ({ userId, userData }) => {
   const [imageUrl, setImageUrl] = useState('');
   const [error, setError] = useState(false);
 
@@ -48,4 +48,4 @@ const Profile = ({ userId, userData }) => {
   );
 };
 
-export default Profile;
+export default UserPhotos;
