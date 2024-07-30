@@ -38,17 +38,17 @@ const Profile = ({ userId, userData }) => {
 
   return (
     <div className="flex items-center justify-center min-h-screen ">
-    <div className="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg">
-      <div className="flex justify-center items-center mb-12">
-        {error || !imageUrl ? (
-          <CgProfile size={120} className="text-gray-400" />
-        ) : (
-          <img src={imageUrl} alt="User Uploaded" className="w-48 h-48 rounded-full object-cover shadow-md" />
-        )}
-      </div>
+      <div className="max-w-4xl w-full p-6 bg-white shadow-2xl rounded-lg">
+        <div className="flex justify-center items-center mb-8">
+          {error || !imageUrl ? (
+            <CgProfile size={120} className="text-gray-400" />
+          ) : (
+            <img src={imageUrl} alt="User Uploaded" className="w-48 h-48 rounded-full object-cover shadow-lg" />
+          )}
+        </div>
         <div className="bg-gray-50 p-8 rounded-lg shadow-inner">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Student Information</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Student Information</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
             <p className="text-gray-700"><strong>Name:</strong> {userData.name}</p>
             <p className="text-gray-700"><strong>Grade Level:</strong> {userData.level}</p>
             <p className="text-gray-700"><strong>Schedule:</strong> {userData.schedule}</p>
@@ -59,6 +59,7 @@ const Profile = ({ userId, userData }) => {
       </div>
     </div>
   );
+
 };
 
 export default Profile;
