@@ -52,7 +52,7 @@ const Profile = ({ userId, userData }) => {
             <p><strong>Grade Level:</strong> {userData.level}</p>
             <p><strong>Schedule:</strong> {userData.schedule}</p>
             <p><strong>Adviser:</strong> {userData.adviser}</p>
-            <p><strong>Gender:</strong> {userData.isMale ? 'Male' : 'Female'}</p>
+            {/* <p><strong>Gender:</strong> {userData.isMale ? 'Male' : 'Female'}</p> */}
           </div>
         </div>
       </div>
