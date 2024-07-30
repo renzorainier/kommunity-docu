@@ -49,8 +49,7 @@ const Profile = ({ userId, userData }) => {
           <h2 className="text-2xl font-semibold mb-6">Student Information</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <p><strong>Name:</strong> {userData.name}</p>
-            <p><strong>Grade Level:</strong> {userData.level}</p>
-            <p><strong>Schedule:</strong> {userData.schedule}</p>
+            <p><strong>Grade Level:</strong> {userData.level.charAt(0).toUpperCase() + userData.level.slice(1)}</p>            <p><strong>Schedule:</strong> {userData.schedule}</p>
             <p><strong>Adviser:</strong> {userData.adviser}</p>
             {/* <p><strong>Gender:</strong> {userData.isMale ? 'Male' : 'Female'}</p> */}
           </div>
