@@ -36,27 +36,29 @@ const Profile = ({ userId, userData }) => {
   }, [userId]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#031525]">
-      <div className="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg">
-        <div className="flex justify-center items-center mb-12">
+    <div className="flex items-center justify-center min-h-screen  p-6">
+      <div className="max-w-4xl w-full p-8 bg-white shadow-lg rounded-lg">
+        <div className="flex justify-center items-center mb-8">
           {error || !imageUrl ? (
             <CgProfile size={120} className="text-gray-400" />
           ) : (
-            <img src={imageUrl} alt="User Uploaded" className="w-48 h-48 rounded-full object-cover shadow-md" />
+            <img src={imageUrl} alt="User Uploaded" className="w-48 h-48 rounded-full object-cover shadow-md border-4 border-[#0587be]" />
           )}
         </div>
-        <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-8 rounded-lg shadow-inner text-white">
-          <h2 className="text-2xl font-semibold mb-6">Student Information</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-6 rounded-lg shadow-inner text-white">
+          <h2 className="text-2xl font-bold mb-4 text-center">Student Information</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-lg">
             <p><strong>Name:</strong> {userData.name}</p>
-            <p><strong>Grade Level:</strong> {userData.level.charAt(0).toUpperCase() + userData.level.slice(1)}</p>            <p><strong>Schedule:</strong> {userData.schedule}</p>
+            <p><strong>Grade Level:</strong> {userData.level.charAt(0).toUpperCase() + userData.level.slice(1)}</p>
+            <p><strong>Schedule:</strong> {userData.schedule}</p>
             <p><strong>Adviser:</strong> {userData.adviser}</p>
-            {/* <p><strong>Gender:</strong> {userData.isMale ? 'Male' : 'Female'}</p> */}
+            <p><strong>Gender:</strong> {userData.isMale ? 'Male' : 'Female'}</p>
           </div>
         </div>
       </div>
     </div>
   );
+
 
 };
 
