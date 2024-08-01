@@ -32,6 +32,10 @@ function Finance({ userData }) {
   return (
     <main className="flex justify-center items-center min-h-screen p-4">
       {userData ? (
+          <div
+          className="flex justify-center  pt-4 pb-5 items-center"
+          style={{ animation: "slide-from-left 1s ease forwards" }}
+        >
         <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-4xl">
           <h2 className="text-3xl font-bold text-gray-800 mb-6">Account Information</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -52,6 +56,7 @@ function Finance({ userData }) {
             <h3 className="text-2xl font-semibold text-gray-700 mb-4">Transaction Records</h3>
             {renderTransactionRecords()}
           </div>
+        </div>
         </div>
       ) : (
         <div className="text-center text-gray-600">Loading...</div>

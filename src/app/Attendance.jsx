@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
-import './Attendance.css'; // If needed for additional styles
+import React, { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import { RxEnter, RxExit } from "react-icons/rx";
+import { TbCalendarMonth } from "react-icons/tb";
+import "./Attendance.css"; // Import additional styles if needed
 
 function Attendance({ userData }) {
   const { ref: wrapperRef, inView: wrapperInView } = useInView({
@@ -11,9 +13,9 @@ function Attendance({ userData }) {
     entries.forEach((entry) => {
       const listItem = entry.target;
       if (entry.isIntersecting) {
-        listItem.classList.add('item-focus');
+        listItem.classList.add("item-focus");
       } else {
-        listItem.classList.remove('item-focus');
+        listItem.classList.remove("item-focus");
       }
     });
   };
@@ -24,7 +26,7 @@ function Attendance({ userData }) {
         threshold: 0.5,
       });
 
-      const items = document.querySelectorAll('.js-scroll-list-item');
+      const items = document.querySelectorAll(".js-scroll-list-item");
       items.forEach((item) => observer.observe(item));
 
       return () => {
@@ -35,7 +37,11 @@ function Attendance({ userData }) {
 
   const renderAttendanceRecords = () => {
     if (Object.keys(userData.attendance).length === 0) {
-      return <p className="text-center mt-4 text-gray-600">No attendance records found.</p>;
+      return (
+        <p className="text-center mt-4 text-gray-600">
+          No attendance records found.
+        </p>
+      );
     }
 
     let currentWeek = null;
@@ -53,7 +59,9 @@ function Attendance({ userData }) {
             if (weekNumber !== currentWeek) {
               currentWeek = weekNumber;
               weekHeader = (
-                <div key={`week-${index}`} className="text-lg text-white font-semibold mt-4">
+                <div
+                  key={`week-${index}`}
+                  className="text-lg text-white font-semibold mt-4">
                   Week {currentWeek}
                 </div>
               );
@@ -61,34 +69,47 @@ function Attendance({ userData }) {
             return (
               <React.Fragment key={`attendance-${index}`}>
                 {weekHeader}
-                <div className="grid mb-2 bg-white grid-cols-4 gap-2 rounded-lg shadow-md shadow-[#0587be] p-4 js-scroll-list-item transition duration-300 hover:shadow-lg">
-                  <div className={`font-semibold text-lg rounded-lg text-white text-center py-2 ${
-                    recordDate.getDay() === 1 ? 'bg-[#025172]' : // Monday
-                    recordDate.getDay() === 2 ? 'bg-[#03597E]' : // Tuesday
-                    recordDate.getDay() === 3 ? 'bg-[#05719E]' : // Wednesday
-                    recordDate.getDay() === 4 ? 'bg-[#067EB0]' : // Thursday
-                    recordDate.getDay() === 5 ? 'bg-[#078CC4]' : '' // Friday
-                  }`}>
+                <div className="grid mb-2 bg-white grid-cols-4 gap-2 rounded-lg p-4 js-scroll-list-item transition duration-300 hover:shadow-lg">
+                  <div
+                    className={`font-semibold text-lg rounded-lg text-white text-center py-2 ${
+                      recordDate.getDay() === 1
+                        ? "bg-[#025172]" // Monday
+                        : recordDate.getDay() === 2
+                        ? "bg-[#03597E]" // Tuesday
+                        : recordDate.getDay() === 3
+                        ? "bg-[#05719E]" // Wednesday
+                        : recordDate.getDay() === 4
+                        ? "bg-[#067EB0]" // Thursday
+                        : recordDate.getDay() === 5
+                        ? "bg-[#078CC4]"
+                        : "" // Friday
+                    }`}>
                     {recordDate.toLocaleDateString(undefined, {
-                      weekday: 'short',
+                      weekday: "short",
                     })}
                   </div>
-                  <div className="text-lg text-center py-2">{recordDate.toLocaleDateString()}</div>
+                  <div className="text-lg text-center py-2">
+                    {recordDate.toLocaleDateString()}
+                  </div>
                   <div className="text-lg text-center py-2">
                     {userData.attendance[date].checkIn
-                      ? new Date(userData.attendance[date].checkIn).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit',
+                      ? new Date(
+                          userData.attendance[date].checkIn
+                        ).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
                         })
-                      : 'N/A'}
+                      : "N/A"}
                   </div>
-                  <div className="text-lg textE-center py-2">
+                  <div className="text-lg text-center py-2">
                     {userData.attendance[date].checkOut
-                      ? new Date(userData.attendance[date].checkOut).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit',
+                      ? new Date(
+                          userData.attendance[date].checkOut
+                        ).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
                         })
-                      : 'N/A'}
+                      : "N/A"}
                   </div>
                 </div>
               </React.Fragment>
@@ -116,15 +137,33 @@ function Attendance({ userData }) {
     <main className="flex min-h-screen bg-[#031525] flex-col items-center justify-center pt-12">
       {userData ? (
         <div
-          className="w-full max-w-4xl text-gray-800 shadow-lg rounded-lg pt-2 overflow-hidden"
-          ref={wrapperRef}
-        >
-          <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div className="relative text-white font-bold text-3xl text-center">Attendance Records</div>
-            <div className="text-white text-lg text-center">{userData.name}</div>
+          className="flex justify-center  pt-4 pb-5 items-center"
+          style={{ animation: "slide-from-left 1s ease forwards" }}>
+          <div
+            className="w-full max-w-4xl text-gray-800 shadow-lg rounded-lg pt-2 overflow-hidden"
+            ref={wrapperRef}>
+            <div className="bg-gradient-to-r from-[#035172] to-[#0587be] p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="relative text-white font-bold text-3xl text-center">
+                Attendance Records
+              </div>
+              <div className="text-white text-lg text-center">
+                {userData.name}
+              </div>
+            </div>
+            <div className=" mx-6 grid grid-cols-4 gap-4  mt-4 bg-gray-200 p-4 rounded-lg">
+              <div className="font-semibold text-lg text-center">Day</div>
+              <div className="flex justify-center items-center font-semibold text-lg">
+                <TbCalendarMonth style={{ fontSize: "1.5em" }} />
+              </div>
+              <div className="flex justify-center items-center font-semibold text-lg">
+                <RxEnter style={{ fontSize: "1.5em" }} />
+              </div>
+              <div className="flex justify-center items-center font-semibold text-lg">
+                <RxExit style={{ fontSize: "1.5em" }} />
+              </div>
+            </div>
+            <div className="px-6">{renderAttendanceRecords()}</div>
           </div>
-
-          <div className="px-6 py-4 bg-[#031525]">{renderAttendanceRecords()}</div>
         </div>
       ) : (
         <div className="flex flex-col items-center">

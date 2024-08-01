@@ -36,6 +36,10 @@ const Profile = ({ userId, userData }) => {
   }, [userId]);
 
   return (
+    <div
+    className="flex justify-center  pt-4 pb-5 items-center"
+    style={{ animation: "slide-from-left 1s ease forwards" }}
+  >
     <div className="flex items-center justify-center min-h-screen  p-4">
       <div className="max-w-4xl w-full p-5 bg-white shadow-lg rounded-lg">
         <div className="flex justify-center items-center mt-8 mb-8 relative">
@@ -68,12 +72,11 @@ const Profile = ({ userId, userData }) => {
             <p className="flex items-center">
               <strong className="w-32 text-[#035172]">Adviser:</strong> {userData.adviser}
             </p>
-            <p className="flex items-center">
-              <strong className="w-32 text-[#035172]">Gender:</strong> {userData.isMale ? "Male" : "Female"}
-            </p>
+
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

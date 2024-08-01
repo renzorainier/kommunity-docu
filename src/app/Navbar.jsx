@@ -30,11 +30,7 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
 
   useEffect(() => {
     const handleShadow = () => {
-      if (window.scrollY >= 90) {
-        setShadow(true);
-      } else {
-        setShadow(false);
-      }
+      setShadow(window.scrollY >= 90);
     };
     window.addEventListener("scroll", handleShadow);
 
@@ -42,12 +38,7 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
   }, []);
 
   return (
-    <div
-      className={
-        shadow
-          ? "fixed w-full h-14 shadow-xl shadow-[#031525] z-[100]"
-          : "fixed w-full h-14 z-[100]"
-      }>
+    <div className={shadow ? "fixed w-full h-14 shadow-xl shadow-[#031525] z-[100]" : "fixed w-full h-14 z-[100]"}>
       <div className="flex justify-between items-center w-full h-full px-5 2xl:px-16 bg-white">
         <div>
           <Image src={teen} width="40" height="40" alt="/" />
@@ -55,37 +46,37 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
         <div>
           <ul className="hidden md:flex">
             <li
-              className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${
-                activeComponent === "attendance" ? "border-b" : ""
+              className={`ml-10 text-sm uppercase cursor-pointer ${
+                activeComponent === "attendance" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
               }`}
               onClick={() => {
                 setActiveComponent("attendance");
-                handleNav(); // Close the nav menu
+                handleNav();
               }}>
               Attendance
             </li>
             <li
-              className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${
-                activeComponent === "finance" ? "border-b" : ""
+              className={`ml-10 text-sm uppercase cursor-pointer ${
+                activeComponent === "finance" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
               }`}
               onClick={() => {
                 setActiveComponent("finance");
-                handleNav(); // Close the nav menu
+                handleNav();
               }}>
               Finance
             </li>
             <li
-              className={`ml-10 text-sm uppercase hover:border-b cursor-pointer ${
-                activeComponent === "profile" ? "border-b" : ""
+              className={`ml-10 text-sm uppercase cursor-pointer ${
+                activeComponent === "profile" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
               }`}
               onClick={() => {
                 setActiveComponent("profile");
-                handleNav(); // Close the nav menu
+                handleNav();
               }}>
               Profile
             </li>
             <li
-              className="ml-10 text-sm uppercase hover:border-b cursor-pointer"
+              className="ml-10 text-sm uppercase cursor-pointer hover:bg-gray-200 px-3 py-2 rounded"
               onClick={() => {
                 setActiveComponent("attendance");
                 handleSignOut();
@@ -99,32 +90,19 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
         </div>
       </div>
 
-      <div
-        className={
-          nav ? "md:hidden fixed left-0 top-0 w-full h-screen bg-black/70" : ""
-        }>
-        <div
-          className={
-            nav
-              ? "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-white p-10 transform translate-x-0 transition-transform duration-500 ease-out"
-              : "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-white p-10 transform -translate-x-full transition-transform duration-500 ease-in"
-          }>
+      <div className={nav ? "md:hidden fixed left-0 top-0 w-full h-screen bg-black/70" : ""}>
+        <div className={nav ? "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-white p-10 transform translate-x-0 transition-transform duration-500 ease-out" : "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-white p-10 transform -translate-x-full transition-transform duration-500 ease-in"}>
           <div>
             <div className="flex w-full items-center justify-between">
               <div>
                 <Image src={teen} width="70" height="70" alt="/" />
               </div>
-
-              <div
-                onClick={handleNav}
-                className="rounded-full shadow-lg shadow-[#035172] p-3 cursor-pointer">
+              <div onClick={handleNav} className="rounded-full shadow-lg shadow-[#0587be] p-3 cursor-pointer">
                 <AiOutlineClose />
               </div>
             </div>
             <div className="border-b border-black my-4">
-              <p className="w-[85%] md:w-[90%] py-4">
-                Metroview Baptist Academy
-              </p>
+              <p className="w-[85%] md:w-[90%] py-4">Metroview Baptist Academy</p>
             </div>
           </div>
           <div className="py-4 flex flex-col">
@@ -132,39 +110,36 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
               <li
                 onClick={() => {
                   setActiveComponent("attendance");
-                  handleNav(); // Close the nav menu
+                  handleNav();
                 }}
                 className={`py-4 text-sm cursor-pointer ${
-                  activeComponent === "attendance" ? "border-b" : ""
+                  activeComponent === "attendance" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
                 }`}>
                 Attendance
               </li>
               <li
                 onClick={() => {
                   setActiveComponent("finance");
-                  handleNav(); // Close the nav menu
+                  handleNav();
                 }}
                 className={`py-4 text-sm cursor-pointer ${
-                  activeComponent === "finance" ? "border-b" : ""
+                  activeComponent === "finance" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
                 }`}>
                 Finance
               </li>
               <li
                 onClick={() => {
                   setActiveComponent("profile");
-                  handleNav(); // Close the nav menu
+                  handleNav();
                 }}
                 className={`py-4 text-sm cursor-pointer ${
-                  activeComponent === "profile" ? "border-b" : ""
+                  activeComponent === "profile" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
                 }`}>
                 Profile
               </li>
               <li
-                onClick={() => {
-                  setActiveComponent("attendance");
-                  handleSignOut();
-                }}
-                className="py-4 text-sm cursor-pointer">
+                onClick={handleSignOut}
+                className="py-4 text-sm cursor-pointer hover:bg-gray-200 px-3 py-2 rounded">
                 Sign Out
               </li>
             </ul>
@@ -283,7 +258,7 @@ export default Navbar;
 
 //               <div
 //                 onClick={handleNav}
-//                 className="rounded-full shadow-lg shadow-[#035172] p-3 cursor-pointer"
+//                 className="rounded-full shadow-lg shadow-[#0587be] p-3 cursor-pointer"
 //               >
 //                 <AiOutlineClose />
 //               </div>
