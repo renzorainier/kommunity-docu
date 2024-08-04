@@ -12,11 +12,27 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [showError, setShowError] = useState(false);
+  const [showGoogleError, setShowGoogleError] = useState(false);
   const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
   const [signInWithGoogle, googleUser, googleLoading, googleError] = useSignInWithGoogle(auth);
   const router = useRouter();
 
+  const validateEmail = (email) => {
+    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    return gmailRegex.test(email);
+  };
+
   const handleSignIn = async () => {
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid Gmail address.");
+      setShowError(true);
+      return;
+    }
+    setEmailError(""); // Clear the error message if email is valid
+    setShowError(false);
+
     try {
       await signInWithEmailAndPassword(email, password);
     } catch (e) {
@@ -42,6 +58,35 @@ const SignIn = () => {
     }
   }, [user, googleUser, router]);
 
+  useEffect(() => {
+    if (emailError) {
+      const timer = setTimeout(() => {
+        setShowError(false);
+      }, 3000); // Clear the error message after 3 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [emailError]);
+
+  useEffect(() => {
+    if (error) {
+      setShowError(true);
+      const timer = setTimeout(() => {
+        setShowError(false);
+      }, 3000); // Clear the error message after 3 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (googleError) {
+      setShowGoogleError(true);
+      const timer = setTimeout(() => {
+        setShowGoogleError(false);
+      }, 3000); // Clear the error message after 3 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [googleError]);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#035172] to-[#0587be] p-4">
       <div className="bg-white rounded-lg shadow-lg flex flex-col md:flex-row w-full max-w-4xl">
@@ -51,8 +96,13 @@ const SignIn = () => {
           </div>
         </div>
         <div className="md:w-1/2 p-8 flex flex-col justify-center items-center">
-          {error && <p className="text-red-500 mb-4">Error Logging in</p>}
-          {googleError && <p className="text-red-500 mb-4 text-center">Error with Google Sign-In. Please make sure to use your school Gmail account.</p>}
+          {showError && error && <p className="text-red-500 mb-4">Error Logging in</p>}
+          {showGoogleError && googleError && (
+            <p className="text-red-500 mb-4 text-center">
+              Error with Google Sign-In. Please make sure to use your school Gmail account.
+            </p>
+          )}
+          {showError && emailError && <p className="text-red-500 mb-4">{emailError}</p>}
           <input
             type="email"
             placeholder="Email"
@@ -98,6 +148,7 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
 
 
 
