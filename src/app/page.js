@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Main from './Main.jsx';
 import Navbar from './Navbar.jsx';
 import Head from 'next/head.js';
+import { Analytics } from "@vercel/analytics/react"
 
 export default function Home() {
   const [activeComponent, setActiveComponent] = useState('attendance'); // State for toggling components
