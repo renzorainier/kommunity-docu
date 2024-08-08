@@ -2,39 +2,31 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
-import { auth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
+import { auth } from "@/app/firebase/config";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import teen from "../img.png";
 
 const SignIn = () => {
   const [showGoogleError, setShowGoogleError] = useState(false);
-  const [signInWithGoogle, googleUser, googleLoading, googleError] = useSignInWithGoogle(auth);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const router = useRouter();
 
   const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
     try {
-      await signInWithGoogle();
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      await signInWithPopup(auth, provider);
+      router.push("/");
     } catch (e) {
       console.error(e);
+      setShowGoogleError(true);
+      setTimeout(() => setShowGoogleError(false), 3000); // Clear the error message after 3 seconds
+    } finally {
+      setGoogleLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (googleUser) {
-      router.push("/");
-    }
-  }, [googleUser, router]);
-
-  useEffect(() => {
-    if (googleError) {
-      setShowGoogleError(true);
-      const timer = setTimeout(() => {
-        setShowGoogleError(false);
-      }, 3000); // Clear the error message after 3 seconds
-      return () => clearTimeout(timer);
-    }
-  }, [googleError]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#035172] to-[#0587be] p-4">
@@ -45,7 +37,7 @@ const SignIn = () => {
           </div>
         </div>
         <div className="w-full p-8 flex flex-col justify-center items-center">
-          {showGoogleError && googleError && (
+          {showGoogleError && (
             <p className="text-red-500 mb-4 text-center">
               Error with Google Sign-In. Please make sure to use your school Gmail account.
             </p>
