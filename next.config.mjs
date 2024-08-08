@@ -1,15 +1,17 @@
-// Import the PWA configuration
-const withPWA = require('next-pwa')({
-    dest: 'public'
-  });
+import withPWA from 'next-pwa';
 
-  // Define your Next.js configuration
-  const nextConfig = {
-    // Add any other Next.js config options here
-  };
+// Define your PWA configuration separately
+const pwaConfig = {
+  dest: 'public'
+};
 
-  // Export the combined configuration
-  module.exports = withPWA(nextConfig);
+// Define your Next.js configuration
+const nextConfig = {
+  // Add any other Next.js config options here
+};
+
+// Export the combined configuration using withPWA
+export default withPWA(pwaConfig)(nextConfig);
 
 
 
