@@ -8,7 +8,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import Attendance from './Attendance.jsx';
 import Finance from './Finance.jsx';
 import Profile from './Profile.jsx'; // Import the new component
-
+import { Analytics } from "@vercel/analytics/react"
 // Import more components as needed
 
 export default function Main({ activeComponent }) {
