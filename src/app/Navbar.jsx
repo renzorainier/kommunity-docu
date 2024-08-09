@@ -39,6 +39,8 @@ const Navbar = ({ activeComponent, setActiveComponent }) => {
 
   return (
     <div className={shadow ? "fixed w-full h-14 shadow-xl shadow-[#031525] z-[100]" : "fixed w-full h-14 z-[100]"}>
+            <link rel="manifest" href="/manifest.json" />
+
       <div className="flex justify-between items-center w-full h-full px-5 2xl:px-16 bg-white">
         <div>
           <Image src={teen} width="40" height="40" alt="/" />
