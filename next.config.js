@@ -1,3 +1,5 @@
+// next.config.js
+
 const withPWA = require('next-pwa')({
   dest: 'public',
 });
@@ -5,9 +7,41 @@ const withPWA = require('next-pwa')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+
+  webpack: (config, { isServer }) => {
+    config.module.rules.push({
+      test: /\.(wav|mp3|ogg|mp4)$/, // Handle sound files
+      use: [
+        {
+          loader: 'file-loader',
+          options: {
+            publicPath: '/_next/static/sounds/',
+            outputPath: 'static/sounds/',
+            name: '[name].[ext]',
+            esModule: false,
+          },
+        },
+      ],
+    });
+
+    return config;
+  },
 };
 
 module.exports = withPWA(nextConfig);
+
+
+
+// const withPWA = require('next-pwa')({
+//   dest: 'public',
+// });
+
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   reactStrictMode: true,
+// };
+
+// module.exports = withPWA(nextConfig);
 
 
 // import withPWA from 'next-pwa';

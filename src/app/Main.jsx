@@ -8,6 +8,8 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import Attendance from './Attendance.jsx';
 import Finance from './Finance.jsx';
 import Profile from './Profile.jsx'; // Import the new component
+// Import the sound file
+import success from './success.wav'; // Make sure the path is correct
 
 // Import more components as needed
 
@@ -29,6 +31,10 @@ export default function Main({ activeComponent }) {
       if (docSnapshot.exists()) {
         setUserData(docSnapshot.data());
         console.log(docSnapshot.data()); // Initial log when listener is set up
+
+        // Play the sound when there's a snapshot update
+        const audio = new Audio(success);
+        audio.play().catch((err) => console.error("Failed to play sound:", err));
       } else {
         console.error('No user data found');
         router.push('/error'); // Redirect to error page if no user data found
@@ -50,15 +56,76 @@ export default function Main({ activeComponent }) {
 
   return (
     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
-            <link rel="manifest" href="/manifest.json" />
+      <link rel="manifest" href="/manifest.json" />
 
       {activeComponent === 'profile' && <Profile userData={userData} userId={user?.uid} />}
       {activeComponent === 'attendance' && <Attendance userData={userData} />}
       {activeComponent === 'finance' && <Finance userData={userData} />}
-
     </main>
   );
 }
+
+// 'use client';
+
+// import { useEffect, useState, useCallback } from 'react';
+// import { useAuthState } from 'react-firebase-hooks/auth';
+// import { auth, db } from '@/app/firebase/config';
+// import { useRouter } from 'next/navigation';
+// import { doc, onSnapshot } from 'firebase/firestore';
+// import Attendance from './Attendance.jsx';
+// import Finance from './Finance.jsx';
+// import Profile from './Profile.jsx'; // Import the new component
+
+// // Import more components as needed
+
+// export default function Main({ activeComponent }) {
+//   const [user, loading, error] = useAuthState(auth);
+//   const [userData, setUserData] = useState(null);
+//   const router = useRouter();
+
+//   const handleUserCheck = useCallback(() => {
+//     if (!user) {
+//       router.push('/sign-in');
+//       return;
+//     }
+
+//     const userDocRef = doc(db, 'users', user.uid);
+
+//     // Set up listener for real-time updates
+//     const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+//       if (docSnapshot.exists()) {
+//         setUserData(docSnapshot.data());
+//         console.log(docSnapshot.data()); // Initial log when listener is set up
+//       } else {
+//         console.error('No user data found');
+//         router.push('/error'); // Redirect to error page if no user data found
+//       }
+//     });
+
+//     return () => unsubscribe(); // Cleanup function to unsubscribe when component unmounts
+//   }, [user, router]);
+
+//   useEffect(() => {
+//     if (!loading && !error) {
+//       handleUserCheck();
+//     }
+//   }, [user, loading, error, handleUserCheck]);
+
+//   if (loading) {
+//     return <div>Loading...</div>;
+//   }
+
+//   return (
+//     <main className="flex min-h-screen flex-col bg-[#031525] items-center justify-between">
+//             <link rel="manifest" href="/manifest.json" />
+
+//       {activeComponent === 'profile' && <Profile userData={userData} userId={user?.uid} />}
+//       {activeComponent === 'attendance' && <Attendance userData={userData} />}
+//       {activeComponent === 'finance' && <Finance userData={userData} />}
+
+//     </main>
+//   );
+// }
 
 
 
