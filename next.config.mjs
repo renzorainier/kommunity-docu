@@ -13,9 +13,20 @@
 // // Export the combined configuration using withPWA
 // export default withPWA(pwaConfig)(nextConfig);
 
-
+import withPWA from 'next-pwa';
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  reactStrictMode: true,
+};
 
-export default nextConfig;
+export default withPWA({
+  dest: 'public',
+})(nextConfig);
+
+
+
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {};
+
+// export default nextConfig;
