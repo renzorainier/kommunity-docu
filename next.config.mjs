@@ -13,14 +13,14 @@
 // // Export the combined configuration using withPWA
 // export default withPWA(pwaConfig)(nextConfig);
 
-
-// next.config.mjs
 import withPWA from 'next-pwa';
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withPWA({
-  dest: 'public',
-  // Add your Next.js config options here
-});
+const nextConfig = {
+  reactStrictMode: true, // Example of a valid Next.js config
+  // Add other Next.js config options here if needed
+};
 
-export default nextConfig;
+export default withPWA({
+  dest: 'public',
+})(nextConfig);
