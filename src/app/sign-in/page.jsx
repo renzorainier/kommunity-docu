@@ -30,6 +30,8 @@ const SignIn = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#035172] to-[#0587be] p-4">
+      <link rel="manifest" href="/manifest.json" />
+
       <div className="bg-white rounded-lg shadow-lg flex flex-col w-full max-w-lg">
         <div className="w-full p-8 flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-t-lg">
           <div>
