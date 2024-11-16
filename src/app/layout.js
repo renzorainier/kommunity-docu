@@ -29,8 +29,8 @@ import { Analytics } from '@vercel/analytics/react';
 const inter = Urbanist({ subsets: ['latin'] })
 
 export const metadata = {
-  title: "MVBA",
-  description: "Metro View Baptist Academy",
+  title: "KommUnity",
+  description: "KommUnity",
 };
 
 export default function RootLayout({ children }) {
