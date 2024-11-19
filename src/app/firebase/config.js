@@ -4,14 +4,13 @@ import { getFirestore } from "firebase/firestore";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAdkGqnV0LoPn-zx4RuIctUFKx7jHioNA8",
-  authDomain: "finalprojmobcomp.firebaseapp.com",
-  projectId: "finalprojmobcomp",
-  storageBucket: "finalprojmobcomp.firebasestorage.app",
-  messagingSenderId: "161357362360",
-  appId: "1:161357362360:web:23aed8a503b8812868304d"
+  apiKey: "AIzaSyBGmvkRN4iFtDH1qcZfpUI7OsNI2FsD3Is",
+  authDomain: "trialsys.firebaseapp.com",
+  projectId: "trialsys",
+  storageBucket: "trialsys.appspot.com",
+  messagingSenderId: "165170725706",
+  appId: "1:165170725706:web:63fe0a18851ac8e312b7b3"
 };
-
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
@@ -19,21 +18,3 @@ const firebaseConfig = {
 
   export { auth, db };
 
-  // const firebaseConfig = {
-  //   apiKey: "AIzaSyCcSIHqKBrxiwjGATJluh-zv2F47_uheKA",
-  //   authDomain: "mvbasys-6d906.firebaseapp.com",
-  //   projectId: "mvbasys-6d906",
-  //   storageBucket: "mvbasys-6d906.appspot.com",
-  //   messagingSenderId: "177732960444",
-  //   appId: "1:177732960444:web:cb13926fa86ea6c79950b9"
-  // };
-
-
-  // const firebaseConfig = {
-  //   apiKey: "AIzaSyBGmvkRN4iFtDH1qcZfpUI7OsNI2FsD3Is",
-  //   authDomain: "trialsys.firebaseapp.com",
-  //   projectId: "trialsys",
-  //   storageBucket: "trialsys.appspot.com",
-  //   messagingSenderId: "165170725706",
-  //   appId: "1:165170725706:web:63fe0a18851ac8e312b7b3"
-  // };
