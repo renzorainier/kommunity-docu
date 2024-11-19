@@ -6,6 +6,7 @@ import { auth, db } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
 import { doc, onSnapshot } from 'firebase/firestore';
 import Feed from './Feed'; // Import the Feed component
+import Post from './Post'; // Import the Feed component
 import success from './success.wav';
 
 export default function Main() {
@@ -74,6 +75,7 @@ export default function Main() {
     <main>
       {/* Pass postData as a prop to Feed */}
       <Feed postData={postData} />
+      <Post />
     </main>
   );
 }
