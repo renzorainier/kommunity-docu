@@ -26,7 +26,7 @@ export default function Feed({ postData }) {
                   <p className="text-gray-700 mt-2"><strong>Picture Reference:</strong> {postDetails.postPicRef}</p>
                 )}
                 <p className="text-gray-500 mt-2"><strong>User ID:</strong> {postDetails.userID}</p>
-                <p className="text-gray-500"><strong>User Profile:</strong> {postDetails.userProfile}</p>
+                <p className="text-gray-500"><strong>User Profile:</strong> {postDetails.userProfileRef}</p>
               </div>
             ))}
           </div>
