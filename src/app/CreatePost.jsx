@@ -21,10 +21,10 @@ function CreatePost({ userData }) {
   }, []);
   const handleCreatePost = async () => {
     // Log userData to see its structure
-    console.log('User Dadddta:', userData);
+    console.log('User Data:', userData);
 
     // Ensure userData is available and contains necessary fields
-    if (!userData || !userData.uid || !userData.name) {
+    if (!userData || !userData.userID || !userData.name) {
       setError('User data is missing or incomplete.');
       return;
     }
@@ -43,8 +43,8 @@ function CreatePost({ userData }) {
       date: serverTimestamp(),
       name: userData.name, // Ensure name is from userData
       postPicRef, // Use the generated postPicRef
-      userID: userData.uid, // Autofill userID from userData
-      userProfile: userData.uid, // Profile ref same as userID
+      userID: userData.userID, // Autofill userID from userData (using userID instead of uid)
+      userProfile: userData.userID, // Profile ref same as userID
     };
 
     try {
