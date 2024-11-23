@@ -71,7 +71,6 @@ function CreatePost({ userData }) {
         postPicRef, // Use postId as the postPicRef
         userID: userData.userID, // Autofill userID from userData (using userID instead of uid)
         userProfileRef: userData.userID, // Profile ref same as userID
-        imageUrl, // Save image URL if uploaded
       };
 
       // Save post to Firestore
