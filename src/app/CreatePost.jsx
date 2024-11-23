@@ -72,6 +72,7 @@ function CreatePost({ userData }) {
       const newPost = {
         caption,
         isVolunteer,
+        isAvailable: true, // New field set to true
         date: serverTimestamp(),
         name: userData.name,
         postPicRef,
