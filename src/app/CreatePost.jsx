@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { doc, setDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '@/app/firebase/config';
 
-function CreatePost({ userData }) {
+function CreatePost({ c }) {
   const [caption, setCaption] = useState('');
   const [postPicRef, setPostPicRef] = useState(''); // Randomly generated
   const [error, setError] = useState('');
@@ -19,13 +19,6 @@ function CreatePost({ userData }) {
   useState(() => {
     setPostPicRef(generateRandomId());
   }, []);
-
-  // Format date function
-  const formatDate = (timestamp) => {
-    if (!timestamp || !timestamp.seconds) return 'Pending...'; // Handle serverTimestamp placeholders
-    const dateObj = new Date(timestamp.seconds * 1000);
-    return dateObj.toLocaleString(); // Convert to a readable date string
-  };
 
   const handleCreatePost = async () => {
     // Ensure userData is available and contains necessary fields
@@ -93,39 +86,4 @@ function CreatePost({ userData }) {
   );
 }
 
-export default function Feed({ postData, userData }) {
-  const formatDate = (timestamp) => {
-    if (!timestamp || !timestamp.seconds) return 'Pending...'; // Handle incomplete timestamps
-    const dateObj = new Date(timestamp.seconds * 1000);
-    return dateObj.toLocaleString();
-  };
-
-  if (!userData) {
-    return <div>Loading user data...</div>;
-  }
-
-  return (
-    <div className="feed">
-      <CreatePost userData={userData} /> {/* Pass userData to CreatePost */}
-      <h2>Feed</h2>
-      {postData ? (
-        Object.entries(postData).map(([date, postGroup]) =>
-          Object.entries(postGroup).map(([postId, post]) => (
-            <div key={postId} className="post border p-4 mb-4 rounded">
-              <h3>{post.caption}</h3>
-              <p>By: {post.name}</p>
-              <p>Date: {formatDate(post.date)}</p>
-              <img
-                src={post.postPicRef}
-                alt={post.caption}
-                className="w-full h-64 object-cover mt-2"
-              />
-            </div>
-          ))
-        )
-      ) : (
-        <p>No posts available</p>
-      )}
-    </div>
-  );
-}
+export default CreatePost;
