@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll, deleteObject } from "firebase/storage";
 import { storage } from "./firebase"; // Ensure correct Firebase configuration
 import { CgProfile } from "react-icons/cg";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { db } from "./firebase"; // Firebase Firestore
 
 export default function Feed({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
@@ -112,14 +114,28 @@ export default function Feed({ postData, userData }) {
     return dateObj.toLocaleString();
   };
 
-  const handleToggleAvailability = (postId) => {
-    // Toggle availability logic here (example: using Firebase to update the post)
-    console.log("Toggled availability for post:", postId);
+  // Toggle the availability of the post (isAvailable field)
+  const handleToggleAvailability = async (postId, currentAvailability) => {
+    const postRef = doc(db, 'posts', postId);
+    try {
+      await updateDoc(postRef, {
+        isAvailable: !currentAvailability,
+      });
+      console.log("Post availability updated!");
+    } catch (error) {
+      console.error("Error updating post availability:", error);
+    }
   };
 
-  const handleDeletePost = (postId) => {
-    // Delete post logic here (example: using Firebase to remove the post)
-    console.log("Deleted post with ID:", postId);
+  // Delete the post from Firestore
+  const handleDeletePost = async (postId) => {
+    const postRef = doc(db, 'posts', postId);
+    try {
+      await deleteDoc(postRef);
+      console.log("Post deleted!");
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
   };
 
   const recentPosts = getRecentPosts();
@@ -154,7 +170,9 @@ export default function Feed({ postData, userData }) {
               {showEditOptions[post.postId] && (
                 <div className="absolute top-12 right-3 bg-white border rounded-lg shadow-md">
                   <button
-                    onClick={() => handleToggleAvailability(post.postId)}
+                    onClick={() =>
+                      handleToggleAvailability(post.postId, post.isAvailable)
+                    }
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                     {post.isAvailable ? "Mark as Unavailable" : "Mark as Available"}
                   </button>
@@ -238,10 +256,7 @@ export default function Feed({ postData, userData }) {
 
 
 
-
-
-
-
+//working no edit data tho
 
 // "use client";
 
