@@ -11,7 +11,6 @@ export default function Feed({ postData, userData }) {
   const [error, setError] = useState({});
   const [visiblePosts, setVisiblePosts] = useState(5);
 
-  // Sort and slice postData to get the most recent posts
   const getRecentPosts = () => {
     if (!postData) return [];
     const allPosts = Object.entries(postData)
@@ -21,9 +20,9 @@ export default function Feed({ postData, userData }) {
           ...postDetails,
         }))
       )
-      .filter((post) => post.date && post.date.seconds) // Filter out invalid posts
-      .sort((a, b) => b.date.seconds - a.date.seconds); // Sort by date (most recent first)
-    return allPosts.slice(0, visiblePosts); // Limit to currently visible posts
+      .filter((post) => post.date && post.date.seconds)
+      .sort((a, b) => b.date.seconds - a.date.seconds);
+    return allPosts.slice(0, visiblePosts);
   };
 
   const fetchImages = async (posts) => {
@@ -33,7 +32,6 @@ export default function Feed({ postData, userData }) {
     posts.forEach((post) => {
       const { postId, userProfileRef, postPicRef } = post;
 
-      // Fetch profile image
       if (userProfileRef) {
         const profileImageRef = ref(storage, `images/${userProfileRef}/`);
         const profilePromise = listAll(profileImageRef)
@@ -51,7 +49,6 @@ export default function Feed({ postData, userData }) {
         profileImagePromises.push(profilePromise);
       }
 
-      // Fetch post image
       if (postPicRef) {
         const postImageRef = ref(storage, `posts/${postPicRef}/`);
         const postPromise = listAll(postImageRef)
@@ -70,7 +67,6 @@ export default function Feed({ postData, userData }) {
       }
     });
 
-    // Wait for all images to load
     const [resolvedProfileImages, resolvedPostImages] = await Promise.all([
       Promise.all(profileImagePromises),
       Promise.all(postImagePromises),
@@ -100,26 +96,26 @@ export default function Feed({ postData, userData }) {
 
   const formatDate = (timestamp) => {
     if (!timestamp || !timestamp.seconds) {
-      return 'Unknown Date'; // Fallback for invalid or missing timestamp
+      return 'Unknown Date';
     }
     const dateObj = new Date(timestamp.seconds * 1000);
-    return dateObj.toLocaleString(); // Convert to a readable date string
+    return dateObj.toLocaleString();
   };
 
   const recentPosts = getRecentPosts();
 
   return (
-    <div className="feed max-w-3xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Posts Feed</h2>
+    <div className="feed max-w-3xl mx-auto p-6 bg-gray-50">
+      <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800">Posts Feed</h2>
       {recentPosts.map((post) => (
         <div
           key={post.postId}
-          className={`post border border-gray-200 rounded-lg p-4 bg-white shadow-md relative ${
-            userData?.userID && post.userID === userData.userID ? 'ring-2 ring-red-500' : ''
+          className={`post bg-white p-6 rounded-lg shadow-xl transition-all duration-300 ${
+            userData?.userID && post.userID === userData.userID ? 'ring-4 ring-blue-500' : ''
           }`}
         >
           {userData?.userID && post.userID === userData.userID && (
-            <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+            <div className="absolute top-3 right-3 bg-blue-500 text-white text-xs font-bold py-1 px-3 rounded-lg">
               My Post
             </div>
           )}
@@ -128,33 +124,27 @@ export default function Feed({ postData, userData }) {
               <img
                 src={profileImages[post.postId]}
                 alt="Profile"
-                className="w-12 h-12 rounded-full object-cover shadow-md"
+                className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
               />
             ) : error[post.postId] ? (
               <CgProfile size={48} className="text-gray-400" />
             ) : (
-              <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                <span className="text-gray-500 text-sm">Loading...</span>
+              <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-500">Loading...</span>
               </div>
             )}
             <div>
-              <p className="text-sm text-gray-500">
-                <strong>Posted by:</strong> {post.name}
-              </p>
-              <p className="text-sm text-gray-500">
-                <strong>Date:</strong> {formatDate(post.date)}
-              </p>
+              <p className="text-lg text-gray-700 font-medium">{post.name}</p>
+              <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
             </div>
           </div>
-          <p className="text-gray-700 mt-4">
-            <strong>Caption:</strong> {post.caption}
-          </p>
+          <p className="text-gray-800 mt-4 text-base">{post.caption}</p>
           {post.postPicRef && postImages[post.postId] ? (
-            <div className="mt-4">
+            <div className="mt-6">
               <img
                 src={postImages[post.postId]}
-                alt="Post Image"
-                className="w-full h-auto rounded-lg shadow-md"
+                alt="Post"
+                className="w-full rounded-lg shadow-md object-cover"
               />
             </div>
           ) : (
@@ -163,12 +153,12 @@ export default function Feed({ postData, userData }) {
         </div>
       ))}
       {recentPosts.length < Object.keys(postData).length && (
-        <div className="text-center mt-6">
+        <div className="text-center mt-8">
           <button
             onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
+            className="px-6 py-3 bg-blue-600 text-white rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-200"
           >
-            Load More
+            Load More Posts
           </button>
         </div>
       )}
