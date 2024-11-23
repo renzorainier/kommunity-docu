@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll, deleteObject } from "firebase/storage";
 import { storage } from "./firebase"; // Ensure correct Firebase configuration
 import { CgProfile } from "react-icons/cg";
-import { doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { db } from "./firebase"; // Firebase Firestore
+import { db } from "./firebase"; // Firestore import
+import { doc, updateDoc, deleteDoc } from "firebase/firestore"; // Firestore functions
 
 export default function Feed({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
@@ -102,10 +102,6 @@ export default function Feed({ postData, userData }) {
     fetchImages(recentPosts);
   }, [postData, visiblePosts]);
 
-  if (!postData) {
-    return <div className="text-center text-gray-600">No posts available.</div>;
-  }
-
   const formatDate = (timestamp) => {
     if (!timestamp || !timestamp.seconds) {
       return "Unknown Date";
@@ -114,27 +110,38 @@ export default function Feed({ postData, userData }) {
     return dateObj.toLocaleString();
   };
 
-  // Toggle the availability of the post (isAvailable field)
-  const handleToggleAvailability = async (postId, currentAvailability) => {
-    const postRef = doc(db, 'posts', postId);
+  // Handle toggle availability (update Firestore)
+  const handleToggleAvailability = async (postId, isAvailable) => {
     try {
+      const postRef = doc(db, 'posts/posts', postId); // Firestore document reference
+      // Update the 'isAvailable' field
       await updateDoc(postRef, {
-        isAvailable: !currentAvailability,
+        isAvailable: !isAvailable, // Toggle the availability
       });
-      console.log("Post availability updated!");
+      console.log('Post availability updated');
     } catch (error) {
-      console.error("Error updating post availability:", error);
+      console.error('Error updating post availability:', error);
     }
   };
 
-  // Delete the post from Firestore
-  const handleDeletePost = async (postId) => {
-    const postRef = doc(db, 'posts', postId);
+  // Handle delete post (remove from Firestore and Storage)
+  const handleDeletePost = async (postId, postPicRef) => {
     try {
+      // Reference to the post document
+      const postRef = doc(db, 'posts/posts', postId);
+
+      // Delete the post image from Firebase Storage
+      if (postPicRef) {
+        const postPicRefObj = ref(storage, `posts/${postPicRef}`);
+        await deleteObject(postPicRefObj);
+        console.log('Post image deleted');
+      }
+
+      // Delete the post document from Firestore
       await deleteDoc(postRef);
-      console.log("Post deleted!");
+      console.log('Post deleted');
     } catch (error) {
-      console.error("Error deleting post:", error);
+      console.error('Error deleting post:', error);
     }
   };
 
@@ -170,14 +177,12 @@ export default function Feed({ postData, userData }) {
               {showEditOptions[post.postId] && (
                 <div className="absolute top-12 right-3 bg-white border rounded-lg shadow-md">
                   <button
-                    onClick={() =>
-                      handleToggleAvailability(post.postId, post.isAvailable)
-                    }
+                    onClick={() => handleToggleAvailability(post.postId, post.isAvailable)}
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                     {post.isAvailable ? "Mark as Unavailable" : "Mark as Available"}
                   </button>
                   <button
-                    onClick={() => handleDeletePost(post.postId)}
+                    onClick={() => handleDeletePost(post.postId, post.postPicRef)}
                     className="block px-4 py-2 text-red-600 hover:bg-gray-100">
                     Delete Post
                   </button>
@@ -231,22 +236,18 @@ export default function Feed({ postData, userData }) {
                 className="w-full rounded-lg shadow-md object-cover"
               />
             </div>
+          ) : error[post.postId] ? (
+            <p className="text-gray-400">Error loading image</p>
           ) : (
-            post.postPicRef && (
-              <p className="text-gray-500 mt-4">Loading post image...</p>
-            )
+            <p className="text-gray-400">Loading image...</p>
           )}
         </div>
       ))}
-      {recentPosts.length < Object.keys(postData).length && (
-        <div className="text-center mt-8">
-          <button
-            onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-200">
-            Load More Posts
-          </button>
-        </div>
-      )}
+      <button
+        onClick={() => setVisiblePosts((prev) => prev + 5)}
+        className="mt-8 w-full bg-blue-600 text-white py-2 rounded-lg shadow-md hover:bg-blue-700">
+        Load More
+      </button>
     </div>
   );
 }
