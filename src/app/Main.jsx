@@ -26,7 +26,7 @@ export default function Main() {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
         setUserData(data);
-        console.log("User data:", data);
+        console.log("User data from Firestore:", data);
 
         // Play success sound
         const audio = new Audio(success);
@@ -36,6 +36,7 @@ export default function Main() {
         router.push('/error');
       }
     });
+
 
     // Listen for post document changes in Firestore
     const postDocRef = doc(db, 'posts', 'posts');

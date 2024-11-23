@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { doc, setDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '@/app/firebase/config';
 
-function CreatePost({ c }) {
+function CreatePost({ userData }) {
   const [caption, setCaption] = useState('');
   const [postPicRef, setPostPicRef] = useState(''); // Randomly generated
   const [error, setError] = useState('');
@@ -19,8 +19,10 @@ function CreatePost({ c }) {
   useState(() => {
     setPostPicRef(generateRandomId());
   }, []);
-
   const handleCreatePost = async () => {
+    // Log userData to see its structure
+    console.log('User Data:', userData);
+
     // Ensure userData is available and contains necessary fields
     if (!userData || !userData.uid || !userData.name) {
       setError('User data is missing or incomplete.');
