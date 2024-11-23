@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
-import { ref, getDownloadURL, listAll } from "firebase/storage";
-import { storage } from "./firebase"; // Ensure correct Firebase configuration
-import { CgProfile } from "react-icons/cg";
+import React, { useState, useEffect } from 'react';
+import { ref, getDownloadURL, listAll } from 'firebase/storage';
+import { storage } from './firebase'; // Ensure correct Firebase configuration
+import { CgProfile } from 'react-icons/cg';
 
 export default function Feed({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
@@ -11,6 +11,7 @@ export default function Feed({ postData, userData }) {
   const [error, setError] = useState({});
   const [visiblePosts, setVisiblePosts] = useState(5);
 
+  // Sort and slice postData to get the most recent posts
   const getRecentPosts = () => {
     if (!postData) return [];
     const allPosts = Object.entries(postData)
@@ -20,9 +21,9 @@ export default function Feed({ postData, userData }) {
           ...postDetails,
         }))
       )
-      .filter((post) => post.date && post.date.seconds)
-      .sort((a, b) => b.date.seconds - a.date.seconds);
-    return allPosts.slice(0, visiblePosts);
+      .filter((post) => post.date && post.date.seconds) // Filter out invalid posts
+      .sort((a, b) => b.date.seconds - a.date.seconds); // Sort by date (most recent first)
+    return allPosts.slice(0, visiblePosts); // Limit to currently visible posts
   };
 
   const fetchImages = async (posts) => {
@@ -32,6 +33,7 @@ export default function Feed({ postData, userData }) {
     posts.forEach((post) => {
       const { postId, userProfileRef, postPicRef } = post;
 
+      // Fetch profile image
       if (userProfileRef) {
         const profileImageRef = ref(storage, `images/${userProfileRef}/`);
         const profilePromise = listAll(profileImageRef)
@@ -49,6 +51,7 @@ export default function Feed({ postData, userData }) {
         profileImagePromises.push(profilePromise);
       }
 
+      // Fetch post image
       if (postPicRef) {
         const postImageRef = ref(storage, `posts/${postPicRef}/`);
         const postPromise = listAll(postImageRef)
@@ -67,6 +70,7 @@ export default function Feed({ postData, userData }) {
       }
     });
 
+    // Wait for all images to load
     const [resolvedProfileImages, resolvedPostImages] = await Promise.all([
       Promise.all(profileImagePromises),
       Promise.all(postImagePromises),
@@ -90,17 +94,19 @@ export default function Feed({ postData, userData }) {
     fetchImages(recentPosts);
   }, [postData, visiblePosts]);
 
-  const formatDate = (timestamp) => {
-    if (!timestamp || !timestamp.seconds) return "Unknown Date";
-    const dateObj = new Date(timestamp.seconds * 1000);
-    return dateObj.toLocaleString();
-  };
-
-  const recentPosts = getRecentPosts();
-
   if (!postData) {
     return <div className="text-center text-gray-600">No posts available.</div>;
   }
+
+  const formatDate = (timestamp) => {
+    if (!timestamp || !timestamp.seconds) {
+      return 'Unknown Date'; // Fallback for invalid or missing timestamp
+    }
+    const dateObj = new Date(timestamp.seconds * 1000);
+    return dateObj.toLocaleString(); // Convert to a readable date string
+  };
+
+  const recentPosts = getRecentPosts();
 
   return (
     <div className="feed max-w-3xl mx-auto p-4">
@@ -109,10 +115,10 @@ export default function Feed({ postData, userData }) {
         <div
           key={post.postId}
           className={`post border border-gray-200 rounded-lg p-4 bg-white shadow-md relative ${
-            post.userID === userData.userID ? "ring-2 ring-red-500" : ""
+            userData?.userID && post.userID === userData.userID ? 'ring-2 ring-red-500' : ''
           }`}
         >
-          {post.userID === userData.userID && (
+          {userData?.userID && post.userID === userData.userID && (
             <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
               My Post
             </div>
@@ -152,9 +158,7 @@ export default function Feed({ postData, userData }) {
               />
             </div>
           ) : (
-            post.postPicRef && (
-              <p className="text-gray-500 mt-4">Loading post image...</p>
-            )
+            post.postPicRef && <p className="text-gray-500 mt-4">Loading post image...</p>
           )}
         </div>
       ))}
@@ -171,7 +175,6 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
-
 
 
 
