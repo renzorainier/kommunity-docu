@@ -25,16 +25,17 @@ export default function Feed({ postData }) {
     return allPosts.slice(0, visiblePosts); // Limit to currently visible posts
   };
 
-  // Function to fetch user and post images
   const fetchImages = async (posts) => {
     const profileImagePromises = [];
     const postImagePromises = [];
+    const userProfileRefs = new Set(); // Track users we have already fetched profile images for
 
     posts.forEach((post) => {
       const { postId, userProfileRef, postPicRef } = post;
 
-      // Fetch profile image
-      if (userProfileRef) {
+      // Fetch profile image only once per user
+      if (userProfileRef && !userProfileRefs.has(userProfileRef)) {
+        userProfileRefs.add(userProfileRef);
         const profileImageRef = ref(storage, `images/${userProfileRef}/`);
         const profilePromise = listAll(profileImageRef)
           .then((response) => {
@@ -42,7 +43,7 @@ export default function Feed({ postData }) {
               setError((prev) => ({ ...prev, [postId]: true }));
               return { postId, url: null };
             }
-            return getDownloadURL(response.items[0]).then((url) => ({ postId, url }));
+            return getDownloadURL(response.items[0]).then((url) => ({ userProfileRef, url }));
           })
           .catch(() => {
             setError((prev) => ({ ...prev, [postId]: true }));
@@ -76,9 +77,8 @@ export default function Feed({ postData }) {
       Promise.all(postImagePromises),
     ]);
 
-    // Map resolved image URLs to their respective postIds
-    const profileImageMap = resolvedProfileImages.reduce((acc, { postId, url }) => {
-      if (url) acc[postId] = url;
+    const profileImageMap = resolvedProfileImages.reduce((acc, { userProfileRef, url }) => {
+      if (url) acc[userProfileRef] = url; // Store the URL by userProfileRef (user ID)
       return acc;
     }, {});
     const postImageMap = resolvedPostImages.reduce((acc, { postId, url }) => {
@@ -112,9 +112,9 @@ export default function Feed({ postData }) {
       {recentPosts.map((post) => (
         <div key={post.postId} className="post border border-gray-200 rounded-lg p-4 bg-white shadow-md">
           <div className="flex items-center space-x-4">
-            {profileImages[post.postId] ? (
+            {profileImages[post.userProfileRef] ? (
               <img
-                src={profileImages[post.postId]}
+                src={profileImages[post.userProfileRef]}
                 alt="Profile"
                 className="w-12 h-12 rounded-full object-cover shadow-md"
               />
@@ -165,6 +165,7 @@ export default function Feed({ postData }) {
     </div>
   );
 }
+
 
 
 // 'use client';
