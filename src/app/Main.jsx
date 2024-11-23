@@ -74,7 +74,7 @@ export default function Main() {
 
   return (
     <main>
-            <Feed postData={postData} />
+            {/* <Feed postData={postData} /> */}
       <CreatePost userData={userData}  />
 
     </main>
