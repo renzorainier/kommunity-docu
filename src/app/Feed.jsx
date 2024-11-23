@@ -11,7 +11,6 @@ export default function Feed({ postData, userData }) {
   const [error, setError] = useState({});
   const [visiblePosts, setVisiblePosts] = useState(5);
 
-  // Sort and slice postData to get the most recent posts
   const getRecentPosts = () => {
     if (!postData) return [];
     const allPosts = Object.entries(postData)
@@ -21,9 +20,9 @@ export default function Feed({ postData, userData }) {
           ...postDetails,
         }))
       )
-      .filter((post) => post.date && post.date.seconds) // Filter out invalid posts
-      .sort((a, b) => b.date.seconds - a.date.seconds); // Sort by date (most recent first)
-    return allPosts.slice(0, visiblePosts); // Limit to currently visible posts
+      .filter((post) => post.date && post.date.seconds)
+      .sort((a, b) => b.date.seconds - a.date.seconds);
+    return allPosts.slice(0, visiblePosts);
   };
 
   const fetchImages = async (posts) => {
@@ -33,7 +32,6 @@ export default function Feed({ postData, userData }) {
     posts.forEach((post) => {
       const { postId, userProfileRef, postPicRef } = post;
 
-      // Fetch profile image
       if (userProfileRef) {
         const profileImageRef = ref(storage, `images/${userProfileRef}/`);
         const profilePromise = listAll(profileImageRef)
@@ -51,7 +49,6 @@ export default function Feed({ postData, userData }) {
         profileImagePromises.push(profilePromise);
       }
 
-      // Fetch post image
       if (postPicRef) {
         const postImageRef = ref(storage, `posts/${postPicRef}/`);
         const postPromise = listAll(postImageRef)
@@ -70,7 +67,6 @@ export default function Feed({ postData, userData }) {
       }
     });
 
-    // Wait for all images to load
     const [resolvedProfileImages, resolvedPostImages] = await Promise.all([
       Promise.all(profileImagePromises),
       Promise.all(postImagePromises),
@@ -94,25 +90,33 @@ export default function Feed({ postData, userData }) {
     fetchImages(recentPosts);
   }, [postData, visiblePosts]);
 
-  if (!postData) {
-    return <div className="text-center text-gray-600">No posts available.</div>;
-  }
-
   const formatDate = (timestamp) => {
-    if (!timestamp || !timestamp.seconds) {
-      return "Unknown Date"; // Fallback for invalid or missing timestamp
-    }
+    if (!timestamp || !timestamp.seconds) return "Unknown Date";
     const dateObj = new Date(timestamp.seconds * 1000);
-    return dateObj.toLocaleString(); // Convert to a readable date string
+    return dateObj.toLocaleString();
   };
 
   const recentPosts = getRecentPosts();
+
+  if (!postData) {
+    return <div className="text-center text-gray-600">No posts available.</div>;
+  }
 
   return (
     <div className="feed max-w-3xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Posts Feed</h2>
       {recentPosts.map((post) => (
-        <div key={post.postId} className="post border border-gray-200 rounded-lg p-4 bg-white shadow-md">
+        <div
+          key={post.postId}
+          className={`post border border-gray-200 rounded-lg p-4 bg-white shadow-md relative ${
+            post.userID === userData.userID ? "ring-2 ring-red-500" : ""
+          }`}
+        >
+          {post.userID === userData.userID && (
+            <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+              My Post
+            </div>
+          )}
           <div className="flex items-center space-x-4">
             {profileImages[post.postId] ? (
               <img
@@ -167,8 +171,6 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
-
-
 
 
 
