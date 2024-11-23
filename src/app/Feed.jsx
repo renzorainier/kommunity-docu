@@ -139,6 +139,21 @@ export default function Feed({ postData, userData }) {
             </div>
           </div>
           <p className="text-gray-800 mt-4 text-base">{post.caption}</p>
+
+          {/* Show Category and Availability */}
+          <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
+            {post.category && (
+              <span className="bg-blue-100 text-blue-800 py-1 px-3 rounded-full">{post.category}</span>
+            )}
+            <span
+              className={`py-1 px-3 rounded-full ${
+                post.isAvailable ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+              }`}
+            >
+              {post.isAvailable ? 'Available' : 'Not Available'}
+            </span>
+          </div>
+
           {post.postPicRef && postImages[post.postId] ? (
             <div className="mt-6">
               <img
@@ -165,7 +180,6 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
-
 
 
 // 'use client';
