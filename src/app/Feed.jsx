@@ -5,7 +5,7 @@ import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "./firebase"; // Ensure correct Firebase configuration
 import { CgProfile } from "react-icons/cg";
 
-export default function Feed({ postData }) {
+export default function Feed({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
   const [postImages, setPostImages] = useState({});
   const [error, setError] = useState({});
