@@ -11,7 +11,7 @@ function CreatePost({ userData }) {
   const [successMessage, setSuccessMessage] = useState('');
   const [uploadedImage, setUploadedImage] = useState(null);
   const [imageError, setImageError] = useState(false);
-  const [isVolunteer, setIsVolunteer] = useState(true); // Default to volunteer
+  const [isVolunteer, setIsVolunteer] = useState(true);
 
   // Generate a random 10-character ID for postId
   const generateRandomId = () => {
@@ -63,7 +63,7 @@ function CreatePost({ userData }) {
 
       const newPost = {
         caption,
-        isVolunteer, // Include the isVolunteer field
+        isVolunteer,
         date: serverTimestamp(),
         name: userData.name,
         postPicRef,
@@ -86,48 +86,51 @@ function CreatePost({ userData }) {
   };
 
   return (
-    <div className="create-post">
-      <h2>Create a New Post</h2>
+    <div className="create-post max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">Create a New Post</h2>
 
-      {error && <p className="error text-red-500">{error}</p>}
-      {successMessage && <p className="success text-green-500">{successMessage}</p>}
+      {error && <p className="error text-red-500 mb-4">{error}</p>}
+      {successMessage && <p className="success text-green-500 mb-4">{successMessage}</p>}
 
-      <div>
+      {/* Caption Input */}
+      <div className="mb-4">
+        <label htmlFor="caption" className="block text-gray-700 font-medium mb-1">
+          Caption
+        </label>
         <input
+          id="caption"
           type="text"
-          placeholder="Caption"
+          placeholder="Write a caption..."
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
-          className="border p-2 rounded mb-2"
+          className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
         />
       </div>
 
-      {/* Toggle Button for Paid or Volunteer */}
-      <div className="flex items-center justify-between mb-4">
-        <span className={`font-bold ${isVolunteer ? 'text-green-500' : 'text-gray-500'}`}>
-          {isVolunteer ? 'Volunteer' : 'Paid'}
-        </span>
-        <button
+      {/* Toggle Button */}
+      <div className="flex items-center justify-between mb-6">
+        <p className="text-gray-700 font-medium">Work Type:</p>
+        <div
           onClick={() => setIsVolunteer(!isVolunteer)}
-          className={`px-4 py-2 rounded-full font-bold transition ${
+          className={`cursor-pointer flex items-center px-4 py-2 rounded-full transition-all ${
             isVolunteer ? 'bg-green-500 text-white' : 'bg-gray-500 text-white'
           }`}
         >
-          {isVolunteer ? 'Switch to Paid' : 'Switch to Volunteer'}
-        </button>
+          {isVolunteer ? 'Volunteer' : 'Paid'}
+        </div>
       </div>
 
-      {/* Image Upload Section */}
+      {/* Image Upload */}
       <div
         onDrop={handleFileDrop}
         onDragOver={(e) => e.preventDefault()}
-        className="w-full p-4 border border-dashed rounded-lg text-center cursor-pointer"
+        className="w-full p-4 border border-dashed rounded-lg text-center cursor-pointer bg-gray-50 hover:bg-gray-100"
       >
-        <label htmlFor="file-upload" className="block w-full cursor-pointer">
+        <label htmlFor="file-upload" className="block w-full cursor-pointer text-gray-600">
           {uploadedImage ? (
-            <p>{uploadedImage.name}</p>
+            <p className="text-gray-700 font-medium">{uploadedImage.name}</p>
           ) : (
-            <p>Drag & drop an image here or click to select one</p>
+            <p className="text-gray-500">Drag & drop an image here or click to select one</p>
           )}
         </label>
         <input
@@ -143,9 +146,12 @@ function CreatePost({ userData }) {
         <p className="text-red-500 text-sm mt-2">Please upload a valid image.</p>
       )}
 
+      {/* Submit Button */}
       <button
         onClick={handleCreatePost}
-        className="bg-blue-500 text-white px-4 py-2 rounded mt-2 hover:bg-blue-600"
+        className={`w-full bg-blue-500 text-white px-4 py-2 rounded mt-4 font-medium hover:bg-blue-600 transition-all ${
+          !caption || !uploadedImage ? 'opacity-50 cursor-not-allowed' : ''
+        }`}
         disabled={!caption || !uploadedImage}
       >
         Create Post
@@ -155,8 +161,6 @@ function CreatePost({ userData }) {
 }
 
 export default CreatePost;
-
-
 
 
 
