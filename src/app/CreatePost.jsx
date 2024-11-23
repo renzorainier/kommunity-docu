@@ -21,7 +21,7 @@ function CreatePost({ userData }) {
   }, []);
   const handleCreatePost = async () => {
     // Log userData to see its structure
-    console.log('User Data:', userData);
+    console.log('User Dadddta:', userData);
 
     // Ensure userData is available and contains necessary fields
     if (!userData || !userData.uid || !userData.name) {
