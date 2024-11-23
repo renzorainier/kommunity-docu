@@ -6,19 +6,14 @@ import { db } from '@/app/firebase/config';
 
 function CreatePost({ userData }) {
   const [caption, setCaption] = useState('');
-  const [postPicRef, setPostPicRef] = useState(''); // Randomly generated
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  // Generate a random 10-character ID for postPicRef
+  // Generate a random 10-character ID for postId and postPicRef
   const generateRandomId = () => {
     return Math.random().toString(36).substr(2, 10).toUpperCase();
   };
 
-  // Set postPicRef on component mount
-  useState(() => {
-    setPostPicRef(generateRandomId());
-  }, []);
   const handleCreatePost = async () => {
     // Log userData to see its structure
     console.log('User Data:', userData);
@@ -36,13 +31,14 @@ function CreatePost({ userData }) {
 
     setError('');
     const currentDate = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
-    const postId = generateRandomId();
+    const postId = generateRandomId(); // Use this as both postId and postPicRef
+    const postPicRef = postId; // Set postPicRef equal to postId
 
     const newPost = {
       caption,
       date: serverTimestamp(),
       name: userData.name, // Ensure name is from userData
-      postPicRef, // Use the generated postPicRef
+      postPicRef, // Use postId as the postPicRef
       userID: userData.userID, // Autofill userID from userData (using userID instead of uid)
       userProfile: userData.userID, // Profile ref same as userID
     };

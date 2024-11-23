@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { doc, onSnapshot } from 'firebase/firestore';
 import success from './success.wav';
 import CreatePost from './CreatePost';
+import Feed from './Feed'
 
 export default function Main() {
   const [user, loading, error] = useAuthState(auth);
@@ -74,6 +75,8 @@ export default function Main() {
   return (
     <main>
       <CreatePost userData={userData}  />
+            <Feed postData={postData} />
+
     </main>
   );
 }
