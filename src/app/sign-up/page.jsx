@@ -84,6 +84,7 @@ const Register = () => {
       const user = auth.currentUser;
       if (!user) throw new Error("User is not authenticated");
 
+      // Upload image to Firebase Storage
       let imageUrl = "";
       if (uploadedImage) {
         const storageRef = ref(storage, `images/${user.uid}/${uploadedImage.name}`);
@@ -91,8 +92,13 @@ const Register = () => {
         imageUrl = await getDownloadURL(storageRef);
       }
 
+      // Save user data in Firestore
       const userRef = doc(db, "users", user.uid);
-      await setDoc(userRef, { ...formData, imageUrl });
+      await setDoc(userRef, {
+        ...formData,
+        userID: user.uid, // Add userID field
+        imageUrl
+      });
 
       alert("Registration complete! Welcome, " + formData.name);
       router.push("/");
@@ -103,6 +109,7 @@ const Register = () => {
       setLoading(false);
     }
   };
+
 
   const isFormComplete = formData.age && formData.yearLevel && uploadedImage;
 
