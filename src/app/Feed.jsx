@@ -110,15 +110,11 @@ export default function Feed({ postData, userData }) {
       {recentPosts.map((post) => (
         <div
           key={post.postId}
-          className={`post bg-white p-6 rounded-lg shadow-xl transition-all duration-300 ${
+          className={`post bg-white p-6 rounded-lg shadow-xl transition-all duration-300 mb-6 ${
             userData?.userID && post.userID === userData.userID ? 'ring-4 ring-blue-500' : ''
           }`}
         >
-          {userData?.userID && post.userID === userData.userID && (
-            <div className="absolute top-3 right-3 bg-blue-500 text-white text-xs font-bold py-1 px-3 rounded-lg">
-              My Post
-            </div>
-          )}
+         
           <div className="flex items-center space-x-4">
             {profileImages[post.postId] ? (
               <img
@@ -180,6 +176,7 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
+
 
 
 // 'use client';
