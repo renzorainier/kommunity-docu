@@ -40,7 +40,7 @@ function CreatePost({ userData }) {
       name: userData.name, // Ensure name is from userData
       postPicRef, // Use postId as the postPicRef
       userID: userData.userID, // Autofill userID from userData (using userID instead of uid)
-      userProfile: userData.userID, // Profile ref same as userID
+      userProfileRef: userData.userID, // Profile ref same as userID
     };
 
     try {
