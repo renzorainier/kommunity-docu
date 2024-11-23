@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { ref, getDownloadURL, listAll } from 'firebase/storage';
-import { storage } from './firebase'; // Ensure correct Firebase configuration
-import { CgProfile } from 'react-icons/cg';
+import React, { useState, useEffect } from "react";
+import { ref, getDownloadURL, listAll } from "firebase/storage";
+import { storage } from "./firebase"; // Ensure correct Firebase configuration
+import { CgProfile } from "react-icons/cg";
 
 export default function Feed({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
@@ -40,7 +40,10 @@ export default function Feed({ postData, userData }) {
               setError((prev) => ({ ...prev, [postId]: true }));
               return { postId, url: null };
             }
-            return getDownloadURL(response.items[0]).then((url) => ({ postId, url }));
+            return getDownloadURL(response.items[0]).then((url) => ({
+              postId,
+              url,
+            }));
           })
           .catch(() => {
             setError((prev) => ({ ...prev, [postId]: true }));
@@ -57,7 +60,10 @@ export default function Feed({ postData, userData }) {
               setError((prev) => ({ ...prev, [postId]: true }));
               return { postId, url: null };
             }
-            return getDownloadURL(response.items[0]).then((url) => ({ postId, url }));
+            return getDownloadURL(response.items[0]).then((url) => ({
+              postId,
+              url,
+            }));
           })
           .catch(() => {
             setError((prev) => ({ ...prev, [postId]: true }));
@@ -72,10 +78,13 @@ export default function Feed({ postData, userData }) {
       Promise.all(postImagePromises),
     ]);
 
-    const profileImageMap = resolvedProfileImages.reduce((acc, { postId, url }) => {
-      if (url) acc[postId] = url;
-      return acc;
-    }, {});
+    const profileImageMap = resolvedProfileImages.reduce(
+      (acc, { postId, url }) => {
+        if (url) acc[postId] = url;
+        return acc;
+      },
+      {}
+    );
     const postImageMap = resolvedPostImages.reduce((acc, { postId, url }) => {
       if (url) acc[postId] = url;
       return acc;
@@ -96,7 +105,7 @@ export default function Feed({ postData, userData }) {
 
   const formatDate = (timestamp) => {
     if (!timestamp || !timestamp.seconds) {
-      return 'Unknown Date';
+      return "Unknown Date";
     }
     const dateObj = new Date(timestamp.seconds * 1000);
     return dateObj.toLocaleString();
@@ -106,15 +115,17 @@ export default function Feed({ postData, userData }) {
 
   return (
     <div className="feed max-w-3xl mx-auto p-6 bg-gray-50">
-      <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800">Posts Feed</h2>
+      <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800">
+        Posts Feed
+      </h2>
       {recentPosts.map((post) => (
         <div
           key={post.postId}
           className={`post bg-white p-6 rounded-lg shadow-xl transition-all duration-300 mb-6 ${
-            userData?.userID && post.userID === userData.userID ? 'ring-4 ring-blue-500' : ''
-          }`}
-        >
-         
+            userData?.userID && post.userID === userData.userID
+              ? "ring-4 ring-blue-500"
+              : ""
+          }`}>
           <div className="flex items-center space-x-4">
             {profileImages[post.postId] ? (
               <img
@@ -137,16 +148,19 @@ export default function Feed({ postData, userData }) {
           <p className="text-gray-800 mt-4 text-base">{post.caption}</p>
 
           {/* Show Category and Availability */}
-          <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
+          <div className="mt-4 flex items-center space-x-2 text-sm text-gray-600">
             {post.category && (
-              <span className="bg-blue-100 text-blue-800 py-1 px-3 rounded-full">{post.category}</span>
+              <span className="bg-blue-100 text-blue-800 py-1 px-3 rounded-full">
+                {post.category}
+              </span>
             )}
             <span
               className={`py-1 px-3 rounded-full ${
-                post.isAvailable ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-              }`}
-            >
-              {post.isAvailable ? 'Available' : 'Not Available'}
+                post.isAvailable
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
+              }`}>
+              {post.isAvailable ? "Available" : "Not Available"}
             </span>
           </div>
 
@@ -159,7 +173,9 @@ export default function Feed({ postData, userData }) {
               />
             </div>
           ) : (
-            post.postPicRef && <p className="text-gray-500 mt-4">Loading post image...</p>
+            post.postPicRef && (
+              <p className="text-gray-500 mt-4">Loading post image...</p>
+            )
           )}
         </div>
       ))}
@@ -167,8 +183,7 @@ export default function Feed({ postData, userData }) {
         <div className="text-center mt-8">
           <button
             onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-200"
-          >
+            className="px-6 py-3 bg-blue-600 text-white rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-200">
             Load More Posts
           </button>
         </div>
@@ -176,8 +191,6 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
-
-
 
 // 'use client';
 
@@ -348,7 +361,6 @@ export default function Feed({ postData, userData }) {
 //   );
 // }
 
-
 //really working
 
 // 'use client';
@@ -516,17 +528,6 @@ export default function Feed({ postData, userData }) {
 //     </div>
 //   );
 // }
-
-
-
-
-
-
-
-
-
-
-
 
 // 'use client';
 
