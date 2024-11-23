@@ -7,12 +7,15 @@ import { ref, uploadBytes } from 'firebase/storage';
 
 function CreatePost({ userData }) {
   const [caption, setCaption] = useState('');
+  const [category, setCategory] = useState(''); // New state for category
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null); // For previewing the image
+  const [imagePreview, setImagePreview] = useState(null);
   const [imageError, setImageError] = useState(false);
   const [isVolunteer, setIsVolunteer] = useState(true);
+
+  const categories = ['Animals', 'Baby', 'Carpentry', 'Gardening', 'Other']; // Predefined categories
 
   // Generate a random 10-character ID for postId
   const generateRandomId = () => {
@@ -27,7 +30,6 @@ function CreatePost({ userData }) {
     setImageError(false);
     setUploadedImage(file);
 
-    // Generate a preview URL
     const reader = new FileReader();
     reader.onload = (e) => {
       setImagePreview(e.target.result);
@@ -57,6 +59,11 @@ function CreatePost({ userData }) {
       return;
     }
 
+    if (!category) {
+      setError('Please select a category!');
+      return;
+    }
+
     setError('');
 
     const currentDate = new Date().toISOString().split('T')[0];
@@ -66,13 +73,14 @@ function CreatePost({ userData }) {
     try {
       if (uploadedImage) {
         const storageRef = ref(storage, `posts/${postId}/${uploadedImage.name}`);
-        await uploadBytes(storageRef, uploadedImage); // Upload image to Firebase Storage
+        await uploadBytes(storageRef, uploadedImage);
       }
 
       const newPost = {
         caption,
+        category, // Add category to the post object
         isVolunteer,
-        isAvailable: true, // New field set to true
+        isAvailable: true,
         date: serverTimestamp(),
         name: userData.name,
         postPicRef,
@@ -87,6 +95,7 @@ function CreatePost({ userData }) {
 
       setSuccessMessage('Post created successfully!');
       setCaption('');
+      setCategory('');
       setUploadedImage(null);
       setImagePreview(null);
     } catch (err) {
@@ -115,6 +124,28 @@ function CreatePost({ userData }) {
           onChange={(e) => setCaption(e.target.value)}
           className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
         />
+      </div>
+
+      {/* Category Dropdown */}
+      <div className="mb-4">
+        <label htmlFor="category" className="block text-gray-700 font-medium mb-1">
+          Category
+        </label>
+        <select
+          id="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+        >
+          <option value="" disabled>
+            Select a category
+          </option>
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Toggle Button */}
@@ -171,9 +202,9 @@ function CreatePost({ userData }) {
       <button
         onClick={handleCreatePost}
         className={`w-full bg-blue-500 text-white px-4 py-2 rounded mt-4 font-medium hover:bg-blue-600 transition-all ${
-          !caption || !uploadedImage ? 'opacity-50 cursor-not-allowed' : ''
+          !caption || !uploadedImage || !category ? 'opacity-50 cursor-not-allowed' : ''
         }`}
-        disabled={!caption || !uploadedImage}
+        disabled={!caption || !uploadedImage || !category}
       >
         Create Post
       </button>
@@ -182,6 +213,7 @@ function CreatePost({ userData }) {
 }
 
 export default CreatePost;
+
 
 
 
