@@ -10,6 +10,7 @@ function CreatePost({ userData }) {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null); // For previewing the image
   const [imageError, setImageError] = useState(false);
   const [isVolunteer, setIsVolunteer] = useState(true);
 
@@ -25,6 +26,13 @@ function CreatePost({ userData }) {
     }
     setImageError(false);
     setUploadedImage(file);
+
+    // Generate a preview URL
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImagePreview(e.target.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleFileDrop = (e) => {
@@ -79,6 +87,7 @@ function CreatePost({ userData }) {
       setSuccessMessage('Post created successfully!');
       setCaption('');
       setUploadedImage(null);
+      setImagePreview(null);
     } catch (err) {
       console.error('Error creating post:', err);
       setError('Failed to create post. Please try again.');
@@ -142,6 +151,17 @@ function CreatePost({ userData }) {
         />
       </div>
 
+      {imagePreview && (
+        <div className="mt-4">
+          <p className="text-gray-600 text-sm mb-2">Image Preview:</p>
+          <img
+            src={imagePreview}
+            alt="Preview"
+            className="w-full h-auto rounded-md shadow-md"
+          />
+        </div>
+      )}
+
       {imageError && (
         <p className="text-red-500 text-sm mt-2">Please upload a valid image.</p>
       )}
@@ -161,9 +181,6 @@ function CreatePost({ userData }) {
 }
 
 export default CreatePost;
-
-
-
 
 
 
