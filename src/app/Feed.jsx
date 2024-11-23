@@ -20,6 +20,7 @@ export default function Feed({ postData, userData }) {
       .flatMap(([date, posts]) =>
         Object.entries(posts).map(([postId, postDetails]) => ({
           postId,
+          date,
           ...postDetails,
         }))
       )
@@ -111,9 +112,9 @@ export default function Feed({ postData, userData }) {
   };
 
   // Handle toggle availability (update Firestore)
-  const handleToggleAvailability = async (postId, isAvailable) => {
+  const handleToggleAvailability = async (postId, date, isAvailable) => {
     try {
-      const postRef = doc(db, 'posts/posts', postId); // Firestore document reference
+      const postRef = doc(db, 'posts/posts', date, postId); // Correct path for post
       // Update the 'isAvailable' field
       await updateDoc(postRef, {
         isAvailable: !isAvailable, // Toggle the availability
@@ -125,10 +126,10 @@ export default function Feed({ postData, userData }) {
   };
 
   // Handle delete post (remove from Firestore and Storage)
-  const handleDeletePost = async (postId, postPicRef) => {
+  const handleDeletePost = async (postId, date, postPicRef) => {
     try {
       // Reference to the post document
-      const postRef = doc(db, 'posts/posts', postId);
+      const postRef = doc(db, 'posts/posts', date, postId);
 
       // Delete the post image from Firebase Storage
       if (postPicRef) {
@@ -177,12 +178,12 @@ export default function Feed({ postData, userData }) {
               {showEditOptions[post.postId] && (
                 <div className="absolute top-12 right-3 bg-white border rounded-lg shadow-md">
                   <button
-                    onClick={() => handleToggleAvailability(post.postId, post.isAvailable)}
+                    onClick={() => handleToggleAvailability(post.postId, post.date, post.isAvailable)}
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                     {post.isAvailable ? "Mark as Unavailable" : "Mark as Available"}
                   </button>
                   <button
-                    onClick={() => handleDeletePost(post.postId, post.postPicRef)}
+                    onClick={() => handleDeletePost(post.postId, post.date, post.postPicRef)}
                     className="block px-4 py-2 text-red-600 hover:bg-gray-100">
                     Delete Post
                   </button>
@@ -224,22 +225,17 @@ export default function Feed({ postData, userData }) {
                   ? "bg-green-100 text-green-800"
                   : "bg-red-100 text-red-800"
               }`}>
-              {post.isAvailable ? "Available" : "Not Available"}
+              {post.isAvailable ? "Available" : "Unavailable"}
             </span>
           </div>
 
-          {post.postPicRef && postImages[post.postId] ? (
-            <div className="mt-6">
-              <img
-                src={postImages[post.postId]}
-                alt="Post"
-                className="w-full rounded-lg shadow-md object-cover"
-              />
-            </div>
-          ) : error[post.postId] ? (
-            <p className="text-gray-400">Error loading image</p>
-          ) : (
-            <p className="text-gray-400">Loading image...</p>
+          {/* Post Image */}
+          {postImages[post.postId] && (
+            <img
+              src={postImages[post.postId]}
+              alt="Post"
+              className="mt-4 w-full h-80 object-cover rounded-lg shadow-md"
+            />
           )}
         </div>
       ))}
@@ -251,6 +247,7 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
+
 
 
 
