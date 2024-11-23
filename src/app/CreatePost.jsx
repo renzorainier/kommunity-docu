@@ -11,6 +11,7 @@ function CreatePost({ userData }) {
   const [successMessage, setSuccessMessage] = useState('');
   const [uploadedImage, setUploadedImage] = useState(null);
   const [imageError, setImageError] = useState(false);
+  const [isVolunteer, setIsVolunteer] = useState(true); // Default to volunteer
 
   // Generate a random 10-character ID for postId
   const generateRandomId = () => {
@@ -62,6 +63,7 @@ function CreatePost({ userData }) {
 
       const newPost = {
         caption,
+        isVolunteer, // Include the isVolunteer field
         date: serverTimestamp(),
         name: userData.name,
         postPicRef,
@@ -98,6 +100,21 @@ function CreatePost({ userData }) {
           onChange={(e) => setCaption(e.target.value)}
           className="border p-2 rounded mb-2"
         />
+      </div>
+
+      {/* Toggle Button for Paid or Volunteer */}
+      <div className="flex items-center justify-between mb-4">
+        <span className={`font-bold ${isVolunteer ? 'text-green-500' : 'text-gray-500'}`}>
+          {isVolunteer ? 'Volunteer' : 'Paid'}
+        </span>
+        <button
+          onClick={() => setIsVolunteer(!isVolunteer)}
+          className={`px-4 py-2 rounded-full font-bold transition ${
+            isVolunteer ? 'bg-green-500 text-white' : 'bg-gray-500 text-white'
+          }`}
+        >
+          {isVolunteer ? 'Switch to Paid' : 'Switch to Volunteer'}
+        </button>
       </div>
 
       {/* Image Upload Section */}
