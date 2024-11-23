@@ -4,19 +4,21 @@ import { useState } from 'react';
 import { doc, setDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '@/app/firebase/config';
 
-function CreatePost({ posts }) {
+function CreatePost({ userData }) {
   const [caption, setCaption] = useState('');
-  const [postPicRef, setPostPicRef] = useState('');
-  const [userName, setUserName] = useState('');
-  const [userID, setUserID] = useState('');
-  const [userProfile, setUserProfile] = useState('');
+  const [postPicRef, setPostPicRef] = useState(''); // Randomly generated
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  // Generate a random 10-character ID
+  // Generate a random 10-character ID for postPicRef
   const generateRandomId = () => {
     return Math.random().toString(36).substr(2, 10).toUpperCase();
   };
+
+  // Set postPicRef on component mount
+  useState(() => {
+    setPostPicRef(generateRandomId());
+  }, []);
 
   // Format date function
   const formatDate = (timestamp) => {
@@ -26,8 +28,14 @@ function CreatePost({ posts }) {
   };
 
   const handleCreatePost = async () => {
-    if (!caption || !postPicRef || !userName || !userID || !userProfile) {
-      setError('All fields are required!');
+    // Ensure userData is available and contains necessary fields
+    if (!userData || !userData.uid || !userData.name) {
+      setError('User data is missing or incomplete.');
+      return;
+    }
+
+    if (!caption) {
+      setError('Caption is required!');
       return;
     }
 
@@ -38,10 +46,10 @@ function CreatePost({ posts }) {
     const newPost = {
       caption,
       date: serverTimestamp(),
-      name: userName,
-      postPicRef,
-      userID,
-      userProfile,
+      name: userData.name, // Ensure name is from userData
+      postPicRef, // Use the generated postPicRef
+      userID: userData.uid, // Autofill userID from userData
+      userProfile: userData.uid, // Profile ref same as userID
     };
 
     try {
@@ -52,10 +60,6 @@ function CreatePost({ posts }) {
 
       setSuccessMessage('Post created successfully!');
       setCaption('');
-      setPostPicRef('');
-      setUserName('');
-      setUserID('');
-      setUserProfile('');
     } catch (err) {
       console.error('Error creating post:', err);
       setError('Failed to create post. Please try again.');
@@ -78,42 +82,6 @@ function CreatePost({ posts }) {
           className="border p-2 rounded mb-2"
         />
       </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Post Picture Reference"
-          value={postPicRef}
-          onChange={(e) => setPostPicRef(e.target.value)}
-          className="border p-2 rounded mb-2"
-        />
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="User Name"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          className="border p-2 rounded mb-2"
-        />
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="User ID"
-          value={userID}
-          onChange={(e) => setUserID(e.target.value)}
-          className="border p-2 rounded mb-2"
-        />
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="User Profile Reference"
-          value={userProfile}
-          onChange={(e) => setUserProfile(e.target.value)}
-          className="border p-2 rounded mb-2"
-        />
-      </div>
 
       <button
         onClick={handleCreatePost}
@@ -125,16 +93,20 @@ function CreatePost({ posts }) {
   );
 }
 
-export default function Feed({ postData }) {
+export default function Feed({ postData, userData }) {
   const formatDate = (timestamp) => {
     if (!timestamp || !timestamp.seconds) return 'Pending...'; // Handle incomplete timestamps
     const dateObj = new Date(timestamp.seconds * 1000);
     return dateObj.toLocaleString();
   };
 
+  if (!userData) {
+    return <div>Loading user data...</div>;
+  }
+
   return (
     <div className="feed">
-      <CreatePost />
+      <CreatePost userData={userData} /> {/* Pass userData to CreatePost */}
       <h2>Feed</h2>
       {postData ? (
         Object.entries(postData).map(([date, postGroup]) =>

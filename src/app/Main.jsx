@@ -5,9 +5,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
 import { doc, onSnapshot } from 'firebase/firestore';
-import Feed from './Feed'; // Import the Feed component
-import Post from './Post'; // Import the Feed component
 import success from './success.wav';
+import CreatePost from './CreatePost';
 
 export default function Main() {
   const [user, loading, error] = useAuthState(auth);
@@ -73,9 +72,12 @@ export default function Main() {
 
   return (
     <main>
-      {/* Pass postData as a prop to Feed */}
-      <Feed postData={postData} />
-      <Post />
+      <CreatePost userData={userData}  />
     </main>
   );
 }
+
+
+
+
+      {/* <Feed postData={postData} /> */}
