@@ -10,6 +10,7 @@ import CreatePost from './CreatePost';
 import Profile from './Profile';
 import Feed from './Feed';
 import Navbar from './Navbar';
+import Search from './Search'
 
 export default function Main() {
   const [user, loading, error] = useAuthState(auth);
@@ -79,6 +80,7 @@ export default function Main() {
 
   return (
     <main className="min-h-screen bg-gray-100">
+      <Search/>
       {/* Navbar */}
       <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
 
