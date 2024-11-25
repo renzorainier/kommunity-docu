@@ -1,51 +1,67 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
 import { ref, getDownloadURL, listAll } from 'firebase/storage';
-import { storage } from '@/app/firebase/config';
+import { db, storage } from '@/app/firebase/config'; // Ensure proper Firebase configuration
 import { CgProfile } from 'react-icons/cg';
 
 export default function Search({ postData }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [userPosts, setUserPosts] = useState([]);
+  const [visiblePosts, setVisiblePosts] = useState(5);
   const [profileImages, setProfileImages] = useState({});
   const [postImages, setPostImages] = useState({});
   const [error, setError] = useState({});
-  const [visiblePosts, setVisiblePosts] = useState(5);
 
-  // Fetch users from Firestore
+  // Fetch all users from Firestore
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const snapshot = await getDocs(collection(db, 'users'));
+        const usersCollection = collection(db, 'users');
+        const snapshot = await getDocs(usersCollection);
+
         const usersData = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+
         setUsers(usersData);
+        setFilteredUsers(usersData);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
     };
+
     fetchUsers();
   }, []);
 
+  // Update filtered users based on the search query
+  useEffect(() => {
+    if (searchQuery === '') {
+      setFilteredUsers(users);
+    } else {
+      const results = users.filter((user) =>
+        user.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredUsers(results);
+    }
+  }, [searchQuery, users]);
+
   const getUserPosts = () => {
     if (!postData || !selectedUser) return [];
-    const allPosts = Object.entries(postData)
+    const userPosts = Object.entries(postData)
       .flatMap(([date, posts]) =>
         Object.entries(posts).map(([postId, postDetails]) => ({
           postId,
           ...postDetails,
         }))
       )
-      .filter(
-        (post) => post.userID === selectedUser.id && post.date?.seconds
-      )
+      .filter((post) => post.userID === selectedUser.id && post.date?.seconds)
       .sort((a, b) => b.date.seconds - a.date.seconds);
-    return allPosts.slice(0, visiblePosts);
+    return userPosts.slice(0, visiblePosts);
   };
 
   const fetchImages = async (posts) => {
@@ -118,19 +134,9 @@ export default function Search({ postData }) {
   };
 
   useEffect(() => {
-    if (selectedUser) {
-      const userPosts = getUserPosts();
-      fetchImages(userPosts);
-    }
-  }, [postData, selectedUser, visiblePosts]);
-
-  const formatDate = (timestamp) => {
-    if (!timestamp || !timestamp.seconds) {
-      return 'Unknown Date';
-    }
-    const dateObj = new Date(timestamp.seconds * 1000);
-    return dateObj.toLocaleString();
-  };
+    const userPosts = getUserPosts();
+    fetchImages(userPosts);
+  }, [selectedUser, visiblePosts]);
 
   if (!selectedUser) {
     return (
@@ -144,19 +150,15 @@ export default function Search({ postData }) {
           className="w-full p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
         <ul className="space-y-2">
-          {users
-            .filter((user) =>
-              user.name.toLowerCase().includes(searchQuery.toLowerCase())
-            )
-            .map((user) => (
-              <li
-                key={user.id}
-                onClick={() => setSelectedUser(user)}
-                className="p-2 border border-gray-200 rounded hover:bg-gray-100 cursor-pointer"
-              >
-                {user.name}
-              </li>
-            ))}
+          {filteredUsers.map((user) => (
+            <li
+              key={user.id}
+              onClick={() => setSelectedUser(user)}
+              className="p-2 border border-gray-200 rounded hover:bg-gray-100 cursor-pointer"
+            >
+              {user.name}
+            </li>
+          ))}
         </ul>
       </div>
     );
@@ -173,31 +175,30 @@ export default function Search({ postData }) {
         Back to Search
       </button>
       <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800">
-        {selectedUser.name}'s Posts
+        Posts by {selectedUser.name}
       </h2>
-      {userPosts.length === 0 ? (
-        <div className="text-center text-gray-600">No posts to display.</div>
-      ) : (
-        userPosts.map((post) => (
-          <div
-            key={post.postId}
-            className="post bg-white p-6 rounded-lg shadow-xl transition-all duration-300 mb-6"
-          >
-            {/* The same UI layout as Profile */}
-            ...
+      {userPosts.map((post) => (
+        <div
+          key={post.postId}
+          className="post bg-white p-6 rounded-lg shadow-xl transition-all duration-300 mb-6"
+        >
+          <div className="flex items-center space-x-4">
+            {profileImages[post.postId] ? (
+              <img
+                src={profileImages[post.postId]}
+                alt="Profile"
+                className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
+              />
+            ) : (
+              <CgProfile size={48} className="text-gray-400" />
+            )}
+            <div>
+              <p className="text-lg text-gray-700 font-medium">{post.name}</p>
+            </div>
           </div>
-        ))
-      )}
-      {userPosts.length < Object.keys(postData).length && (
-        <div className="text-center mt-8">
-          <button
-            onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-200"
-          >
-            Load More Posts
-          </button>
+          <p className="text-gray-800 mt-4">{post.caption}</p>
         </div>
-      )}
+      ))}
     </div>
   );
 }
