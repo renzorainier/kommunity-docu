@@ -73,22 +73,21 @@ export default function Main() {
     <div className="main-container relative min-h-screen">
       <Navbar />
       <main>
-        <Feed postData={postData} userData={userData} />
-        {isCreatePostOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-              <CreatePost userData={userData} />
-              <button
-                onClick={() => setIsCreatePostOpen(false)}
-                className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                Close
-              </button>
-            </div>
+        {isCreatePostOpen ? (
+          <div className="fixed inset-0 bg-white z-50">
+            <CreatePost userData={userData} />
+            <button
+              onClick={() => setIsCreatePostOpen(false)}
+              className="absolute top-4 right-4 bg-red-600 text-white p-2 rounded hover:bg-red-700">
+              Close
+            </button>
           </div>
+        ) : (
+          <Feed postData={postData} userData={userData} />
         )}
         <button
           onClick={() => setIsCreatePostOpen(true)}
-          className="fixed bottom-6 left-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 z-50">
+          className="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 z-50">
           +
         </button>
       </main>
