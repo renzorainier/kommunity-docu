@@ -1,36 +1,30 @@
-import React from 'react';
+'use client';
 
 export default function Navbar({ activeComponent, setActiveComponent }) {
   return (
-    <nav className="navbar bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex space-x-4">
-          <button
-            onClick={() => setActiveComponent('Feed')}
-            className={`px-4 py-2 rounded ${
-              activeComponent === 'Feed' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'
-            }`}>
-            Feed
-          </button>
-          <button
-            onClick={() => setActiveComponent('Profile')}
-            className={`px-4 py-2 rounded ${
-              activeComponent === 'Profile' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'
-            }`}>
-            Profile
-          </button>
-          <button
-            onClick={() => setActiveComponent('CreatePost')}
-            className={`px-4 py-2 rounded ${
-              activeComponent === 'CreatePost' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'
-            }`}>
-            Create Post
-          </button>
-        </div>
-      </div>
+    <nav className="flex justify-around bg-white shadow p-4">
+      <button
+        onClick={() => setActiveComponent('feed')}
+        className={`text-lg font-semibold ${activeComponent === 'feed' ? 'text-blue-500' : 'text-gray-700'}`}
+      >
+        Feed
+      </button>
+      <button
+        onClick={() => setActiveComponent('profile')}
+        className={`text-lg font-semibold ${activeComponent === 'profile' ? 'text-blue-500' : 'text-gray-700'}`}
+      >
+        Profile
+      </button>
+      <button
+        onClick={() => setActiveComponent('createPost')}
+        className={`text-lg font-semibold ${activeComponent === 'createPost' ? 'text-blue-500' : 'text-gray-700'}`}
+      >
+        Create Post
+      </button>
     </nav>
   );
 }
+
 
 
 
