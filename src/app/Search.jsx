@@ -50,6 +50,12 @@ export default function Search({ postData }) {
     }
   }, [searchQuery, users]);
 
+  const formatDate = (timestamp) => {
+    if (!timestamp?.seconds) return '';
+    const date = new Date(timestamp.seconds * 1000);
+    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+  };
+
   const getUserPosts = () => {
     if (!postData || !selectedUser) return [];
     const userPosts = Object.entries(postData)
@@ -194,6 +200,7 @@ export default function Search({ postData }) {
             )}
             <div>
               <p className="text-lg text-gray-700 font-medium">{post.name}</p>
+              <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
             </div>
           </div>
           <p className="text-gray-800 mt-4">{post.caption}</p>
