@@ -1,29 +1,37 @@
 'use client';
 
+import { FaHome, FaUser, FaPlusCircle } from 'react-icons/fa'; // Using react-icons for icons
+
 export default function Navbar({ activeComponent, setActiveComponent }) {
   return (
-    <nav className="flex justify-around bg-white shadow p-4">
+    <nav className="fixed bottom-0 left-0 w-full bg-white shadow-lg border-t border-gray-200 flex justify-around items-center h-16">
       <button
         onClick={() => setActiveComponent('feed')}
-        className={`text-lg font-semibold ${activeComponent === 'feed' ? 'text-blue-500' : 'text-gray-700'}`}
+        className={`flex flex-col items-center ${activeComponent === 'feed' ? 'text-blue-500' : 'text-gray-600'}`}
       >
-        Feed
+        <FaHome size={24} />
+        <span className="text-xs">Feed</span>
       </button>
-      <button
-        onClick={() => setActiveComponent('profile')}
-        className={`text-lg font-semibold ${activeComponent === 'profile' ? 'text-blue-500' : 'text-gray-700'}`}
-      >
-        Profile
-      </button>
+
       <button
         onClick={() => setActiveComponent('createPost')}
-        className={`text-lg font-semibold ${activeComponent === 'createPost' ? 'text-blue-500' : 'text-gray-700'}`}
+        className={`flex flex-col items-center ${activeComponent === 'createPost' ? 'text-blue-500' : 'text-gray-600'}`}
       >
-        Create Post
+        <FaPlusCircle size={24} />
+        <span className="text-xs">Post</span>
+      </button>
+
+      <button
+        onClick={() => setActiveComponent('profile')}
+        className={`flex flex-col items-center ${activeComponent === 'profile' ? 'text-blue-500' : 'text-gray-600'}`}
+      >
+        <FaUser size={24} />
+        <span className="text-xs">Profile</span>
       </button>
     </nav>
   );
 }
+
 
 
 

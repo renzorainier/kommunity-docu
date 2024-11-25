@@ -9,13 +9,13 @@ import success from './success.wav';
 import CreatePost from './CreatePost';
 import Profile from './Profile';
 import Feed from './Feed';
-import Navbar from './Navbar'; // Import Navbar
+import Navbar from './Navbar';
 
 export default function Main() {
   const [user, loading, error] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
   const [postData, setPostData] = useState(null);
-  const [activeComponent, setActiveComponent] = useState('feed'); // Default to 'feed'
+  const [activeComponent, setActiveComponent] = useState('feed');
   const router = useRouter();
 
   const handleUserCheck = useCallback(() => {
@@ -29,12 +29,10 @@ export default function Main() {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
         setUserData(data);
-        console.log('User data from Firestore:', data);
 
         const audio = new Audio(success);
         audio.play().catch((err) => console.error('Failed to play sound:', err));
       } else {
-        console.error('No user data found');
         router.push('/error');
       }
     });
@@ -44,9 +42,6 @@ export default function Main() {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
         setPostData(data);
-        console.log('Posts data:', data);
-      } else {
-        console.error('No posts data found');
       }
     });
 
@@ -83,12 +78,9 @@ export default function Main() {
   };
 
   return (
-    <main>
-      {/* Navbar */}
+    <main className="min-h-screen bg-gray-100">
+      <section className="pb-16">{renderComponent()}</section>
       <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
-
-      {/* Active Component */}
-      <section className="p-4">{renderComponent()}</section>
     </main>
   );
 }
