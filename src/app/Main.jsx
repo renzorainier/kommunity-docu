@@ -8,12 +8,13 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import success from './success.wav';
 import CreatePost from './CreatePost';
 import Profile from './Profile';
-import Feed from './Feed'
+import Feed from './Feed';
 
 export default function Main() {
   const [user, loading, error] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
   const [postData, setPostData] = useState(null);
+  const [activeComponent, setActiveComponent] = useState('feed'); // Default to 'feed'
   const router = useRouter();
 
   const handleUserCheck = useCallback(() => {
@@ -22,37 +23,32 @@ export default function Main() {
       return;
     }
 
-    // Listen for user document changes in Firestore
     const userDocRef = doc(db, 'users', user.uid);
     const unsubscribeUser = onSnapshot(userDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
         setUserData(data);
-        console.log("User data from Firestore:", data);
+        console.log('User data from Firestore:', data);
 
-        // Play success sound
         const audio = new Audio(success);
-        audio.play().catch((err) => console.error("Failed to play sound:", err));
+        audio.play().catch((err) => console.error('Failed to play sound:', err));
       } else {
         console.error('No user data found');
         router.push('/error');
       }
     });
 
-
-    // Listen for post document changes in Firestore
     const postDocRef = doc(db, 'posts', 'posts');
     const unsubscribePost = onSnapshot(postDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
         setPostData(data);
-        console.log("Posts data:", data);
+        console.log('Posts data:', data);
       } else {
         console.error('No posts data found');
       }
     });
 
-    // Cleanup subscriptions on unmount
     return () => {
       unsubscribeUser();
       unsubscribePost();
@@ -73,12 +69,44 @@ export default function Main() {
     return <div>Error: {error.message}</div>;
   }
 
-  return (
-    <main>
-            <Feed postData={postData} userData={userData} />
-            <Profile postData={postData} userData={userData} />
-            <CreatePost userData={userData}  />
+  const renderComponent = () => {
+    switch (activeComponent) {
+      case 'profile':
+        return <Profile postData={postData} userData={userData} />;
+      case 'createPost':
+        return <CreatePost userData={userData} />;
+      case 'feed':
+      default:
+        return <Feed postData={postData} userData={userData} />;
+    }
+  };
 
+  return (
+    <main className="min-h-screen bg-gray-100">
+      {/* Navbar */}
+      <nav className="flex justify-around bg-white shadow p-4">
+        <button
+          onClick={() => setActiveComponent('feed')}
+          className={`text-lg font-semibold ${activeComponent === 'feed' ? 'text-blue-500' : 'text-gray-700'}`}
+        >
+          Feed
+        </button>
+        <button
+          onClick={() => setActiveComponent('profile')}
+          className={`text-lg font-semibold ${activeComponent === 'profile' ? 'text-blue-500' : 'text-gray-700'}`}
+        >
+          Profile
+        </button>
+        <button
+          onClick={() => setActiveComponent('createPost')}
+          className={`text-lg font-semibold ${activeComponent === 'createPost' ? 'text-blue-500' : 'text-gray-700'}`}
+        >
+          Create Post
+        </button>
+      </nav>
+
+      {/* Active Component */}
+      <section className="p-4">{renderComponent()}</section>
     </main>
   );
 }
