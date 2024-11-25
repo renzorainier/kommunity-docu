@@ -1,158 +1,195 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import Image from "next/image";
-import { signOut } from "firebase/auth";
-import { auth } from "@/app/firebase/config";
-import teen from "./img.png";
+import React from 'react';
 
-const Navbar = ({ activeComponent, setActiveComponent }) => {
-  const [nav, setNav] = useState(false);
-  const [shadow, setShadow] = useState(false);
-  const router = useRouter();
-
-  const handleNav = () => {
-    setNav(!nav);
-  };
-
-  const navigateTo = (path) => {
-    router.push(path);
-    setNav(false);
-  };
-
-  const handleSignOut = () => {
-    signOut(auth);
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
-    sessionStorage.removeItem("user");
-    router.push("/sign-in");
-  };
-
-  useEffect(() => {
-    const handleShadow = () => {
-      setShadow(window.scrollY >= 90);
-    };
-    window.addEventListener("scroll", handleShadow);
-
-    return () => window.removeEventListener("scroll", handleShadow); // Cleanup listener
-  }, []);
-
+export default function Navbar({ activeComponent, setActiveComponent }) {
   return (
-    <div className={shadow ? "fixed w-full h-14 shadow-xl shadow-[#031525] z-[100]" : "fixed w-full h-14 z-[100]"}>
-            <link rel="manifest" href="/manifest.json" />
-
-      <div className="flex justify-between items-center w-full h-full px-5 2xl:px-16 bg-white">
-        <div>
-          <Image src={teen} width="40" height="40" alt="/" />
-        </div>
-        <div>
-          <ul className="hidden md:flex">
-            <li
-              className={`ml-10 text-sm uppercase cursor-pointer ${
-                activeComponent === "attendance" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
-              }`}
-              onClick={() => {
-                setActiveComponent("attendance");
-                handleNav();
-              }}>
-              Attendance
-            </li>
-            <li
-              className={`ml-10 text-sm uppercase cursor-pointer ${
-                activeComponent === "finance" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
-              }`}
-              onClick={() => {
-                setActiveComponent("finance");
-                handleNav();
-              }}>
-              Finance
-            </li>
-            <li
-              className={`ml-10 text-sm uppercase cursor-pointer ${
-                activeComponent === "profile" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
-              }`}
-              onClick={() => {
-                setActiveComponent("profile");
-                handleNav();
-              }}>
-              Profile
-            </li>
-            <li
-              className="ml-10 text-sm uppercase cursor-pointer hover:bg-gray-200 px-3 py-2 rounded"
-              onClick={() => {
-                setActiveComponent("attendance");
-                handleSignOut();
-              }}>
-              Sign Out
-            </li>
-          </ul>
-          <div onClick={handleNav} className="md:hidden">
-            <AiOutlineMenu size={25} />
-          </div>
+    <nav className="navbar bg-gray-800 text-white p-4">
+      <div className="container mx-auto flex justify-between items-center">
+        <div className="flex space-x-4">
+          <button
+            onClick={() => setActiveComponent('Feed')}
+            className={`px-4 py-2 rounded ${
+              activeComponent === 'Feed' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'
+            }`}>
+            Feed
+          </button>
+          <button
+            onClick={() => setActiveComponent('Profile')}
+            className={`px-4 py-2 rounded ${
+              activeComponent === 'Profile' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'
+            }`}>
+            Profile
+          </button>
+          <button
+            onClick={() => setActiveComponent('CreatePost')}
+            className={`px-4 py-2 rounded ${
+              activeComponent === 'CreatePost' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'
+            }`}>
+            Create Post
+          </button>
         </div>
       </div>
-
-      <div className={nav ? "md:hidden fixed left-0 top-0 w-full h-screen bg-black/70" : ""}>
-        <div className={nav ? "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-white p-10 transform translate-x-0 transition-transform duration-500 ease-out" : "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-white p-10 transform -translate-x-full transition-transform duration-500 ease-in"}>
-          <div>
-            <div className="flex w-full items-center justify-between">
-              <div>
-                <Image src={teen} width="70" height="70" alt="/" />
-              </div>
-              <div onClick={handleNav} className="rounded-full shadow-lg shadow-[#0587be] p-3 cursor-pointer">
-                <AiOutlineClose />
-              </div>
-            </div>
-            <div className="border-b border-black my-4">
-              <p className="w-[85%] md:w-[90%] py-4">Metroview Baptist Academy</p>
-            </div>
-          </div>
-          <div className="py-4 flex flex-col">
-            <ul className="uppercase">
-              <li
-                onClick={() => {
-                  setActiveComponent("attendance");
-                  handleNav();
-                }}
-                className={`py-4 text-sm cursor-pointer ${
-                  activeComponent === "attendance" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
-                }`}>
-                Attendance
-              </li>
-              <li
-                onClick={() => {
-                  setActiveComponent("finance");
-                  handleNav();
-                }}
-                className={`py-4 text-sm cursor-pointer ${
-                  activeComponent === "finance" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
-                }`}>
-                Finance
-              </li>
-              <li
-                onClick={() => {
-                  setActiveComponent("profile");
-                  handleNav();
-                }}
-                className={`py-4 text-sm cursor-pointer ${
-                  activeComponent === "profile" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
-                }`}>
-                Profile
-              </li>
-              <li
-                onClick={handleSignOut}
-                className="py-4 text-sm cursor-pointer hover:bg-gray-200 px-3 py-2 rounded">
-                Sign Out
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+    </nav>
   );
-};
+}
 
-export default Navbar;
+
+
+
+// import React, { useState, useEffect } from "react";
+// import { useRouter } from "next/navigation";
+// import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+// import Image from "next/image";
+// import { signOut } from "firebase/auth";
+// import { auth } from "@/app/firebase/config";
+// import teen from "./img.png";
+
+// const Navbar = ({ activeComponent, setActiveComponent }) => {
+//   const [nav, setNav] = useState(false);
+//   const [shadow, setShadow] = useState(false);
+//   const router = useRouter();
+
+//   const handleNav = () => {
+//     setNav(!nav);
+//   };
+
+//   const navigateTo = (path) => {
+//     router.push(path);
+//     setNav(false);
+//   };
+
+//   const handleSignOut = () => {
+//     signOut(auth);
+//     localStorage.removeItem("email");
+//     localStorage.removeItem("password");
+//     sessionStorage.removeItem("user");
+//     router.push("/sign-in");
+//   };
+
+//   useEffect(() => {
+//     const handleShadow = () => {
+//       setShadow(window.scrollY >= 90);
+//     };
+//     window.addEventListener("scroll", handleShadow);
+
+//     return () => window.removeEventListener("scroll", handleShadow); // Cleanup listener
+//   }, []);
+
+//   return (
+//     <div className={shadow ? "fixed w-full h-14 shadow-xl shadow-[#031525] z-[100]" : "fixed w-full h-14 z-[100]"}>
+//             <link rel="manifest" href="/manifest.json" />
+
+//       <div className="flex justify-between items-center w-full h-full px-5 2xl:px-16 bg-white">
+//         <div>
+//           <Image src={teen} width="40" height="40" alt="/" />
+//         </div>
+//         <div>
+//           <ul className="hidden md:flex">
+//             <li
+//               className={`ml-10 text-sm uppercase cursor-pointer ${
+//                 activeComponent === "attendance" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
+//               }`}
+//               onClick={() => {
+//                 setActiveComponent("attendance");
+//                 handleNav();
+//               }}>
+//               Attendance
+//             </li>
+//             <li
+//               className={`ml-10 text-sm uppercase cursor-pointer ${
+//                 activeComponent === "finance" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
+//               }`}
+//               onClick={() => {
+//                 setActiveComponent("finance");
+//                 handleNav();
+//               }}>
+//               Finance
+//             </li>
+//             <li
+//               className={`ml-10 text-sm uppercase cursor-pointer ${
+//                 activeComponent === "profile" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
+//               }`}
+//               onClick={() => {
+//                 setActiveComponent("profile");
+//                 handleNav();
+//               }}>
+//               Profile
+//             </li>
+//             <li
+//               className="ml-10 text-sm uppercase cursor-pointer hover:bg-gray-200 px-3 py-2 rounded"
+//               onClick={() => {
+//                 setActiveComponent("attendance");
+//                 handleSignOut();
+//               }}>
+//               Sign Out
+//             </li>
+//           </ul>
+//           <div onClick={handleNav} className="md:hidden">
+//             <AiOutlineMenu size={25} />
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className={nav ? "md:hidden fixed left-0 top-0 w-full h-screen bg-black/70" : ""}>
+//         <div className={nav ? "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-white p-10 transform translate-x-0 transition-transform duration-500 ease-out" : "fixed left-0 top-0 w-[75%] sm:w-[60%] md:w-[45%] h-screen bg-white p-10 transform -translate-x-full transition-transform duration-500 ease-in"}>
+//           <div>
+//             <div className="flex w-full items-center justify-between">
+//               <div>
+//                 <Image src={teen} width="70" height="70" alt="/" />
+//               </div>
+//               <div onClick={handleNav} className="rounded-full shadow-lg shadow-[#0587be] p-3 cursor-pointer">
+//                 <AiOutlineClose />
+//               </div>
+//             </div>
+//             <div className="border-b border-black my-4">
+//               <p className="w-[85%] md:w-[90%] py-4">Metroview Baptist Academy</p>
+//             </div>
+//           </div>
+//           <div className="py-4 flex flex-col">
+//             <ul className="uppercase">
+//               <li
+//                 onClick={() => {
+//                   setActiveComponent("attendance");
+//                   handleNav();
+//                 }}
+//                 className={`py-4 text-sm cursor-pointer ${
+//                   activeComponent === "attendance" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
+//                 }`}>
+//                 Attendance
+//               </li>
+//               <li
+//                 onClick={() => {
+//                   setActiveComponent("finance");
+//                   handleNav();
+//                 }}
+//                 className={`py-4 text-sm cursor-pointer ${
+//                   activeComponent === "finance" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
+//                 }`}>
+//                 Finance
+//               </li>
+//               <li
+//                 onClick={() => {
+//                   setActiveComponent("profile");
+//                   handleNav();
+//                 }}
+//                 className={`py-4 text-sm cursor-pointer ${
+//                   activeComponent === "profile" ? "bg-[#0587be] text-white px-3 py-2 rounded" : "hover:bg-gray-200 px-3 py-2 rounded"
+//                 }`}>
+//                 Profile
+//               </li>
+//               <li
+//                 onClick={handleSignOut}
+//                 className="py-4 text-sm cursor-pointer hover:bg-gray-200 px-3 py-2 rounded">
+//                 Sign Out
+//               </li>
+//             </ul>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Navbar;
 
 // import Image from "next/image";
 // import React, { useState, useEffect } from "react";
