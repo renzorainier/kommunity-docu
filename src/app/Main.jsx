@@ -83,7 +83,7 @@ export default function Main() {
       <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
 
       {/* Active Component */}
-      <section className="pt-16 p-4">{renderComponent()}</section>
+      <section className="pt-16 ">{renderComponent()}</section>
     </main>
   );
 }
