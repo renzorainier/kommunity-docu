@@ -80,7 +80,7 @@ export default function Main() {
 
   return (
     <main className="min-h-screen bg-gray-100">
-      <Search/>
+      <Search postData={postData}/>
       {/* Navbar */}
       <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
 
