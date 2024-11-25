@@ -15,7 +15,7 @@ export default function Main() {
   const [user, loading, error] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
   const [postData, setPostData] = useState(null);
-  const [activeComponent, setActiveComponent] = useState('Feed'); // State to manage active component
+  const [isCreatePostOpen, setIsCreatePostOpen] = useState(false); // State for CreatePost modal
   const router = useRouter();
 
   const handleUserCheck = useCallback(() => {
@@ -69,32 +69,29 @@ export default function Main() {
     return <div>Error: {error.message}</div>;
   }
 
-  const renderComponent = () => {
-    switch (activeComponent) {
-      case 'Profile':
-        return (
-          <Profile
-            postData={postData}
-            userData={userData}
-            goBack={() => setActiveComponent('Feed')} // Back to Feed
-          />
-        );
-      case 'CreatePost':
-        return (
-          <CreatePost
-            userData={userData}
-            goBack={() => setActiveComponent('Feed')} // Back to Feed
-          />
-        );
-      default:
-        return <Feed postData={postData} userData={userData} />;
-    }
-  };
-
   return (
-    <div className="main-container">
-      <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
-      <main>{renderComponent()}</main>
+    <div className="main-container relative min-h-screen">
+      <Navbar />
+      <main>
+        <Feed postData={postData} userData={userData} />
+        {isCreatePostOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+              <CreatePost userData={userData} />
+              <button
+                onClick={() => setIsCreatePostOpen(false)}
+                className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+        <button
+          onClick={() => setIsCreatePostOpen(true)}
+          className="fixed bottom-6 left-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 z-50">
+          +
+        </button>
+      </main>
     </div>
   );
 }
