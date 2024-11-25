@@ -6,7 +6,7 @@ import { ref, getDownloadURL, listAll } from 'firebase/storage';
 import { db, storage } from '@/app/firebase/config'; // Ensure proper Firebase configuration
 import { CgProfile } from 'react-icons/cg';
 
-export default function Search({ postData }) {
+export default function Search({ postData, currentUser }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -28,15 +28,18 @@ export default function Search({ postData }) {
           ...doc.data(),
         }));
 
-        setUsers(usersData);
-        setFilteredUsers(usersData);
+        // Filter out the logged-in user
+        const filteredUsers = usersData.filter(user => user.id !== currentUser?.id);
+
+        setUsers(filteredUsers);
+        setFilteredUsers(filteredUsers);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
     };
 
     fetchUsers();
-  }, []);
+  }, [currentUser]);
 
   // Update filtered users based on the search query
   useEffect(() => {
