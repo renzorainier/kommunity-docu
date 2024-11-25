@@ -197,6 +197,38 @@ export default function Search({ postData }) {
             </div>
           </div>
           <p className="text-gray-800 mt-4">{post.caption}</p>
+
+          {/* Show Category and Availability */}
+          <div className="mt-4 flex items-center space-x-2 text-sm text-gray-600">
+            {post.category && (
+              <span className="bg-blue-100 text-blue-800 py-1 px-3 rounded-full">
+                {post.category}
+              </span>
+            )}
+            <span
+              className={`py-1 px-3 rounded-full ${
+                post.isAvailable
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-red-100 text-red-800'
+              }`}
+            >
+              {post.isAvailable ? 'Available' : 'Not Available'}
+            </span>
+          </div>
+
+          {post.postPicRef && postImages[post.postId] ? (
+            <div className="mt-6">
+              <img
+                src={postImages[post.postId]}
+                alt="Post"
+                className="w-full rounded-lg shadow-md object-cover"
+              />
+            </div>
+          ) : (
+            post.postPicRef && (
+              <p className="text-gray-500 mt-4">Loading post image...</p>
+            )
+          )}
         </div>
       ))}
     </div>
