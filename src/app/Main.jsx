@@ -9,6 +9,7 @@ import success from './success.wav';
 import CreatePost from './CreatePost';
 import Profile from './Profile';
 import Feed from './Feed';
+import Navbar from './Navbar'; // Import Navbar
 
 export default function Main() {
   const [user, loading, error] = useAuthState(auth);
@@ -84,26 +85,7 @@ export default function Main() {
   return (
     <main className="min-h-screen bg-gray-100">
       {/* Navbar */}
-      <nav className="flex justify-around bg-white shadow p-4">
-        <button
-          onClick={() => setActiveComponent('feed')}
-          className={`text-lg font-semibold ${activeComponent === 'feed' ? 'text-blue-500' : 'text-gray-700'}`}
-        >
-          Feed
-        </button>
-        <button
-          onClick={() => setActiveComponent('profile')}
-          className={`text-lg font-semibold ${activeComponent === 'profile' ? 'text-blue-500' : 'text-gray-700'}`}
-        >
-          Profile
-        </button>
-        <button
-          onClick={() => setActiveComponent('createPost')}
-          className={`text-lg font-semibold ${activeComponent === 'createPost' ? 'text-blue-500' : 'text-gray-700'}`}
-        >
-          Create Post
-        </button>
-      </nav>
+      <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
 
       {/* Active Component */}
       <section className="p-4">{renderComponent()}</section>
