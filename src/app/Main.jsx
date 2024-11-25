@@ -83,7 +83,7 @@ export default function Main() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-100">
+    <main>
       {/* Navbar */}
       <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
 
