@@ -15,7 +15,7 @@ export default function Main() {
   const [user, loading, error] = useAuthState(auth);
   const [userData, setUserData] = useState(null);
   const [postData, setPostData] = useState(null);
-  const [activeComponent, setActiveComponent] = useState('feed');
+  const [activeComponent, setActiveComponent] = useState('feed'); // Default to Feed
   const router = useRouter();
 
   const handleUserCheck = useCallback(() => {
@@ -79,12 +79,14 @@ export default function Main() {
 
   return (
     <main className="min-h-screen bg-gray-100">
-      <section className="pb-16">{renderComponent()}</section>
+      {/* Navbar */}
       <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
+
+      {/* Active Component */}
+      <section className="pt-16 p-4">{renderComponent()}</section>
     </main>
   );
 }
-
 
 
 

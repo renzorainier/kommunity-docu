@@ -1,33 +1,57 @@
 'use client';
 
-import { FaHome, FaUser, FaPlusCircle } from 'react-icons/fa'; // Using react-icons for icons
+import { FaArrowLeft } from 'react-icons/fa'; // Back icon
+import { FaHome, FaUser, FaPlusCircle } from 'react-icons/fa'; // Icons for navigation
 
 export default function Navbar({ activeComponent, setActiveComponent }) {
+  // Handle Back Button Logic
+  const handleBackToFeed = () => {
+    setActiveComponent('feed');
+  };
+
   return (
-    <nav className="fixed bottom-0 left-0 w-full bg-white shadow-lg border-t border-gray-200 flex justify-around items-center h-16">
-      <button
-        onClick={() => setActiveComponent('feed')}
-        className={`flex flex-col items-center ${activeComponent === 'feed' ? 'text-blue-500' : 'text-gray-600'}`}
-      >
-        <FaHome size={24} />
-        <span className="text-xs">Feed</span>
-      </button>
-
-      <button
-        onClick={() => setActiveComponent('createPost')}
-        className={`flex flex-col items-center ${activeComponent === 'createPost' ? 'text-blue-500' : 'text-gray-600'}`}
-      >
-        <FaPlusCircle size={24} />
-        <span className="text-xs">Post</span>
-      </button>
-
-      <button
-        onClick={() => setActiveComponent('profile')}
-        className={`flex flex-col items-center ${activeComponent === 'profile' ? 'text-blue-500' : 'text-gray-600'}`}
-      >
-        <FaUser size={24} />
-        <span className="text-xs">Profile</span>
-      </button>
+    <nav className="fixed top-0 left-0 w-full bg-white shadow-md border-b border-gray-200 h-16 flex items-center justify-between px-4">
+      {/* Back Button and Title */}
+      {(activeComponent === 'profile' || activeComponent === 'createPost') ? (
+        <>
+          <button
+            onClick={handleBackToFeed}
+            className="text-blue-500 flex items-center space-x-2"
+          >
+            <FaArrowLeft size={20} />
+            <span className="text-lg font-medium">Back</span>
+          </button>
+          <h1 className="text-xl font-semibold">
+            {activeComponent === 'profile' ? 'Profile' : 'Create Post'}
+          </h1>
+          <div className="w-10" /> {/* Empty space to balance layout */}
+        </>
+      ) : (
+        /* Navigation Buttons for Feed */
+        <div className="flex justify-around w-full">
+          <button
+            onClick={() => setActiveComponent('feed')}
+            className={`flex flex-col items-center ${activeComponent === 'feed' ? 'text-blue-500' : 'text-gray-600'}`}
+          >
+            <FaHome size={24} />
+            <span className="text-xs">Feed</span>
+          </button>
+          <button
+            onClick={() => setActiveComponent('createPost')}
+            className={`flex flex-col items-center ${activeComponent === 'createPost' ? 'text-blue-500' : 'text-gray-600'}`}
+          >
+            <FaPlusCircle size={24} />
+            <span className="text-xs">Post</span>
+          </button>
+          <button
+            onClick={() => setActiveComponent('profile')}
+            className={`flex flex-col items-center ${activeComponent === 'profile' ? 'text-blue-500' : 'text-gray-600'}`}
+          >
+            <FaUser size={24} />
+            <span className="text-xs">Profile</span>
+          </button>
+        </div>
+      )}
     </nav>
   );
 }
