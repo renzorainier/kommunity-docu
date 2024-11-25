@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { doc, onSnapshot } from 'firebase/firestore';
 import success from './success.wav';
 import CreatePost from './CreatePost';
+import Profile from './Profile';
 import Feed from './Feed'
 
 export default function Main() {
@@ -75,7 +76,8 @@ export default function Main() {
   return (
     <main>
             <Feed postData={postData} userData={userData} />
-      <CreatePost userData={userData}  />
+            <Profile postData={postData} userData={userData} />
+            <CreatePost userData={userData}  />
 
     </main>
   );
