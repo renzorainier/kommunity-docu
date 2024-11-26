@@ -7,25 +7,32 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
     // Render navbar when activeComponent is 'feed'
     return (
       <>
-        <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-10 flex justify-between items-center px-6 py-4">
-          {/* App Title or Logo */}
-          <div className="text-xl font-bold">KommUnity</div>
+        <nav className="fixed top-0 left-0 right-0 bg-[#F4F7FE] shadow-sm z-10 flex justify-between items-center px-4 py-3 border-b border-gray-300">
+          {/* App Logo and Title */}
+          <div className="flex items-center gap-2">
+            <img
+              src="/path-to-logo.png" // Replace with your actual logo path
+              alt="Logo"
+              className="w-8 h-8"
+            />
+            <span className="text-lg font-semibold text-gray-800">KommUnity</span>
+          </div>
 
           {/* Action Buttons */}
           <div className="flex gap-4">
-            <button
-              onClick={() => setActiveComponent('profile')}
-              aria-label="Profile"
-              className="text-gray-600 hover:text-blue-500"
-            >
-              <FaUser size={24} />
-            </button>
             <button
               onClick={() => setActiveComponent('search')}
               aria-label="Search"
               className="text-gray-600 hover:text-blue-500"
             >
-              <FaSearch size={24} />
+              <FaSearch size={20} />
+            </button>
+            <button
+              onClick={() => setActiveComponent('profile')}
+              aria-label="Profile"
+              className="text-gray-600 hover:text-blue-500"
+            >
+              <FaUser size={20} />
             </button>
           </div>
         </nav>
