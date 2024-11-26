@@ -1,6 +1,6 @@
 'use client';
 
-import { FaUser, FaPlus, FaArrowLeft } from 'react-icons/fa'; // Import icons
+import { FaUser, FaPlus, FaArrowLeft, FaSearch } from 'react-icons/fa'; // Import icons
 
 export default function Navbar({ activeComponent, setActiveComponent }) {
   if (activeComponent === 'feed') {
@@ -26,6 +26,13 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
           >
             <FaPlus size={24} />
           </button>
+          <button
+            onClick={() => setActiveComponent('search')}
+            aria-label="Search"
+            className="text-gray-600 hover:text-blue-500"
+          >
+            <FaSearch size={24} />
+          </button>
         </div>
       </nav>
     );
@@ -42,7 +49,6 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
     </button>
   );
 }
-
 
 
 
