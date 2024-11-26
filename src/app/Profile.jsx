@@ -118,9 +118,7 @@ export default function Profile({ postData, userData }) {
 
   return (
     <div className="profile max-w-3xl mx-auto p-6 bg-gray-50">
-      <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800">
-        My Posts
-      </h2>
+
       {visibleUserPosts.length === 0 ? (
         <div className="text-center text-gray-600">No posts to display.</div>
       ) : (
