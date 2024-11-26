@@ -123,39 +123,39 @@ export default function Feed({ postData, userData }) {
       {recentPosts.map((post) => (
         <div
           key={post.postId}
-          className="post bg-white rounded-lg shadow-md mb-6 overflow-hidden"
+          className="post bg-gradient-to-r from-white via-blue-50 to-indigo-100 rounded-lg shadow-lg mb-6 overflow-hidden"
         >
           {/* Header Section */}
-          <div className="flex items-center justify-between p-4 bg-gray-100">
+          <div className="flex items-center justify-between p-4 bg-indigo-200">
             <div className="flex items-center space-x-2">
               {profileImages[post.postId] ? (
                 <img
                   src={profileImages[post.postId]}
                   alt="Profile"
-                  className="w-12 h-12 rounded-full object-cover"
+                  className="w-12 h-12 rounded-full object-cover border-2 border-blue-400"
                 />
               ) : (
-                <CgProfile size={40} className="text-gray-400" />
+                <CgProfile size={40} className="text-blue-500" />
               )}
               <div>
-                <p className="text-gray-800 font-semibold text-lg">
+                <p className="text-gray-900 font-bold text-lg">
                   {post.name}
                 </p>
-                <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
+                <p className="text-sm text-gray-600">{formatDate(post.date)}</p>
               </div>
             </div>
             {/* Status Badges */}
             <div className="flex items-center space-x-2">
               {post.category && (
-                <span className="text-sm py-1 px-3 rounded-full bg-purple-100 text-purple-800">
+                <span className="text-sm py-1 px-3 rounded-full bg-purple-300 text-purple-800">
                   {post.category}
                 </span>
               )}
               <span
                 className={`text-sm py-1 px-3 rounded-full ${
                   post.isAvailable
-                    ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-800"
+                    ? "bg-green-300 text-green-900"
+                    : "bg-red-300 text-red-900"
                 }`}
               >
                 {post.isAvailable ? "Available" : "Not Available"}
@@ -164,7 +164,9 @@ export default function Feed({ postData, userData }) {
           </div>
 
           {/* Caption Section */}
-          <p className="p-4 text-gray-800">{post.caption}</p>
+          <p className="p-4 text-sm font-semibold text-indigo-800 bg-indigo-100">
+            {post.caption}
+          </p>
 
           {/* Post Image */}
           {post.postPicRef && postImages[post.postId] ? (
@@ -187,7 +189,7 @@ export default function Feed({ postData, userData }) {
       <div className="text-center mt-8">
         <button
           onClick={() => setVisiblePosts((prev) => prev + 5)}
-          className="px-6 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+          className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
         >
           Load More Posts
         </button>
@@ -195,6 +197,8 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
+
+
 
 
 
