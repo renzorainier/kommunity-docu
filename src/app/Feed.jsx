@@ -123,66 +123,63 @@ export default function Feed({ postData, userData }) {
       {recentPosts.map((post) => (
         <div
           key={post.postId}
-          className="post bg-white rounded-lg shadow-md mb-6"
+          className={`post bg-white p-4 rounded-md shadow-md transition-all duration-300 mb-4 border ${
+            userData?.userID && post.userID === userData.userID
+              ? "border-blue-400"
+              : "border-gray-200"
+          }`}
         >
-          {/* Header Section */}
-          <div className="flex items-center justify-between p-4 bg-gray-100 rounded-t-lg">
-            <div className="flex items-center space-x-2">
-              {profileImages[post.postId] ? (
-                <img
-                  src={profileImages[post.postId]}
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-              ) : (
-                <CgProfile size={40} className="text-gray-400" />
-              )}
-              <div>
-                <p className="text-gray-800 font-semibold">{post.name}</p>
-                <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
+          {/* Profile Section */}
+          <div className="flex items-center space-x-3">
+            {profileImages[post.postId] ? (
+              <img
+                src={profileImages[post.postId]}
+                alt="Profile"
+                className="w-12 h-12 rounded-full object-cover border border-gray-300"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                <CgProfile size={24} className="text-gray-500" />
               </div>
-            </div>
-            <div className="flex space-x-2">
-              <span className="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">
-                Pet Sitting
-              </span>
-              <span
-                className={`text-xs px-3 py-1 rounded-full ${
-                  post.isPaid ? "bg-red-100 text-red-800" : "bg-gray-100 text-gray-600"
-                }`}
-              >
-                {post.isPaid ? "Paid" : "Free"}
-              </span>
-              <span
-                className={`text-xs px-3 py-1 rounded-full ${
-                  post.isAvailable
-                    ? "bg-green-100 text-green-800"
-                    : "bg-gray-100 text-gray-600"
-                }`}
-              >
-                {post.isAvailable ? "Available" : "Unavailable"}
-              </span>
+            )}
+            <div>
+              <p className="text-gray-800 font-semibold">{post.name}</p>
+              <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
             </div>
           </div>
 
-          {/* Post Caption */}
-          <div className="px-4 py-2">
-            <p className="text-gray-800">{post.caption}</p>
+          {/* Caption */}
+          <p className="text-gray-800 mt-2">{post.caption}</p>
+
+          {/* Tag Section */}
+          <div className="flex items-center space-x-2 mt-3 text-sm">
+            {post.category && (
+              <span className="bg-blue-100 text-blue-800 py-1 px-3 rounded-full">
+                {post.category}
+              </span>
+            )}
+            <span
+              className={`py-1 px-3 rounded-full ${
+                post.isAvailable
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
+              }`}
+            >
+              {post.isAvailable ? "Available" : "Not Available"}
+            </span>
           </div>
 
           {/* Post Image */}
           {post.postPicRef && postImages[post.postId] ? (
-            <img
-              src={postImages[post.postId]}
-              alt="Post"
-              className="w-full rounded-b-lg object-cover"
-            />
+            <div className="mt-4">
+              <img
+                src={postImages[post.postId]}
+                alt="Post"
+                className="w-full rounded-md object-cover shadow-sm"
+              />
+            </div>
           ) : (
-            post.postPicRef && (
-              <div className="bg-gray-200 w-full h-64 rounded-b-lg flex items-center justify-center">
-                <p className="text-gray-500">Loading image...</p>
-              </div>
-            )
+            post.postPicRef && <p className="text-gray-500 mt-2">Loading image...</p>
           )}
         </div>
       ))}
@@ -199,7 +196,6 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
-
 
 
 
