@@ -82,7 +82,7 @@ export default function Main() {
     <main className="min-h-screen bg-gray-100">
       <Search postData={postData} userData={userData}/>
       {/* Navbar */}
-      <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
+      {/* <Navbar activeComponent={activeComponent} setActiveComponent={setActiveComponent} /> */}
 
       {/* Active Component */}
       <section className="pt-16 ">{renderComponent()}</section>
