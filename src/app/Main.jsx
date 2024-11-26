@@ -10,6 +10,7 @@ import CreatePost from './CreatePost';
 import Profile from './Profile';
 import Feed from './Feed';
 import Navbar from './Navbar'; // Import the refactored Navbar component
+import Search from './Search'
 
 export default function Main() {
   const [user, loading, error] = useAuthState(auth);

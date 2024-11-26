@@ -1,6 +1,6 @@
 'use client';
 
-import { FaUser, FaPlus } from 'react-icons/fa'; // Import icons
+import { FaUser, FaPlus, FaArrowLeft } from 'react-icons/fa'; // Import icons
 
 export default function Navbar({ activeComponent, setActiveComponent }) {
   if (activeComponent === 'feed') {
@@ -35,10 +35,10 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
   return (
     <button
       onClick={() => setActiveComponent('feed')}
-      className="fixed top-4 left-4 bg-blue-500 text-white p-2 rounded-full shadow-lg z-20"
+      className="fixed top-4 left-4 bg-blue-500 text-white p-3 rounded-full shadow-lg z-20 hover:bg-blue-600"
       aria-label="Back"
     >
-      ← Back
+      <FaArrowLeft size={24} />
     </button>
   );
 }
