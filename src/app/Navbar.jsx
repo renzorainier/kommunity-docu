@@ -34,7 +34,7 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
         <button
           onClick={() => setActiveComponent('createPost')}
           aria-label="Create Post"
-          className="fixed bottom-4 right-4 bg-blue-500 text-white p-4 rounded-full shadow-lg z-20 hover:bg-blue-600"
+          className="fixed bottom-4 right-4 bg-gradient-to-r from-orange-400 to-red-500 text-white p-4 rounded-full shadow-lg z-20 hover:shadow-xl transition-all"
         >
           <FaPlus size={24} />
         </button>
@@ -47,7 +47,7 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
     <>
       <button
         onClick={() => setActiveComponent('feed')}
-        className="fixed top-4 left-4 bg-blue-500 text-white p-3 rounded-full shadow-lg z-20 hover:bg-blue-600"
+        className="fixed top-4 left-4 bg-gradient-to-r from-orange-400 to-red-500 text-white p-3 rounded-full shadow-lg z-20 hover:shadow-xl transition-all"
         aria-label="Back"
       >
         <FaArrowLeft size={24} />
@@ -55,6 +55,7 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
     </>
   );
 }
+
 
 
 
