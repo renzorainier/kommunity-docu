@@ -8,7 +8,7 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
     return (
       <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-10 flex justify-between items-center px-6 py-4">
         {/* App Title or Logo */}
-        <div className="text-xl font-bold">Kommu</div>
+        <div className="text-xl font-bold">KommUnity</div>
 
         {/* Action Buttons */}
         <div className="flex gap-4">
