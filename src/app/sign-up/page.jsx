@@ -9,15 +9,26 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import teen from "../img.png";
 
+const skillOptions = [
+  "Web Development",
+  "Graphic Design",
+  "Data Analysis",
+  "Content Writing",
+  "Marketing",
+  "Project Management",
+  "Software Testing",
+];
+
 const Register = () => {
   const [showError, setShowError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: '',
-    surname: '',
-    contactNumber: '',
-    facebookLink: '',
-    email: '',
+    firstName: "",
+    surname: "",
+    contactNumber: "",
+    facebookLink: "",
+    email: "",
+    jobSkillset: [],
   });
   const [uploadedImage, setUploadedImage] = useState(null);
   const [imageError, setImageError] = useState(false);
@@ -54,6 +65,18 @@ const Register = () => {
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSkillToggle = (skill) => {
+    setFormData((prev) => {
+      const skills = new Set(prev.jobSkillset);
+      if (skills.has(skill)) {
+        skills.delete(skill);
+      } else {
+        skills.add(skill);
+      }
+      return { ...prev, jobSkillset: Array.from(skills) };
+    });
   };
 
   const handleImageUpload = (file) => {
@@ -99,7 +122,8 @@ const Register = () => {
         contactNumber: formData.contactNumber,
         facebookLink: formData.facebookLink,
         email: formData.email,
-        userID: user.uid, // Add userID field
+        jobSkillset: formData.jobSkillset,
+        userID: user.uid,
         imageUrl,
       });
 
@@ -182,6 +206,24 @@ const Register = () => {
                 required
                 className="w-full border rounded-lg p-3"
               />
+
+              {/* Skill Selection */}
+              <div className="w-full">
+                <p className="mb-2">Select Your Skillset:</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {skillOptions.map((skill) => (
+                    <label key={skill} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={formData.jobSkillset.includes(skill)}
+                        onChange={() => handleSkillToggle(skill)}
+                        className="form-checkbox"
+                      />
+                      <span>{skill}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
 
               <div
                 onDrop={handleFileDrop}
