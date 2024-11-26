@@ -82,12 +82,6 @@ export default function Main() {
       {activeComponent === 'feed' && (
         <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-10 flex justify-around py-4">
           <button
-            onClick={() => setActiveComponent('feed')}
-            className={`text-lg ${activeComponent === 'feed' ? 'font-bold' : ''}`}
-          >
-            Feed
-          </button>
-          <button
             onClick={() => setActiveComponent('profile')}
             className={`text-lg ${activeComponent === 'profile' ? 'font-bold' : ''}`}
           >
