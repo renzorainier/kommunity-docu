@@ -72,6 +72,8 @@ export default function Main() {
         return <Profile postData={postData} userData={userData} />;
       case 'createPost':
         return <CreatePost userData={userData} />;
+        case 'search':
+          return <Search userData={userData} postData={postData}  />;
       case 'feed':
       default:
         return <Feed postData={postData} userData={userData} />;
