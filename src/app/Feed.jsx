@@ -126,13 +126,13 @@ export default function Feed({ postData, userData }) {
           className="post bg-gradient-to-r from-white via-blue-50 to-indigo-100 rounded-lg shadow-lg mb-6 overflow-hidden"
         >
           {/* Header Section */}
-          <div className="flex items-center justify-between p-4 bg-indigo-200">
+          <div className="flex items-center justify-between p-4 bg-indigo-100">
             <div className="flex items-center space-x-2">
               {profileImages[post.postId] ? (
                 <img
                   src={profileImages[post.postId]}
                   alt="Profile"
-                  className="w-12 h-12 rounded-full object-cover border-2 border-blue-400"
+                  className="w-12 h-12 rounded-full object-cover border-2 border-indigo-400"
                 />
               ) : (
                 <CgProfile size={40} className="text-blue-500" />
