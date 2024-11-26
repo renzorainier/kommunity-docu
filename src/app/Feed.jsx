@@ -119,21 +119,21 @@ export default function Feed({ postData, userData }) {
   const recentPosts = getRecentPosts();
 
   return (
-    <div className="feed max-w-3xl mx-auto p-6 bg-gray-50">
+    <div className="feed max-w-3xl mx-auto p-6 bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen">
       {recentPosts.map((post) => (
         <div
           key={post.postId}
-          className={`post bg-white p-6 rounded-lg shadow-xl transition-all duration-300 mb-6 ${
+          className={`post bg-white p-6 rounded-lg shadow-md transition-all duration-300 mb-6 border-l-4 ${
             userData?.userID && post.userID === userData.userID
-              ? "ring-4 ring-blue-500"
-              : ""
+              ? "border-blue-500"
+              : "border-gray-200"
           }`}>
           <div className="flex items-center space-x-4">
             {profileImages[post.postId] ? (
               <img
                 src={profileImages[post.postId]}
                 alt="Profile"
-                className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
+                className="w-16 h-16 rounded-full object-cover border-2 border-gray-300"
               />
             ) : error[post.postId] ? (
               <CgProfile size={48} className="text-gray-400" />
@@ -143,14 +143,13 @@ export default function Feed({ postData, userData }) {
               </div>
             )}
             <div>
-              <p className="text-lg text-gray-700 font-medium">{post.name}</p>
+              <p className="text-lg text-gray-800 font-semibold">{post.name}</p>
               <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
             </div>
           </div>
-          <p className="text-gray-800 mt-4 text-base">{post.caption}</p>
+          <p className="text-gray-800 mt-4">{post.caption}</p>
 
-          {/* Show Category and Availability */}
-          <div className="mt-4 flex items-center space-x-2 text-sm text-gray-600">
+          <div className="mt-4 flex items-center space-x-2 text-sm">
             {post.category && (
               <span className="bg-blue-100 text-blue-800 py-1 px-3 rounded-full">
                 {post.category}
@@ -186,7 +185,7 @@ export default function Feed({ postData, userData }) {
         <div className="text-center mt-8">
           <button
             onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-200">
+            className="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 shadow-md transition-all">
             Load More Posts
           </button>
         </div>
