@@ -185,7 +185,7 @@ export default function Feed({ postData, userData }) {
         <div className="text-center mt-8">
           <button
             onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-full font-semibold hover:shadow-lg shadow-md transition-all">
+            className="px-6 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all">
             Load More Posts
           </button>
         </div>
@@ -193,6 +193,7 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
+
 
 
 
