@@ -7,7 +7,7 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
     // Render navbar when activeComponent is 'feed'
     return (
       <>
-        <nav className="fixed top-0 left-0 right-0 bg-[#F4F7FE] shadow-sm z-10 flex justify-between items-center px-4 py-3 border-b border-gray-300">
+        <nav className="fixed top-0 left-0 right-0 bg-[#F4F7FE] shadow-sm z-10 flex justify-between items-center px-4 py-3 border-b border-indigo-300">
           {/* App Logo and Title */}
           <div className="flex items-center gap-2">
             <img

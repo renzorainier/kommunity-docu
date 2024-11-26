@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { useState } from "react";
@@ -20,8 +20,6 @@ const skillOptions = [
 ];
 
 const Register = () => {
-  const [showError, setShowError] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     surname: "",
@@ -30,8 +28,12 @@ const Register = () => {
     email: "",
     jobSkillset: [],
   });
+  const [searchText, setSearchText] = useState("");
+  const [filteredSkills, setFilteredSkills] = useState(skillOptions);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [imageError, setImageError] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleGoogleSignIn = async () => {
@@ -67,16 +69,32 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleSkillToggle = (skill) => {
-    setFormData((prev) => {
-      const skills = new Set(prev.jobSkillset);
-      if (skills.has(skill)) {
-        skills.delete(skill);
-      } else {
-        skills.add(skill);
-      }
-      return { ...prev, jobSkillset: Array.from(skills) };
-    });
+  const handleSkillSearch = (e) => {
+    const text = e.target.value;
+    setSearchText(text);
+    setFilteredSkills(
+      skillOptions.filter(
+        (skill) =>
+          skill.toLowerCase().includes(text.toLowerCase()) &&
+          !formData.jobSkillset.includes(skill)
+      )
+    );
+  };
+
+  const handleSkillAdd = (skill) => {
+    setFormData((prev) => ({
+      ...prev,
+      jobSkillset: [...prev.jobSkillset, skill],
+    }));
+    setSearchText("");
+    setFilteredSkills([]);
+  };
+
+  const handleSkillRemove = (skill) => {
+    setFormData((prev) => ({
+      ...prev,
+      jobSkillset: prev.jobSkillset.filter((s) => s !== skill),
+    }));
   };
 
   const handleImageUpload = (file) => {
@@ -86,12 +104,6 @@ const Register = () => {
     }
     setImageError(false);
     setUploadedImage(file);
-  };
-
-  const handleFileDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    handleImageUpload(file);
   };
 
   const handleFilePicker = (e) => {
@@ -107,7 +119,6 @@ const Register = () => {
       const user = auth.currentUser;
       if (!user) throw new Error("User is not authenticated");
 
-      // Upload image to Firebase Storage
       let imageUrl = "";
       if (uploadedImage) {
         const storageRef = ref(storage, `images/${user.uid}/${uploadedImage.name}`);
@@ -115,16 +126,11 @@ const Register = () => {
         imageUrl = await getDownloadURL(storageRef);
       }
 
-      // Save user data in Firestore
       const userRef = doc(db, "users", user.uid);
       await setDoc(userRef, {
-        name: `${formData.firstName} ${formData.surname}`,
-        contactNumber: formData.contactNumber,
-        facebookLink: formData.facebookLink,
-        email: formData.email,
-        jobSkillset: formData.jobSkillset,
-        userID: user.uid,
+        ...formData,
         imageUrl,
+        userID: user.uid,
       });
 
       alert("Registration complete! Welcome, " + formData.firstName);
@@ -148,26 +154,22 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-300 p-4">
       <div className="bg-white rounded-lg shadow-lg flex flex-col w-full max-w-lg">
         <div className="w-full p-8 flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-t-lg">
-          <Image src={teen} width="260" height="260" alt="Teen Image" />
+          <Image src={teen} width={260} height={260} alt="Teen Image" />
         </div>
         <div className="w-full p-8 flex flex-col justify-center items-center">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">Create Your Account</h1>
-          <p className="text-gray-600 mb-8">Please register to get started.</p>
-
           {showError && (
             <p className="text-red-500 mb-4 text-center">
               Error: Please try again later.
             </p>
           )}
-
           <button
             onClick={handleGoogleSignIn}
-            className="w-full p-3 bg-white text-custom font-bold rounded-lg shadow-md hover:shadow-lg transition duration-300 hover:bg-gray-100"
+            className="w-full p-3 bg-white text-black font-bold rounded-lg shadow-md"
             disabled={loading}
           >
             {loading ? "Signing up with Google..." : "Sign up with Google"}
           </button>
-
           {formData.email && (
             <form onSubmit={handleSubmit} className="mt-6 space-y-6 w-full">
               <input
@@ -207,28 +209,50 @@ const Register = () => {
                 className="w-full border rounded-lg p-3"
               />
 
-              {/* Skill Selection */}
               <div className="w-full">
-                <p className="mb-2">Select Your Skillset:</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {skillOptions.map((skill) => (
-                    <label key={skill} className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        checked={formData.jobSkillset.includes(skill)}
-                        onChange={() => handleSkillToggle(skill)}
-                        className="form-checkbox"
-                      />
-                      <span>{skill}</span>
-                    </label>
+                <label className="block mb-2 font-bold">Search Skills:</label>
+                <input
+                  type="text"
+                  placeholder="Type a skill..."
+                  value={searchText}
+                  onChange={handleSkillSearch}
+                  className="w-full border rounded-lg p-3"
+                />
+                {filteredSkills.length > 0 && (
+                  <ul className="border mt-2 rounded-lg max-h-40 overflow-y-scroll">
+                    {filteredSkills.map((skill) => (
+                      <li
+                        key={skill}
+                        onClick={() => handleSkillAdd(skill)}
+                        className="p-2 cursor-pointer hover:bg-gray-100"
+                      >
+                        {skill}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {formData.jobSkillset.map((skill) => (
+                    <div
+                      key={skill}
+                      className="bg-gray-200 rounded-full px-4 py-1 text-sm flex items-center gap-2"
+                    >
+                      {skill}
+                      <button
+                        type="button"
+                        onClick={() => handleSkillRemove(skill)}
+                        className="text-red-500 font-bold"
+                      >
+                        x
+                      </button>
+                    </div>
                   ))}
                 </div>
               </div>
 
               <div
-                onDrop={handleFileDrop}
-                onDragOver={(e) => e.preventDefault()}
                 className="w-full p-4 border border-dashed rounded-lg text-center cursor-pointer"
+                onClick={() => document.getElementById("file-upload").click()}
               >
                 <label htmlFor="file-upload" className="block w-full cursor-pointer">
                   {uploadedImage ? (
@@ -251,7 +275,7 @@ const Register = () => {
 
               <button
                 type="submit"
-                className="w-full bg-custom text-black font-bold py-2 rounded-lg transition duration-300"
+                className="w-full bg-blue-600 text-white font-bold py-2 rounded-lg"
                 disabled={!isFormComplete || loading}
               >
                 {loading ? "Submitting..." : "Complete Registration"}
