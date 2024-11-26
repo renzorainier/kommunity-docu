@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
-import { storage } from "./firebase"; // Ensure correct Firebase configuration
+import { storage } from "./firebase";
 import { CgProfile } from "react-icons/cg";
 
 export default function Feed({ postData, userData }) {
@@ -181,18 +181,19 @@ export default function Feed({ postData, userData }) {
         </div>
       ))}
 
-      {recentPosts.length < allPosts.length && (
-        <div className="text-center mt-8">
-          <button
-            onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all">
-            Load More Posts
-          </button>
-        </div>
-      )}
+      {/* Gradient Button */}
+      <div className="text-center mt-8">
+        <button
+          onClick={() => setVisiblePosts((prev) => prev + 5)}
+          className="px-6 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+        >
+          Load More Posts
+        </button>
+      </div>
     </div>
   );
 }
+
 
 
 
