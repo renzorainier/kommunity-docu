@@ -118,9 +118,7 @@ export default function Feed({ postData, userData }) {
 
   return (
     <div className="feed max-w-3xl mx-auto p-6 bg-gray-50">
-      <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800">
-        Posts Feed
-      </h2>
+  
       {recentPosts.map((post) => (
         <div
           key={post.postId}
