@@ -9,6 +9,7 @@ import success from './success.wav';
 import CreatePost from './CreatePost';
 import Profile from './Profile';
 import Feed from './Feed';
+import Navbar from './Navbar'; // Import the new Navbar component
 
 export default function Main() {
   const [user, loading, error] = useAuthState(auth);
@@ -79,22 +80,7 @@ export default function Main() {
   return (
     <main className="min-h-screen bg-gray-100 relative">
       {/* Navbar */}
-      {activeComponent === 'feed' && (
-        <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-10 flex justify-around py-4">
-          <button
-            onClick={() => setActiveComponent('profile')}
-            className={`text-lg ${activeComponent === 'profile' ? 'font-bold' : ''}`}
-          >
-            Profile
-          </button>
-          <button
-            onClick={() => setActiveComponent('createPost')}
-            className={`text-lg ${activeComponent === 'createPost' ? 'font-bold' : ''}`}
-          >
-            Create Post
-          </button>
-        </nav>
-      )}
+      {activeComponent === 'feed' && <Navbar setActiveComponent={setActiveComponent} />}
 
       {/* Floating Back Button */}
       {activeComponent !== 'feed' && (
@@ -111,6 +97,7 @@ export default function Main() {
     </main>
   );
 }
+
 
 
 // 'use client';
