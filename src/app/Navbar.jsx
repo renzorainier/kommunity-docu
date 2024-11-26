@@ -6,28 +6,39 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
   if (activeComponent === 'feed') {
     // Render navbar when activeComponent is 'feed'
     return (
-      <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-10 flex justify-between items-center px-6 py-4">
-        {/* App Title or Logo */}
-        <div className="text-xl font-bold">KommUnity</div>
+      <>
+        <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-10 flex justify-between items-center px-6 py-4">
+          {/* App Title or Logo */}
+          <div className="text-xl font-bold">KommUnity</div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-4">
-          <button
-            onClick={() => setActiveComponent('profile')}
-            aria-label="Profile"
-            className="text-gray-600 hover:text-blue-500"
-          >
-            <FaUser size={24} />
-          </button>
-          <button
-            onClick={() => setActiveComponent('search')}
-            aria-label="Search"
-            className="text-gray-600 hover:text-blue-500"
-          >
-            <FaSearch size={24} />
-          </button>
-        </div>
-      </nav>
+          {/* Action Buttons */}
+          <div className="flex gap-4">
+            <button
+              onClick={() => setActiveComponent('profile')}
+              aria-label="Profile"
+              className="text-gray-600 hover:text-blue-500"
+            >
+              <FaUser size={24} />
+            </button>
+            <button
+              onClick={() => setActiveComponent('search')}
+              aria-label="Search"
+              className="text-gray-600 hover:text-blue-500"
+            >
+              <FaSearch size={24} />
+            </button>
+          </div>
+        </nav>
+
+        {/* Floating Create Post Button, only visible in feed */}
+        <button
+          onClick={() => setActiveComponent('createPost')}
+          aria-label="Create Post"
+          className="fixed bottom-4 right-4 bg-blue-500 text-white p-4 rounded-full shadow-lg z-20 hover:bg-blue-600"
+        >
+          <FaPlus size={24} />
+        </button>
+      </>
     );
   }
 
@@ -41,19 +52,9 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
       >
         <FaArrowLeft size={24} />
       </button>
-
-      {/* Floating Create Post Button */}
-      <button
-        onClick={() => setActiveComponent('createPost')}
-        aria-label="Create Post"
-        className="fixed bottom-4 right-4 bg-blue-500 text-white p-4 rounded-full shadow-lg z-20 hover:bg-blue-600"
-      >
-        <FaPlus size={24} />
-      </button>
     </>
   );
 }
-
 
 
 
