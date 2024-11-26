@@ -119,7 +119,7 @@ export default function Feed({ postData, userData }) {
   const recentPosts = getRecentPosts();
 
   return (
-    <div className="feed max-w-3xl mx-auto p-6 bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen">
+    <div className="feed max-w-3xl mx-auto p- bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen">
       {recentPosts.map((post) => (
         <div
           key={post.postId}
