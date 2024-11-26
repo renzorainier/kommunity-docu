@@ -9,7 +9,7 @@ export default function Profile({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
   const [postImages, setPostImages] = useState({});
   const [error, setError] = useState({});
-  const [visiblePosts, setVisiblePosts] = useState(100);
+  const [visiblePosts, setVisiblePosts] = useState(5);
 
   const getUserPosts = () => {
     if (!postData || !userData?.userID) return [];
