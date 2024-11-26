@@ -20,13 +20,6 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
             <FaUser size={24} />
           </button>
           <button
-            onClick={() => setActiveComponent('createPost')}
-            aria-label="Create Post"
-            className="text-gray-600 hover:text-blue-500"
-          >
-            <FaPlus size={24} />
-          </button>
-          <button
             onClick={() => setActiveComponent('search')}
             aria-label="Search"
             className="text-gray-600 hover:text-blue-500"
@@ -40,13 +33,24 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
 
   // Render a floating back button for other components
   return (
-    <button
-      onClick={() => setActiveComponent('feed')}
-      className="fixed top-4 left-4 bg-blue-500 text-white p-3 rounded-full shadow-lg z-20 hover:bg-blue-600"
-      aria-label="Back"
-    >
-      <FaArrowLeft size={24} />
-    </button>
+    <>
+      <button
+        onClick={() => setActiveComponent('feed')}
+        className="fixed top-4 left-4 bg-blue-500 text-white p-3 rounded-full shadow-lg z-20 hover:bg-blue-600"
+        aria-label="Back"
+      >
+        <FaArrowLeft size={24} />
+      </button>
+
+      {/* Floating Create Post Button */}
+      <button
+        onClick={() => setActiveComponent('createPost')}
+        aria-label="Create Post"
+        className="fixed bottom-4 right-4 bg-blue-500 text-white p-4 rounded-full shadow-lg z-20 hover:bg-blue-600"
+      >
+        <FaPlus size={24} />
+      </button>
+    </>
   );
 }
 
