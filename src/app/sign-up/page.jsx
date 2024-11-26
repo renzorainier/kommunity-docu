@@ -126,14 +126,20 @@ const Register = () => {
         imageUrl = await getDownloadURL(storageRef);
       }
 
+      const fullName = `${formData.firstName} ${formData.surname}`; // Merge names
+
       const userRef = doc(db, "users", user.uid);
       await setDoc(userRef, {
-        ...formData,
+        name: fullName, // Store merged name
+        contactNumber: formData.contactNumber,
+        facebookLink: formData.facebookLink,
+        email: formData.email,
+        jobSkillset: formData.jobSkillset,
         imageUrl,
         userID: user.uid,
       });
 
-      alert("Registration complete! Welcome, " + formData.firstName);
+      alert("Registration complete! Welcome, " + fullName);
       router.push("/");
     } catch (error) {
       console.error("Error submitting form: ", error);
@@ -142,6 +148,7 @@ const Register = () => {
       setLoading(false);
     }
   };
+
 
   const isFormComplete =
     formData.firstName &&
