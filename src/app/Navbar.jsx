@@ -1,22 +1,32 @@
 'use client';
 
+import { FaUser, FaPlus } from 'react-icons/fa'; // Import icons
+
 export default function Navbar({ activeComponent, setActiveComponent }) {
   if (activeComponent === 'feed') {
     // Render navbar when activeComponent is 'feed'
     return (
-      <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-10 flex justify-around py-4">
-        <button
-          onClick={() => setActiveComponent('profile')}
-          className="text-lg"
-        >
-          Profile
-        </button>
-        <button
-          onClick={() => setActiveComponent('createPost')}
-          className="text-lg"
-        >
-          Create Post
-        </button>
+      <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-10 flex justify-between items-center px-6 py-4">
+        {/* App Title or Logo */}
+        <div className="text-xl font-bold">Kommu</div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-4">
+          <button
+            onClick={() => setActiveComponent('profile')}
+            aria-label="Profile"
+            className="text-gray-600 hover:text-blue-500"
+          >
+            <FaUser size={24} />
+          </button>
+          <button
+            onClick={() => setActiveComponent('createPost')}
+            aria-label="Create Post"
+            className="text-gray-600 hover:text-blue-500"
+          >
+            <FaPlus size={24} />
+          </button>
+        </div>
       </nav>
     );
   }
@@ -26,13 +36,12 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
     <button
       onClick={() => setActiveComponent('feed')}
       className="fixed top-4 left-4 bg-blue-500 text-white p-2 rounded-full shadow-lg z-20"
+      aria-label="Back"
     >
       ← Back
     </button>
   );
 }
-
-
 
 
 
