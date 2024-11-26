@@ -119,67 +119,66 @@ export default function Feed({ postData, userData }) {
   const recentPosts = getRecentPosts();
 
   return (
-    <div className="feed max-w-3xl mx-auto p-4 bg-gray-100 min-h-screen">
+    <div className="feed max-w-3xl mx-auto p-4 bg-gray-50 min-h-screen">
       {recentPosts.map((post) => (
         <div
           key={post.postId}
-          className={`post bg-white p-4 rounded-md shadow-md transition-all duration-300 mb-4 border ${
-            userData?.userID && post.userID === userData.userID
-              ? "border-blue-400"
-              : "border-gray-200"
-          }`}
+          className="post bg-white rounded-lg shadow-md mb-6 overflow-hidden"
         >
-          {/* Profile Section */}
-          <div className="flex items-center space-x-3">
-            {profileImages[post.postId] ? (
-              <img
-                src={profileImages[post.postId]}
-                alt="Profile"
-                className="w-12 h-12 rounded-full object-cover border border-gray-300"
-              />
-            ) : (
-              <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                <CgProfile size={24} className="text-gray-500" />
+          {/* Header Section */}
+          <div className="flex items-center justify-between p-4 bg-gray-100">
+            <div className="flex items-center space-x-2">
+              {profileImages[post.postId] ? (
+                <img
+                  src={profileImages[post.postId]}
+                  alt="Profile"
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+              ) : (
+                <CgProfile size={40} className="text-gray-400" />
+              )}
+              <div>
+                <p className="text-gray-800 font-semibold text-lg">
+                  {post.name}
+                </p>
+                <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
               </div>
-            )}
-            <div>
-              <p className="text-gray-800 font-semibold">{post.name}</p>
-              <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
+            </div>
+            {/* Status Badges */}
+            <div className="flex items-center space-x-2">
+              {post.category && (
+                <span className="text-sm py-1 px-3 rounded-full bg-purple-100 text-purple-800">
+                  {post.category}
+                </span>
+              )}
+              <span
+                className={`text-sm py-1 px-3 rounded-full ${
+                  post.isAvailable
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
+                }`}
+              >
+                {post.isAvailable ? "Available" : "Not Available"}
+              </span>
             </div>
           </div>
 
-          {/* Caption */}
-          <p className="text-gray-800 mt-2">{post.caption}</p>
-
-          {/* Tag Section */}
-          <div className="flex items-center space-x-2 mt-3 text-sm">
-            {post.category && (
-              <span className="bg-blue-100 text-blue-800 py-1 px-3 rounded-full">
-                {post.category}
-              </span>
-            )}
-            <span
-              className={`py-1 px-3 rounded-full ${
-                post.isAvailable
-                  ? "bg-green-100 text-green-800"
-                  : "bg-red-100 text-red-800"
-              }`}
-            >
-              {post.isAvailable ? "Available" : "Not Available"}
-            </span>
-          </div>
+          {/* Caption Section */}
+          <p className="p-4 text-gray-800">{post.caption}</p>
 
           {/* Post Image */}
           {post.postPicRef && postImages[post.postId] ? (
-            <div className="mt-4">
+            <div>
               <img
                 src={postImages[post.postId]}
                 alt="Post"
-                className="w-full rounded-md object-cover shadow-sm"
+                className="w-full object-cover"
               />
             </div>
           ) : (
-            post.postPicRef && <p className="text-gray-500 mt-2">Loading image...</p>
+            post.postPicRef && (
+              <p className="text-gray-500 p-4">Loading post image...</p>
+            )
           )}
         </div>
       ))}
