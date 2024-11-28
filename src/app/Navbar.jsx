@@ -11,14 +11,14 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
       <>
         <nav className="fixed top-0 left-0 right-0 bg-[#E0EAF6] shadow-sm z-10 flex justify-between items-center px-5 py-1 border-b border-indigo-300">
           {/* App Logo and Title */}
-          <div className="flex items-center">
+          <div className="flex items-center ml-[-20px]">
             <Image
               src={logo} // Logo image
               width={90}
               height={70}
               alt="KommUnity Logo"
             />
-            <span className="text-lg font-bold text-[#323030] font-inter">
+            <span className="text-lg font-bold text-[#323030] font-inter ml-[-10px]">
               KommUnity
             </span>
           </div>
