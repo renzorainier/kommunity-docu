@@ -76,7 +76,7 @@ const SignIn = () => {
           disabled={googleLoading}
         >
           <Image
-            src="/google-icon.png" // Add a Google icon file
+            src="/sign-in/googleicon.png"
             alt="Google Icon"
             width={20}
             height={20}
