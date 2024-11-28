@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FiPhone, FiMail, FiFacebook } from "react-icons/fi";
+import { FaPhoneAlt, FaEnvelope, FaFacebook } from "react-icons/fa";
 
 const Header = ({ userData }) => {
   if (!userData) return null;
@@ -17,27 +17,23 @@ const Header = ({ userData }) => {
           alt={`${name}'s profile`}
           className="w-24 h-24 rounded-full object-cover border-2 border-gray-200 shadow-md"
         />
+
         {/* User Info */}
         <div>
           <h1 className="text-2xl font-bold text-gray-800">{name}</h1>
-
-          <div className="mt-2 space-y-2">
-            {/* Contact Number */}
-            <div className="flex items-center space-x-3 text-gray-600">
-              <FiPhone className="text-blue-600" size={20} />
+          {/* Contact Info with Icons */}
+          <div className="mt-4 flex flex-col space-y-2 text-gray-600">
+            <div className="flex items-center space-x-3">
+              <FaPhoneAlt className="text-blue-500" />
               <span>{contactNumber || "N/A"}</span>
             </div>
-
-            {/* Email */}
-            <div className="flex items-center space-x-3 text-gray-600">
-              <FiMail className="text-red-600" size={20} />
+            <div className="flex items-center space-x-3">
+              <FaEnvelope className="text-red-500" />
               <span>{email || "N/A"}</span>
             </div>
-
-            {/* Facebook Link */}
             {facebookLink && (
               <div className="flex items-center space-x-3">
-                <FiFacebook className="text-blue-600" size={20} />
+                <FaFacebook className="text-blue-700" />
                 <a
                   href={facebookLink}
                   target="_blank"
@@ -51,7 +47,7 @@ const Header = ({ userData }) => {
 
           {/* Skillset */}
           {jobSkillset?.length > 0 && (
-            <div className="mt-4">
+            <div className="mt-6">
               <h3 className="font-semibold text-gray-700">Skillset:</h3>
               <ul className="flex flex-wrap gap-2 mt-2">
                 {jobSkillset.map((skill, index) => (
