@@ -198,145 +198,181 @@ const Register = () => {
           </div>
         </div>
       ) : (
-        // Updated Registration Layout
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-          <div className="bg-white shadow-lg rounded-lg max-w-md w-full p-6">
-            <div className="text-center mb-6">
-              <Image src={teen} width={100} height={100} alt="KommUnity Logo" />
-              <h1 className="text-2xl font-bold text-gray-800 mt-2">KommUnity</h1>
-            </div>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-bold text-gray-700">
-                  First Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  placeholder="Juan"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full border border-gray-300 rounded-lg p-2.5 mt-1"
-                />
-              </div>
-              <div>
-                <label htmlFor="surname" className="block text-sm font-bold text-gray-700">
-                  Surname <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="surname"
-                  placeholder="Cruz"
-                  value={formData.surname}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full border border-gray-300 rounded-lg p-2.5 mt-1"
-                />
-              </div>
-              <div>
-                <label htmlFor="contactNumber" className="block text-sm font-bold text-gray-700">
-                  Contact Number
-                </label>
-                <input
-                  type="text"
-                  id="contactNumber"
-                  placeholder="09** *** ****"
-                  value={formData.contactNumber}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2.5 mt-1"
-                />
-              </div>
-              <div>
-                <label htmlFor="facebookLink" className="block text-sm font-bold text-gray-700">
-                  Facebook Link
-                </label>
-                <input
-                  type="url"
-                  id="facebookLink"
-                  placeholder="https://www.facebook.com/juan.cruz.1898"
-                  value={formData.facebookLink}
-                  onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg p-2.5 mt-1"
-                />
-              </div>
-              <div>
-                <label htmlFor="jobSkillset" className="block text-sm font-bold text-gray-700">
-                  Job Skill Sets
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    id="jobSkillset"
-                    placeholder="Search and select skill sets"
-                    value={searchText}
-                    onChange={handleSkillSearch}
-                    className="w-full border border-gray-300 rounded-lg p-2.5 mt-1"
-                  />
-                  {filteredSkills.length > 0 && (
-                    <ul className="absolute bg-white border border-gray-300 rounded-lg w-full mt-1 max-h-40 overflow-y-auto z-10">
-                      {filteredSkills.map((skill) => (
-                        <li
-                          key={skill}
-                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                          onClick={() => handleSkillAdd(skill)}
-                        >
-                          {skill}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {formData.jobSkillset.map((skill) => (
-                    <span
-                      key={skill}
-                      className="bg-blue-500 text-white text-sm px-2 py-1 rounded-lg flex items-center gap-1"
-                    >
-                      {skill}
-                      <button
-                        type="button"
-                        className="text-xs font-bold"
-                        onClick={() => handleSkillRemove(skill)}
-                      >
-                        ✕
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-gray-700">
-                  Profile Image
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFilePicker}
-                  className="w-full mt-1"
-                />
-                {imageError && (
-                  <p className="text-red-500 text-sm mt-1">
-                    Please upload an image
-                  </p>
+        // Registration Form
+        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4 py-8">
+  {/* Logo Section */}
+  <div className="flex flex-center items-center mb-8">
+    <Image
+      src={teen} // Replace with the actual path to your logo
+      alt="KommUnity Logo"
+      width={100}
+      height={40}
+    />
+    <h1 className="text-5xl font-bold text-gray-800 mt-4">KommUnity</h1>
+  </div>
+
+  {/* Form Section */}
+  <form
+    onSubmit={handleSubmit}
+    className="w-full max-w-md space-y-6"
+  >
+    <h2 className="text-3xl font-bold text-gray-800 text-left">Sign Up</h2>
+
+    {/* First Name */}
+    <div>
+      <label
+        htmlFor="firstName"
+        className="block text-sm font-semibold text-gray-700"
+      >
+        First Name <span className="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        id="firstName"
+        placeholder="Juan"
+        value={formData.firstName}
+        onChange={handleInputChange}
+        required
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
+      />
+    </div>
+
+    {/* Surname */}
+    <div>
+      <label
+        htmlFor="surname"
+        className="block text-sm font-semibold text-gray-700"
+      >
+        Surname <span className="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        id="surname"
+        placeholder="Cruz"
+        value={formData.surname}
+        onChange={handleInputChange}
+        required
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
+      />
+    </div>
+
+    {/* Contact Number */}
+    <div>
+      <label
+        htmlFor="contactNumber"
+        className="block text-sm font-semibold text-gray-700"
+      >
+        Contact Number
+      </label>
+      <input
+        type="text"
+        id="contactNumber"
+        placeholder="09** *** ****"
+        value={formData.contactNumber}
+        onChange={handleInputChange}
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
+      />
+    </div>
+
+    {/* Facebook Link */}
+    <div>
+      <label
+        htmlFor="facebookLink"
+        className="block text-sm font-semibold text-gray-700"
+      >
+        Facebook Link
+      </label>
+      <input
+        type="url"
+        id="facebookLink"
+        placeholder="https://www.facebook.com/juan.cruz.1898"
+        value={formData.facebookLink}
+        onChange={handleInputChange}
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
+      />
+    </div>
+
+    {/* Job Skill Sets */}
+    <div>
+      <label
+        htmlFor="jobSkillset"
+        className="block text-sm font-semibold text-gray-700"
+      >
+        Job Skill sets
+      </label>
+      <select
+        id="jobSkillset"
+        value={searchText}
+        onChange={handleSkillSearch}
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
+      >
+        <option value="" disabled>
+          Select Skill Set/s
+        </option>
+        {skillOptions.map((skill) => (
+          <option key={skill} value={skill}>
+            {skill}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* Terms and Privacy */}
+    <p className="text-sm text-center text-gray-600">
+      By continuing, you are agreeing to our{" "}
+      <a href="/terms" className="text-blue-500 underline">
+        Terms of Service
+      </a>{" "}
+      and{" "}
+      <a href="/privacy" className="text-blue-500 underline">
+        Privacy Policy
+      </a>.
+    </p>
+ {/* Profile Image Upload */}
+ <div className="w-full p-4 border border-dashed rounded-lg text-center cursor-pointer">
+              <label htmlFor="file-upload" className="block w-full cursor-pointer">
+                {uploadedImage ? (
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={URL.createObjectURL(uploadedImage)}
+                      alt="Profile"
+                      className="w-24 h-24 rounded-full object-cover mb-2"
+                    />
+                    <p className="text-sm">{uploadedImage.name}</p>
+                  </div>
+                ) : (
+                  <p>Drag & drop an image here or click to select one</p>
                 )}
-              </div>
-              <button
-                type="submit"
-                disabled={!isFormComplete || loading}
-                className="w-full p-3 mt-4 bg-blue-500 text-white rounded-lg font-bold shadow hover:shadow-md disabled:bg-gray-300 transition"
-              >
-                {loading ? "Submitting..." : "Submit"}
-              </button>
-            </form>
-          </div>
-        </div>
+              </label>
+              <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleFilePicker}
+                className="hidden"
+              />
+            </div>
+            {imageError && (
+              <p className="text-red-500 text-sm mt-2">Please upload a valid image.</p>
+            )}
+    {/* Submit Button */}
+    <button
+      type="submit"
+      disabled={!isFormComplete || loading}
+      className="w-full bg-red-500 text-white px-3 py-2 rounded-lg font-bold text-lg hover:bg-red-600 transition focus:ring focus:ring-red-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
+    >
+      {loading ? "Submitting..." : "Sign Up"}
+    </button>
+  </form>
+  </div>
+
       )}
     </>
   );
 };
 
 export default Register;
+
 
 
 

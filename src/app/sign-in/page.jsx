@@ -43,10 +43,13 @@ const SignIn = () => {
         />
         <h1 className="text-2xl font-bold text-gray-800 mt-4">KommUnity</h1>
       </div>
-
+       {/* Login Header */}
+        <div className="w-full mt-10">
+        <h2 className="text-2xl font-extrabold text-gray-800 text-left">Log In</h2>
+      </div>
       {/* Content Section */}
-      <div className="w-full px-8">
-        <p className="text-center text-gray-600 mb-6">
+      <div className="w-full mt-2">
+        <p className="text-gray-600 text-sm text-left">
           By continuing, you are agreeing to our{" "}
           <a
             href="/terms"
