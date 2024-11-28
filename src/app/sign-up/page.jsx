@@ -164,7 +164,6 @@ const Register = () => {
     <>
       {!formData.email ? (
         // Initial Sign-Up View
-
         <div className="min-h-screen flex flex-col items-center justify-between bg-white px-6 py-10">
           <div className="flex flex-col items-center">
             <Image src={teen} width={170} height={170} alt="KommUnity Logo" />
@@ -175,8 +174,6 @@ const Register = () => {
           <div className="w-full flex flex-col items-start pl-8 mt-0">
             <h2 className="text-2xl font-extrabold text-gray-700">Sign Up</h2>
             <p className="text-gray-600 text-sm mt-0">
-              {" "}
-              {/* Zero margin-top to bring them closer */}
               By continuing, you are agreeing to our{" "}
               <a href="/terms" className="text-blue-500 hover:underline">
                 Terms of Service
@@ -194,7 +191,8 @@ const Register = () => {
             <button
               onClick={handleGoogleSignIn}
               className="flex items-center justify-center w-full py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-gray-50 transition duration-300"
-              disabled={loading}>
+              disabled={loading}
+            >
               <Image
                 src={logo}
                 width={20}
@@ -222,7 +220,7 @@ const Register = () => {
           {/* Logo Section */}
           <div className="flex flex-center items-center mb-8">
             <Image
-              src={teen} // Replace with the actual path to your logo
+              src={teen}
               alt="KommUnity Logo"
               width={100}
               height={40}
@@ -280,9 +278,9 @@ const Register = () => {
                 Contact Number
               </label>
               <input
-                type="text"
+                type="tel"
                 id="contactNumber"
-                placeholder="09** *** ****"
+                placeholder="0927 123 4567"
                 value={formData.contactNumber}
                 onChange={handleInputChange}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
@@ -299,85 +297,90 @@ const Register = () => {
               <input
                 type="url"
                 id="facebookLink"
-                placeholder="https://www.facebook.com/juan.cruz.1898"
+                placeholder="https://facebook.com/john.doe"
                 value={formData.facebookLink}
                 onChange={handleInputChange}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
               />
             </div>
 
-            {/* Job Skill Sets */}
+            {/* Job Skillset */}
             <div>
               <label
                 htmlFor="jobSkillset"
                 className="block text-sm font-semibold text-gray-700">
-                Job Skill sets
+                Job Skillset <span className="text-red-500">*</span>
               </label>
-              <select
-                id="jobSkillset"
-                value={searchText}
-                onChange={handleSkillSearch}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none">
-                <option value="" disabled>
-                  Select Skill Set/s
-                </option>
-                {skillOptions.map((skill) => (
-                  <option key={skill} value={skill}>
+
+              <div className="relative">
+                <input
+                  type="text"
+                  value={searchText}
+                  onChange={handleSkillSearch}
+                  placeholder="Search job skills"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
+                />
+                {searchText && (
+                  <ul className="absolute z-10 w-full bg-white border border-gray-200 mt-1 rounded-lg shadow-lg">
+                    {filteredSkills.map((skill, index) => (
+                      <li
+                        key={index}
+                        className="px-4 py-2 text-gray-700 cursor-pointer hover:bg-blue-50"
+                        onClick={() => handleSkillAdd(skill)}
+                      >
+                        {skill}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.jobSkillset.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1 bg-gray-300 text-gray-700 rounded-lg text-sm flex items-center">
                     {skill}
-                  </option>
+                    <button
+                      type="button"
+                      onClick={() => handleSkillRemove(skill)}
+                      className="ml-2 text-red-500 hover:text-red-700"
+                    >
+                      &times;
+                    </button>
+                  </span>
                 ))}
-              </select>
+              </div>
             </div>
 
-            {/* Terms and Privacy */}
-            <p className="text-sm text-center text-gray-600">
-              By continuing, you are agreeing to our{" "}
-              <a href="/terms" className="text-blue-500 underline">
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a href="/privacy" className="text-blue-500 underline">
-                Privacy Policy
-              </a>
-              .
-            </p>
-            {/* Profile Image Upload */}
-            <div className="w-full p-4 border border-dashed rounded-lg text-center cursor-pointer">
+            {/* Upload Profile Picture */}
+            <div>
               <label
-                htmlFor="file-upload"
-                className="block w-full cursor-pointer">
-                {uploadedImage ? (
-                  <div className="flex flex-col items-center">
-                    <img
-                      src={URL.createObjectURL(uploadedImage)}
-                      alt="Profile"
-                      className="w-24 h-24 rounded-full object-cover mb-2"
-                    />
-                    <p className="text-sm">{uploadedImage.name}</p>
-                  </div>
-                ) : (
-                  <p>Drag & drop an image here or click to select one</p>
-                )}
+                htmlFor="imageUpload"
+                className="block text-sm font-semibold text-gray-700">
+                Profile Picture <span className="text-red-500">*</span>
               </label>
               <input
-                id="file-upload"
                 type="file"
+                id="imageUpload"
                 accept="image/*"
-                onChange={handleFilePicker}
-                className="hidden"
+                onChange={(e) => handleFilePicker(e)}
+                className="w-full text-sm mt-1"
               />
+              {imageError && (
+                <p className="text-red-500 text-xs mt-1">
+                  Please select an image file.
+                </p>
+              )}
             </div>
-            {imageError && (
-              <p className="text-red-500 text-sm mt-2">
-                Please upload a valid image.
-              </p>
-            )}
+
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={!isFormComplete || loading}
-              className="w-full bg-red-500 text-white px-3 py-2 rounded-lg font-bold text-lg hover:bg-red-600 transition focus:ring focus:ring-red-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
-              {loading ? "Submitting..." : "Sign Up"}
+              disabled={!isFormComplete}
+              className="w-full py-3 bg-blue-600 text-white rounded-lg text-lg font-semibold disabled:bg-gray-400"
+            >
+              {loading ? "Submitting..." : "Submit"}
             </button>
           </form>
         </div>
@@ -387,6 +390,7 @@ const Register = () => {
 };
 
 export default Register;
+
 // //
 // "use client";
 

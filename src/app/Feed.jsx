@@ -126,7 +126,7 @@ export default function Feed({ postData, userData }) {
           className="post bg-gradient-to-r from-white via-blue-50 to-indigo-100 rounded-lg shadow-lg mb-6 overflow-hidden"
         >
           {/* Header Section */}
-          <div className="flex items-center justify-between p-4 bg-indigo-100">
+          <div className="flex items-center justify-between p-4 bg-[#F8FBFF]">
             <div className="flex items-center space-x-2">
               {profileImages[post.postId] ? (
                 <img
@@ -164,7 +164,7 @@ export default function Feed({ postData, userData }) {
           </div>
 
           {/* Caption Section */}
-          <p className="p-4 text-sm font-semibold text-indigo-800 bg-indigo-100">
+          <p className="p-4 text-sm font-semibold text-indigo-800 bg-[#F8FBFF] ">
             {post.caption}
           </p>
 
