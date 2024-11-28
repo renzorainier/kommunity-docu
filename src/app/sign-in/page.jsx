@@ -48,7 +48,7 @@ const SignIn = () => {
         <h2 className="text-2xl font-extrabold text-gray-800 text-left">Log In</h2>
       </div>
       {/* Terms and Policy Section */}
-      <div className="w-full pl-5">
+      <div className="w-full mt-4 pl-8">
         <p className="text-gray-600 text-sm">
           By continuing, you are agreeing to our{" "}
           <a
