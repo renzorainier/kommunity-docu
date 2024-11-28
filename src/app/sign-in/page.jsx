@@ -40,7 +40,7 @@ const SignIn = () => {
           height={170}
           alt="KommUnity Logo"
         />
-        <h1 className="text-4xl font-bold text-[#323030] mt-4">KommUnity</h1>
+        <h1 className="text-4xl font-black text-[#323030] mt-[-6px]">KommUnity</h1>
       </div>
 
       {/* Login Header */}

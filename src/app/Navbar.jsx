@@ -9,7 +9,7 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
     // Render navbar when activeComponent is 'feed'
     return (
       <>
-        <nav className="fixed top-0 left-0 right-0 bg-[#E0EAF6] shadow-sm z-10 flex justify-between items-center px-5 py-1 border-b border-indigo-300">
+        <nav className="fixed top-0 left-0 right-0 bg-[#E0EAF6] shadow-sm z-1 flex justify-between items-center px-4 py-0 border-b border-grey-600">
           {/* App Logo and Title */}
           <div className="flex items-center ml-[-20px]">
             <Image
@@ -18,7 +18,7 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
               height={70}
               alt="KommUnity Logo"
             />
-            <span className="text-lg font-bold text-[#323030] font-inter ml-[-10px]">
+            <span className="text-xl font-bold text-[#323030] font-inter ml-[-10px]">
               KommUnity
             </span>
           </div>
@@ -39,6 +39,9 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
             </button>
           </div>
         </nav>
+
+        {/* Horizontal line */}
+        <hr className="fixed top-[70px] left-0 right-0 border-t border-gray-300 z-1" />
 
         {/* Floating Create Post Button, only visible in feed */}
         <button
@@ -63,6 +66,7 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
     </>
   );
 }
+
 
 // import React, { useState, useEffect } from "react";
 // import { useRouter } from "next/navigation";
