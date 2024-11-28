@@ -126,11 +126,11 @@ const Register = () => {
         imageUrl = await getDownloadURL(storageRef);
       }
 
-      const fullName = `${formData.firstName} ${formData.surname}`; // Merge names
+      const fullName = `${formData.firstName} ${formData.surname}`;
 
       const userRef = doc(db, "users", user.uid);
       await setDoc(userRef, {
-        name: fullName, // Store merged name
+        name: fullName,
         contactNumber: formData.contactNumber,
         facebookLink: formData.facebookLink,
         email: formData.email,
@@ -198,118 +198,133 @@ const Register = () => {
           </div>
         </div>
       ) : (
-        //  Registration Layout
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-200 to-gray-400">
-          <div className="bg-white shadow-xl rounded-lg max-w-2xl w-full p-8">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-blue-800">Complete Your Registration</h1>
-              <p className="mt-2 text-gray-600">
-                Fill out the fields below to complete your profile.
-              </p>
+        // Updated Registration Layout
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+          <div className="bg-white shadow-lg rounded-lg max-w-md w-full p-6">
+            <div className="text-center mb-6">
+              <Image src={teen} width={100} height={100} alt="KommUnity Logo" />
+              <h1 className="text-2xl font-bold text-gray-800 mt-2">KommUnity</h1>
             </div>
-            {showError && (
-              <p className="text-center text-red-500 mt-4">
-                Error: Please try again later.
-              </p>
-            )}
-            <form onSubmit={handleSubmit} className="space-y-6 mt-8">
-              <input
-                type="text"
-                id="firstName"
-                placeholder="First Name"
-                value={formData.firstName}
-                onChange={handleInputChange}
-                required
-                className="w-full border rounded-lg p-3"
-              />
-              <input
-                type="text"
-                id="surname"
-                placeholder="Surname"
-                value={formData.surname}
-                onChange={handleInputChange}
-                required
-                className="w-full border rounded-lg p-3"
-              />
-              <input
-                type="text"
-                id="contactNumber"
-                placeholder="Contact Number"
-                value={formData.contactNumber}
-                onChange={handleInputChange}
-                required
-                className="w-full border rounded-lg p-3"
-              />
-              <input
-                type="url"
-                id="facebookLink"
-                placeholder="Facebook Link"
-                value={formData.facebookLink}
-                onChange={handleInputChange}
-                required
-                className="w-full border rounded-lg p-3"
-              />
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block font-bold mb-2">Search Skills:</label>
+                <label htmlFor="firstName" className="block text-sm font-bold text-gray-700">
+                  First Name <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
-                  placeholder="Type a skill..."
-                  value={searchText}
-                  onChange={handleSkillSearch}
-                  className="w-full border rounded-lg p-3"
+                  id="firstName"
+                  placeholder="Juan"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full border border-gray-300 rounded-lg p-2.5 mt-1"
                 />
-                {filteredSkills.length > 0 && (
-                  <ul className="border mt-2 rounded-lg max-h-40 overflow-y-auto">
-                    {filteredSkills.map((skill) => (
-                      <li
-                        key={skill}
-                        onClick={() => handleSkillAdd(skill)}
-                        className="p-2 cursor-pointer hover:bg-gray-100"
-                      >
-                        {skill}
-                      </li>
-                    ))}
-                  </ul>
-                )}
               </div>
-              {formData.jobSkillset.length > 0 && (
-                <div>
-                  <p className="font-bold">Selected Skills:</p>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {formData.jobSkillset.map((skill) => (
-                      <span
-                        key={skill}
-                        className="bg-blue-100 text-blue-600 py-1 px-3 rounded-full"
-                      >
-                        {skill}{" "}
-                        <button
-                          type="button"
-                          onClick={() => handleSkillRemove(skill)}
-                          className="ml-2 text-red-500"
-                        >
-                          x
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
               <div>
-                <label className="block font-bold mb-2">Profile Image:</label>
+                <label htmlFor="surname" className="block text-sm font-bold text-gray-700">
+                  Surname <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="surname"
+                  placeholder="Cruz"
+                  value={formData.surname}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full border border-gray-300 rounded-lg p-2.5 mt-1"
+                />
+              </div>
+              <div>
+                <label htmlFor="contactNumber" className="block text-sm font-bold text-gray-700">
+                  Contact Number
+                </label>
+                <input
+                  type="text"
+                  id="contactNumber"
+                  placeholder="09** *** ****"
+                  value={formData.contactNumber}
+                  onChange={handleInputChange}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 mt-1"
+                />
+              </div>
+              <div>
+                <label htmlFor="facebookLink" className="block text-sm font-bold text-gray-700">
+                  Facebook Link
+                </label>
+                <input
+                  type="url"
+                  id="facebookLink"
+                  placeholder="https://www.facebook.com/juan.cruz.1898"
+                  value={formData.facebookLink}
+                  onChange={handleInputChange}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 mt-1"
+                />
+              </div>
+              <div>
+                <label htmlFor="jobSkillset" className="block text-sm font-bold text-gray-700">
+                  Job Skill Sets
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="jobSkillset"
+                    placeholder="Search and select skill sets"
+                    value={searchText}
+                    onChange={handleSkillSearch}
+                    className="w-full border border-gray-300 rounded-lg p-2.5 mt-1"
+                  />
+                  {filteredSkills.length > 0 && (
+                    <ul className="absolute bg-white border border-gray-300 rounded-lg w-full mt-1 max-h-40 overflow-y-auto z-10">
+                      {filteredSkills.map((skill) => (
+                        <li
+                          key={skill}
+                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                          onClick={() => handleSkillAdd(skill)}
+                        >
+                          {skill}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {formData.jobSkillset.map((skill) => (
+                    <span
+                      key={skill}
+                      className="bg-blue-500 text-white text-sm px-2 py-1 rounded-lg flex items-center gap-1"
+                    >
+                      {skill}
+                      <button
+                        type="button"
+                        className="text-xs font-bold"
+                        onClick={() => handleSkillRemove(skill)}
+                      >
+                        ✕
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700">
+                  Profile Image
+                </label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleFilePicker}
-                  className="w-full"
+                  className="w-full mt-1"
                 />
-                {imageError && <p className="text-red-500">Please upload an image</p>}
+                {imageError && (
+                  <p className="text-red-500 text-sm mt-1">
+                    Please upload an image
+                  </p>
+                )}
               </div>
               <button
                 type="submit"
                 disabled={!isFormComplete || loading}
-                className={`w-full p-3 bg-blue-600 text-white font-bold rounded-lg shadow ${
-                  loading && "opacity-50 cursor-not-allowed"
-                }`}
+                className="w-full p-3 mt-4 bg-blue-500 text-white rounded-lg font-bold shadow hover:shadow-md disabled:bg-gray-300 transition"
               >
                 {loading ? "Submitting..." : "Submit"}
               </button>
@@ -322,6 +337,7 @@ const Register = () => {
 };
 
 export default Register;
+
 
 
 
