@@ -92,7 +92,7 @@ const SignIn = () => {
         <p className="text-gray-600">
           Need an account?{" "}
           <a
-            href="/signup"
+            href="/sign-up"
             className="text-blue-500 hover:underline"
           >
             Sign up
