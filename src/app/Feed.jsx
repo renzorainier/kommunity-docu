@@ -170,17 +170,17 @@ export default function Feed({ postData, userData }) {
 
           {/* Post Image */}
           {post.postPicRef && postImages[post.postId] ? (
-            <div>
-              <img
-                src={postImages[post.postId]}
-                alt="Post"
-                className="w-full object-cover"
-              />
-            </div>
-          ) : (
-            post.postPicRef && (
-              <p className="text-gray-500 p-4">Loading post image...</p>
-            )
+          <div className="relative pb-9 bg-[#E0EAF6]">
+          <img
+          src={postImages[post.postId]}
+          alt="Post"
+          className="w-full object-cover" // Keeps the image proportional without stretching
+          />
+          </div>
+        ) : (
+        post.postPicRef && (
+    <p className="text-gray-500 p-4">Loading post image...</p>
+  )
           )}
         </div>
       ))}
