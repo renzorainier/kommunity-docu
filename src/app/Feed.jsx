@@ -119,7 +119,7 @@ export default function Feed({ postData, userData }) {
   const recentPosts = getRecentPosts();
 
   return (
-    <div className="feed max-w-3xl mx-auto p-4 bg-gray-50 min-h-screen">
+    <div className="feed max-w-3xl mx-auto p-4 bg-[#F8FBFF] min-h-screen">
       {recentPosts.map((post) => (
         <div
           key={post.postId}
