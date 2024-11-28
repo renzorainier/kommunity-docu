@@ -149,7 +149,6 @@ const Register = () => {
     }
   };
 
-
   const isFormComplete =
     formData.firstName &&
     formData.surname &&
@@ -158,144 +157,174 @@ const Register = () => {
     uploadedImage;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-300 p-4">
-      <div className="bg-white rounded-lg shadow-lg flex flex-col w-full max-w-lg">
-        <div className="w-full p-8 flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-t-lg">
-          <Image src={teen} width={260} height={260} alt="Teen Image" />
-        </div>
-        <div className="w-full p-8 flex flex-col justify-center items-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Create Your Account</h1>
-          {showError && (
-            <p className="text-red-500 mb-4 text-center">
-              Error: Please try again later.
+    <>
+      {!formData.email ? (
+        // Initial Sign-Up View
+        <div className="initial-sign-up min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+            <div className="flex flex-col items-center">
+              <Image src={teen} width={120} height={120} alt="KommUnity Logo" />
+              <h1 className="text-3xl font-bold text-gray-800 mt-4">KommUnity</h1>
+            </div>
+            <p className="text-gray-600 text-center mt-4">
+              By continuing, you are agreeing to our{" "}
+              <a href="/terms" className="text-blue-500 underline">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a href="/privacy" className="text-blue-500 underline">
+                Privacy Policy
+              </a>.
             </p>
-          )}
-          <button
-            onClick={handleGoogleSignIn}
-            className="w-full p-3 bg-white text-black font-bold rounded-lg shadow-md"
-            disabled={loading}
-          >
-            {loading ? "Signing up with Google..." : "Sign up with Google"}
-          </button>
-          {formData.email && (
-            <form onSubmit={handleSubmit} className="mt-6 space-y-6 w-full">
-              <input
-                type="text"
-                id="firstName"
-                placeholder="First Name"
-                value={formData.firstName}
-                onChange={handleInputChange}
-                required
-                className="w-full border rounded-lg p-3"
+            <button
+              onClick={handleGoogleSignIn}
+              className="mt-6 w-full flex items-center justify-center gap-2 p-3 bg-white border border-gray-300 text-gray-600 font-bold rounded-lg shadow-sm hover:shadow-md transition"
+              disabled={loading}
+            >
+              <Image
+                src="/google-icon.svg" // Replace with the correct path to your Google logo icon
+                width={20}
+                height={20}
+                alt="Google Icon"
               />
-              <input
-                type="text"
-                id="surname"
-                placeholder="Surname"
-                value={formData.surname}
-                onChange={handleInputChange}
-                required
-                className="w-full border rounded-lg p-3"
-              />
-              <input
-                type="text"
-                id="contactNumber"
-                placeholder="Contact Number"
-                value={formData.contactNumber}
-                onChange={handleInputChange}
-                required
-                className="w-full border rounded-lg p-3"
-              />
-              <input
-                type="url"
-                id="facebookLink"
-                placeholder="Facebook Link"
-                value={formData.facebookLink}
-                onChange={handleInputChange}
-                required
-                className="w-full border rounded-lg p-3"
-              />
-
-              <div className="w-full">
-                <label className="block mb-2 font-bold">Search Skills:</label>
+              {loading ? "Signing up with Google..." : "Continue with Google"}
+            </button>
+            <p className="text-center text-gray-600 mt-4">
+              Already have an account?{" "}
+              <a href="/login" className="text-blue-500 underline">
+                Log In
+              </a>
+            </p>
+          </div>
+        </div>
+      ) : (
+        // Form for Completing Registration
+        <div className="min-h-screen flex items-center justify-center bg-gray-300 p-4">
+          <div className="bg-white rounded-lg shadow-lg flex flex-col w-full max-w-lg">
+            <div className="w-full p-8 flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-t-lg">
+              <Image src={teen} width={260} height={260} alt="Teen Image" />
+            </div>
+            <div className="w-full p-8 flex flex-col justify-center items-center">
+              <h1 className="text-4xl font-bold text-gray-800 mb-4">
+                Create Your Account
+              </h1>
+              {showError && (
+                <p className="text-red-500 mb-4 text-center">
+                  Error: Please try again later.
+                </p>
+              )}
+              <form onSubmit={handleSubmit} className="mt-6 space-y-6 w-full">
                 <input
                   type="text"
-                  placeholder="Type a skill..."
-                  value={searchText}
-                  onChange={handleSkillSearch}
+                  id="firstName"
+                  placeholder="First Name"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  required
                   className="w-full border rounded-lg p-3"
                 />
-                {filteredSkills.length > 0 && (
-                  <ul className="border mt-2 rounded-lg max-h-40 overflow-y-scroll">
-                    {filteredSkills.map((skill) => (
-                      <li
-                        key={skill}
-                        onClick={() => handleSkillAdd(skill)}
-                        className="p-2 cursor-pointer hover:bg-gray-100"
-                      >
-                        {skill}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {formData.jobSkillset.map((skill) => (
-                    <div
-                      key={skill}
-                      className="bg-gray-200 rounded-full px-4 py-1 text-sm flex items-center gap-2"
-                    >
-                      {skill}
-                      <button
-                        type="button"
-                        onClick={() => handleSkillRemove(skill)}
-                        className="text-red-500 font-bold"
-                      >
-                        x
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div
-                className="w-full p-4 border border-dashed rounded-lg text-center cursor-pointer"
-                onClick={() => document.getElementById("file-upload").click()}
-              >
-                <label htmlFor="file-upload" className="block w-full cursor-pointer">
-                  {uploadedImage ? (
-                    <p>{uploadedImage.name}</p>
-                  ) : (
-                    <p>Drag & drop an image here or click to select one</p>
-                  )}
-                </label>
                 <input
-                  id="file-upload"
+                  type="text"
+                  id="surname"
+                  placeholder="Surname"
+                  value={formData.surname}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full border rounded-lg p-3"
+                />
+                <input
+                  type="text"
+                  id="contactNumber"
+                  placeholder="Contact Number"
+                  value={formData.contactNumber}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full border rounded-lg p-3"
+                />
+                <input
+                  type="url"
+                  id="facebookLink"
+                  placeholder="Facebook Link"
+                  value={formData.facebookLink}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full border rounded-lg p-3"
+                />
+                <div className="w-full">
+                  <label className="block mb-2 font-bold">Search Skills:</label>
+                  <input
+                    type="text"
+                    placeholder="Type a skill..."
+                    value={searchText}
+                    onChange={handleSkillSearch}
+                    className="w-full border rounded-lg p-3"
+                  />
+                  {filteredSkills.length > 0 && (
+                    <ul className="border mt-2 rounded-lg max-h-40 overflow-y-scroll">
+                      {filteredSkills.map((skill) => (
+                        <li
+                          key={skill}
+                          onClick={() => handleSkillAdd(skill)}
+                          className="p-2 cursor-pointer hover:bg-gray-100"
+                        >
+                          {skill}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                {formData.jobSkillset.length > 0 && (
+                  <div className="w-full mt-4">
+                    <label className="block mb-2 font-bold">Selected Skills:</label>
+                    <ul className="flex flex-wrap gap-2">
+                      {formData.jobSkillset.map((skill) => (
+                        <li
+                          key={skill}
+                          className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-lg"
+                        >
+                          {skill}
+                          <button
+                            type="button"
+                            onClick={() => handleSkillRemove(skill)}
+                            className="text-white hover:text-gray-300"
+                          >
+                            &times;
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                <label className="block mt-4 mb-2 font-bold">Profile Image:</label>
+                <input
                   type="file"
                   accept="image/*"
                   onChange={handleFilePicker}
-                  className="hidden"
+                  className="w-full"
                 />
-              </div>
-              {imageError && (
-                <p className="text-red-500 text-sm mt-2">Please upload a valid image.</p>
-              )}
-
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white font-bold py-2 rounded-lg"
-                disabled={!isFormComplete || loading}
-              >
-                {loading ? "Submitting..." : "Complete Registration"}
-              </button>
-            </form>
-          )}
+                {imageError && (
+                  <p className="text-red-500 mt-2">Please upload an image.</p>
+                )}
+                <button
+                  type="submit"
+                  className={`mt-6 w-full py-3 bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 transition ${
+                    !isFormComplete && "opacity-50 cursor-not-allowed"
+                  }`}
+                  disabled={!isFormComplete || loading}
+                >
+                  {loading ? "Submitting..." : "Complete Registration"}
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
 export default Register;
+
 
 
 //workin ver 26
