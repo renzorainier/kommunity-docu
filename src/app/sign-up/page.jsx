@@ -8,16 +8,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import teen from "../img.png";
-
-const skillOptions = [
-  "Web Development",
-  "Graphic Design",
-  "Data Analysis",
-  "Content Writing",
-  "Marketing",
-  "Project Management",
-  "Software Testing",
-];
+import google from "../sign-in/search.png"
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -28,12 +19,8 @@ const Register = () => {
     email: "",
     jobSkillset: [],
   });
-  const [searchText, setSearchText] = useState("");
-  const [filteredSkills, setFilteredSkills] = useState(skillOptions);
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const [imageError, setImageError] = useState(false);
-  const [showError, setShowError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
   const router = useRouter();
 
   const handleGoogleSignIn = async () => {
@@ -64,238 +51,76 @@ const Register = () => {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
-  };
-
-  const handleSkillSearch = (e) => {
-    const text = e.target.value;
-    setSearchText(text);
-    setFilteredSkills(
-      skillOptions.filter(
-        (skill) =>
-          skill.toLowerCase().includes(text.toLowerCase()) &&
-          !formData.jobSkillset.includes(skill)
-      )
-    );
-  };
-
-  const handleSkillAdd = (skill) => {
-    setFormData((prev) => ({
-      ...prev,
-      jobSkillset: [...prev.jobSkillset, skill],
-    }));
-    setSearchText("");
-    setFilteredSkills([]);
-  };
-
-  const handleSkillRemove = (skill) => {
-    setFormData((prev) => ({
-      ...prev,
-      jobSkillset: prev.jobSkillset.filter((s) => s !== skill),
-    }));
-  };
-
-  const handleImageUpload = (file) => {
-    if (!file) {
-      setImageError(true);
-      return;
-    }
-    setImageError(false);
-    setUploadedImage(file);
-  };
-
-  const handleFilePicker = (e) => {
-    const file = e.target.files[0];
-    handleImageUpload(file);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const user = auth.currentUser;
-      if (!user) throw new Error("User is not authenticated");
-
-      let imageUrl = "";
-      if (uploadedImage) {
-        const storageRef = ref(storage, `images/${user.uid}/${uploadedImage.name}`);
-        await uploadBytes(storageRef, uploadedImage);
-        imageUrl = await getDownloadURL(storageRef);
-      }
-
-      const fullName = `${formData.firstName} ${formData.surname}`; // Merge names
-
-      const userRef = doc(db, "users", user.uid);
-      await setDoc(userRef, {
-        name: fullName, // Store merged name
-        contactNumber: formData.contactNumber,
-        facebookLink: formData.facebookLink,
-        email: formData.email,
-        jobSkillset: formData.jobSkillset,
-        imageUrl,
-        userID: user.uid,
-      });
-
-      alert("Registration complete! Welcome, " + fullName);
-      router.push("/");
-    } catch (error) {
-      console.error("Error submitting form: ", error);
-      setShowError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
-  const isFormComplete =
-    formData.firstName &&
-    formData.surname &&
-    formData.contactNumber &&
-    formData.facebookLink &&
-    uploadedImage;
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-300 p-4">
-      <div className="bg-white rounded-lg shadow-lg flex flex-col w-full max-w-lg">
-        <div className="w-full p-8 flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-t-lg">
-          <Image src={teen} width={260} height={260} alt="Teen Image" />
-        </div>
-        <div className="w-full p-8 flex flex-col justify-center items-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Create Your Account</h1>
-          {showError && (
-            <p className="text-red-500 mb-4 text-center">
-              Error: Please try again later.
-            </p>
-          )}
-          <button
-            onClick={handleGoogleSignIn}
-            className="w-full p-3 bg-white text-black font-bold rounded-lg shadow-md"
-            disabled={loading}
+    <div className="min-h-screen flex flex-col items-center justify-between bg-white">
+      {/* Header Section */}
+      <div className="flex flex-col items-center mt-12">
+        <Image
+          src={teen}
+          width={100}
+          height={100}
+          alt="KommUnity Logo"
+        />
+        <h1 className="text-2xl font-bold text-gray-800 mt-4">KommUnity</h1>
+      </div>
+
+      {/* Content Section */}
+      <div className="w-full px-8 mt-8">
+        <h2 className="text-xl font-semibold text-gray-800 text-center mb-4">Sign up</h2>
+        <p className="text-center text-gray-600 mb-6">
+          By continuing, you are agreeing to our{" "}
+          <a
+            href="/terms"
+            className="text-blue-500 hover:underline"
           >
-            {loading ? "Signing up with Google..." : "Sign up with Google"}
-          </button>
-          {formData.email && (
-            <form onSubmit={handleSubmit} className="mt-6 space-y-6 w-full">
-              <input
-                type="text"
-                id="firstName"
-                placeholder="First Name"
-                value={formData.firstName}
-                onChange={handleInputChange}
-                required
-                className="w-full border rounded-lg p-3"
-              />
-              <input
-                type="text"
-                id="surname"
-                placeholder="Surname"
-                value={formData.surname}
-                onChange={handleInputChange}
-                required
-                className="w-full border rounded-lg p-3"
-              />
-              <input
-                type="text"
-                id="contactNumber"
-                placeholder="Contact Number"
-                value={formData.contactNumber}
-                onChange={handleInputChange}
-                required
-                className="w-full border rounded-lg p-3"
-              />
-              <input
-                type="url"
-                id="facebookLink"
-                placeholder="Facebook Link"
-                value={formData.facebookLink}
-                onChange={handleInputChange}
-                required
-                className="w-full border rounded-lg p-3"
-              />
+            Terms of Service
+          </a>{" "}
+          and{" "}
+          <a
+            href="/privacy"
+            className="text-blue-500 hover:underline"
+          >
+            Privacy Policy
+          </a>.
+        </p>
 
-              <div className="w-full">
-                <label className="block mb-2 font-bold">Search Skills:</label>
-                <input
-                  type="text"
-                  placeholder="Type a skill..."
-                  value={searchText}
-                  onChange={handleSkillSearch}
-                  className="w-full border rounded-lg p-3"
-                />
-                {filteredSkills.length > 0 && (
-                  <ul className="border mt-2 rounded-lg max-h-40 overflow-y-scroll">
-                    {filteredSkills.map((skill) => (
-                      <li
-                        key={skill}
-                        onClick={() => handleSkillAdd(skill)}
-                        className="p-2 cursor-pointer hover:bg-gray-100"
-                      >
-                        {skill}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {formData.jobSkillset.map((skill) => (
-                    <div
-                      key={skill}
-                      className="bg-gray-200 rounded-full px-4 py-1 text-sm flex items-center gap-2"
-                    >
-                      {skill}
-                      <button
-                        type="button"
-                        onClick={() => handleSkillRemove(skill)}
-                        className="text-red-500 font-bold"
-                      >
-                        x
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
+        {/* Error Message */}
+        {showError && (
+          <p className="text-red-500 text-center text-sm mb-4">
+            Error with Google Sign-Up. Please try again.
+          </p>
+        )}
 
-              <div
-                className="w-full p-4 border border-dashed rounded-lg text-center cursor-pointer"
-                onClick={() => document.getElementById("file-upload").click()}
-              >
-                <label htmlFor="file-upload" className="block w-full cursor-pointer">
-                  {uploadedImage ? (
-                    <p>{uploadedImage.name}</p>
-                  ) : (
-                    <p>Drag & drop an image here or click to select one</p>
-                  )}
-                </label>
-                <input
-                  id="file-upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFilePicker}
-                  className="hidden"
-                />
-              </div>
-              {imageError && (
-                <p className="text-red-500 text-sm mt-2">Please upload a valid image.</p>
-              )}
+        {/* Google Sign-Up Button */}
+        <button
+          onClick={handleGoogleSignIn}
+          className="flex items-center justify-center w-full p-3 bg-white text-gray-800 border border-gray-300 rounded-md shadow hover:bg-gray-50 transition duration-300"
+          disabled={loading}
+        >
+          <span className="text-lg">
+            {loading ? "Signing Up with Google..." : "Continue with Google"}
+          </span>
+        </button>
+      </div>
 
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white font-bold py-2 rounded-lg"
-                disabled={!isFormComplete || loading}
-              >
-                {loading ? "Submitting..." : "Complete Registration"}
-              </button>
-            </form>
-          )}
-        </div>
+      {/* Footer Section */}
+      <div className="w-full flex flex-col items-center pb-8 mt-6">
+        <p className="text-gray-600 text-sm">
+          Already have an account?{" "}
+          <a
+            href="/sign-in"
+            className="text-blue-500 hover:underline"
+          >
+            Log In
+          </a>
+        </p>
       </div>
     </div>
   );
 };
 
 export default Register;
+
 
 
 //workin ver 26
