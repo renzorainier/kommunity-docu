@@ -147,14 +147,14 @@ export default function Feed({ postData, userData }) {
             {/* Status Badges */}
             <div className="flex items-center space-x-2">
               {post.category && (
-                <span className="text-sm py-1 px-3 rounded-full bg-purple-300 text-purple-800">
+                <span className="text-sm py-1 px-3 rounded-full bg-[#5856D6] text-[#FFFFFF]">
                   {post.category}
                 </span>
               )}
               <span
                 className={`text-sm py-1 px-3 rounded-full ${
                   post.isAvailable
-                    ? "bg-green-300 text-green-900"
+                    ? "bg-[#B3BBC5] text-green-900"
                     : "bg-red-300 text-red-900"
                 }`}
               >
