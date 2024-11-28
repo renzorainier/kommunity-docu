@@ -673,3 +673,115 @@ export default SignIn;
 // };
 
 // export default SignIn;
+
+
+
+
+//working ver 28
+
+// 'use client';
+
+// import Image from "next/image";
+// import { useState } from "react";
+// import { useRouter } from "next/navigation";
+// import { auth } from "@/app/firebase/config";
+// import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+// import teen from "../img.png";
+// import google from "./search.png"
+
+// const SignIn = () => {
+//   const [showGoogleError, setShowGoogleError] = useState(false);
+//   const [googleLoading, setGoogleLoading] = useState(false);
+//   const router = useRouter();
+
+//   const handleGoogleSignIn = async () => {
+//     setGoogleLoading(true);
+//     try {
+//       const provider = new GoogleAuthProvider();
+//       provider.setCustomParameters({ prompt: "select_account" });
+//       await signInWithPopup(auth, provider);
+//       router.push("/");
+//     } catch (e) {
+//       console.error(e);
+//       setShowGoogleError(true);
+//       setTimeout(() => setShowGoogleError(false), 3000); // Clear error message after 3 seconds
+//     } finally {
+//       setGoogleLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen flex flex-col items-center justify-between bg-white">
+//       <link rel="manifest" href="/manifest.json" />
+
+//       {/* Logo and Header Section */}
+//       <div className="flex flex-col items-center mt-12">
+//         <Image
+//           src={teen} // Logo image
+//           width={100}
+//           height={100}
+//           alt="KommUnity Logo"
+//         />
+//         <h1 className="text-2xl font-bold text-gray-800 mt-4">KommUnity</h1>
+//       </div>
+
+//       {/* Content Section */}
+//       <div className="w-full px-8">
+//         <p className="text-center text-gray-600 mb-6">
+//           By continuing, you are agreeing to our{" "}
+//           <a
+//             href="/terms"
+//             className="text-blue-500 hover:underline"
+//           >
+//             Terms of Service
+//           </a>{" "}
+//           and{" "}
+//           <a
+//             href="/privacy"
+//             className="text-blue-500 hover:underline"
+//           >
+//             Privacy Policy
+//           </a>.
+//         </p>
+
+//         {/* Error Message */}
+//         {showGoogleError && (
+//           <p className="text-red-500 text-center mb-4">
+//             Error with Google Sign-In. Please try again.
+//           </p>
+//         )}
+
+//         {/* Google Sign-In Button */}
+//         <button
+//           onClick={handleGoogleSignIn}
+//           className="flex items-center justify-center w-full p-3 bg-white text-gray-800 border border-gray-300 rounded-md shadow hover:bg-gray-50 transition duration-300"
+//           disabled={googleLoading}
+//         >
+//           <Image
+//             src={google}
+//             alt="Google Icon"
+//             width={20}
+//             height={20}
+//             className="mr-2"
+//           />
+//           {googleLoading ? "Signing In with Google..." : "Continue with Google"}
+//         </button>
+//       </div>
+
+//       {/* Footer */}
+//       <div className="w-full flex flex-col items-center pb-8">
+//         <p className="text-gray-600">
+//           Need an account?{" "}
+//           <a
+//             href="/sign-up"
+//             className="text-blue-500 hover:underline"
+//           >
+//             Sign up
+//           </a>
+//         </p>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SignIn;
