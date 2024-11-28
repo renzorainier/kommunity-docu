@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "./firebase"; // Ensure correct Firebase configuration
 import { CgProfile } from "react-icons/cg";
+import Header from "./Header"
 
 export default function Profile({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
