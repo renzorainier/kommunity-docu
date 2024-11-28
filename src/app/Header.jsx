@@ -18,68 +18,71 @@ const Header = ({ userData }) => {
         </button>
       </div>
 
-      {/* Profile Section */}
-      <div className="flex items-center space-x-6 bg-white p-6 rounded-lg shadow-xl relative z-10">
-        {/* Profile Picture */}
-        <div className="relative">
-          <img
-            src={imageUrl}
-            alt={`${name}'s profile`}
-            className="w-24 h-24 rounded-full object-cover border-4 border-gray-300 shadow-lg"
-          />
-        </div>
-
-        {/* User Info */}
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold text-gray-800">{name}</h1>
-          {/* Icons for Contact Info */}
-          <div className="flex space-x-6 mt-3 text-gray-700">
-            {facebookLink && (
-              <a
-                href={facebookLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 hover:text-blue-600 transition duration-300">
-                <FaFacebook className="text-xl" />
-                <span className="hidden md:inline">Facebook</span>
-              </a>
-            )}
-            {contactNumber && (
-              <div className="flex items-center space-x-2">
-                <FaPhoneAlt className="text-xl text-green-500" />
-                <span>{contactNumber}</span>
-              </div>
-            )}
-            {email && (
-              <div className="flex items-center space-x-2">
-                <FaEnvelope className="text-xl text-purple-500" />
-                <span>{email}</span>
-              </div>
-            )}
+      {/* Profile and Skills Section */}
+      <div className="bg-white p-6 rounded-lg shadow-xl relative z-10">
+        {/* Profile Section */}
+        <div className="flex items-center space-x-6">
+          {/* Profile Picture */}
+          <div className="relative">
+            <img
+              src={imageUrl}
+              alt={`${name}'s profile`}
+              className="w-24 h-24 rounded-full object-cover border-4 border-gray-300 shadow-lg"
+            />
           </div>
+
+          {/* User Info */}
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold text-gray-800">{name}</h1>
+            {/* Icons for Contact Info */}
+            <div className="flex space-x-6 mt-3 text-gray-700">
+              {facebookLink && (
+                <a
+                  href={facebookLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2 hover:text-blue-600 transition duration-300">
+                  <FaFacebook className="text-xl" />
+                  <span className="hidden md:inline">Facebook</span>
+                </a>
+              )}
+              {contactNumber && (
+                <div className="flex items-center space-x-2">
+                  <FaPhoneAlt className="text-xl text-green-500" />
+                  <span>{contactNumber}</span>
+                </div>
+              )}
+              {email && (
+                <div className="flex items-center space-x-2">
+                  <FaEnvelope className="text-xl text-purple-500" />
+                  <span>{email}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Options Menu */}
+          <button className="p-2 text-gray-600 hover:text-gray-800 transition duration-300">
+            <span className="text-2xl">•••</span>
+          </button>
         </div>
 
-        {/* Options Menu */}
-        <button className="p-2 text-gray-600 hover:text-gray-800 transition duration-300">
-          <span className="text-2xl">•••</span>
-        </button>
+        {/* Skills Section */}
+        {jobSkillset?.length > 0 && (
+          <div className="mt-6">
+            <h3 className="font-semibold text-gray-800 text-lg">Job Skill Sets:</h3>
+            <ul className="flex flex-wrap gap-3 mt-3">
+              {jobSkillset.map((skill, index) => (
+                <li
+                  key={index}
+                  className="bg-gray-100 text-gray-800 py-2 px-4 rounded-full shadow-sm text-sm">
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
-
-      {/* Skills Section */}
-      {jobSkillset?.length > 0 && (
-        <div className="mt-6 bg-white p-5 rounded-lg shadow-lg">
-          <h3 className="font-semibold text-gray-800 text-lg">Job Skill Sets:</h3>
-          <ul className="flex flex-wrap gap-3 mt-3">
-            {jobSkillset.map((skill, index) => (
-              <li
-                key={index}
-                className="bg-gray-100 text-gray-800 py-2 px-4 rounded-full shadow-sm text-sm">
-                {skill}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 };
