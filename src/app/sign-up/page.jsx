@@ -159,7 +159,7 @@ const Register = () => {
   return (
     <>
       {!formData.email ? (
-        // Initial Sign-Up View
+        // Initial Sign-Up View (Unchanged)
         <div className="initial-sign-up min-h-screen flex items-center justify-center bg-gray-50">
           <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
             <div className="flex flex-col items-center">
@@ -182,7 +182,7 @@ const Register = () => {
               disabled={loading}
             >
               <Image
-                src="/google-icon.svg" // Replace with the correct path to your Google logo icon
+                src="/google-icon.svg"
                 width={20}
                 height={20}
                 alt="Google Icon"
@@ -198,124 +198,122 @@ const Register = () => {
           </div>
         </div>
       ) : (
-        // Form for Completing Registration
-        <div className="min-h-screen flex items-center justify-center bg-gray-300 p-4">
-          <div className="bg-white rounded-lg shadow-lg flex flex-col w-full max-w-lg">
-            <div className="w-full p-8 flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-t-lg">
-              <Image src={teen} width={260} height={260} alt="Teen Image" />
+        // Updated Registration Layout
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-200 to-gray-400">
+          <div className="bg-white shadow-xl rounded-lg max-w-2xl w-full p-8">
+            <div className="text-center">
+              <h1 className="text-3xl font-bold text-blue-800">Complete Your Registration</h1>
+              <p className="mt-2 text-gray-600">
+                Fill out the fields below to complete your profile.
+              </p>
             </div>
-            <div className="w-full p-8 flex flex-col justify-center items-center">
-              <h1 className="text-4xl font-bold text-gray-800 mb-4">
-                Create Your Account
-              </h1>
-              {showError && (
-                <p className="text-red-500 mb-4 text-center">
-                  Error: Please try again later.
-                </p>
-              )}
-              <form onSubmit={handleSubmit} className="mt-6 space-y-6 w-full">
+            {showError && (
+              <p className="text-center text-red-500 mt-4">
+                Error: Please try again later.
+              </p>
+            )}
+            <form onSubmit={handleSubmit} className="space-y-6 mt-8">
+              <input
+                type="text"
+                id="firstName"
+                placeholder="First Name"
+                value={formData.firstName}
+                onChange={handleInputChange}
+                required
+                className="w-full border rounded-lg p-3"
+              />
+              <input
+                type="text"
+                id="surname"
+                placeholder="Surname"
+                value={formData.surname}
+                onChange={handleInputChange}
+                required
+                className="w-full border rounded-lg p-3"
+              />
+              <input
+                type="text"
+                id="contactNumber"
+                placeholder="Contact Number"
+                value={formData.contactNumber}
+                onChange={handleInputChange}
+                required
+                className="w-full border rounded-lg p-3"
+              />
+              <input
+                type="url"
+                id="facebookLink"
+                placeholder="Facebook Link"
+                value={formData.facebookLink}
+                onChange={handleInputChange}
+                required
+                className="w-full border rounded-lg p-3"
+              />
+              <div>
+                <label className="block font-bold mb-2">Search Skills:</label>
                 <input
                   type="text"
-                  id="firstName"
-                  placeholder="First Name"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  required
+                  placeholder="Type a skill..."
+                  value={searchText}
+                  onChange={handleSkillSearch}
                   className="w-full border rounded-lg p-3"
                 />
-                <input
-                  type="text"
-                  id="surname"
-                  placeholder="Surname"
-                  value={formData.surname}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full border rounded-lg p-3"
-                />
-                <input
-                  type="text"
-                  id="contactNumber"
-                  placeholder="Contact Number"
-                  value={formData.contactNumber}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full border rounded-lg p-3"
-                />
-                <input
-                  type="url"
-                  id="facebookLink"
-                  placeholder="Facebook Link"
-                  value={formData.facebookLink}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full border rounded-lg p-3"
-                />
-                <div className="w-full">
-                  <label className="block mb-2 font-bold">Search Skills:</label>
-                  <input
-                    type="text"
-                    placeholder="Type a skill..."
-                    value={searchText}
-                    onChange={handleSkillSearch}
-                    className="w-full border rounded-lg p-3"
-                  />
-                  {filteredSkills.length > 0 && (
-                    <ul className="border mt-2 rounded-lg max-h-40 overflow-y-scroll">
-                      {filteredSkills.map((skill) => (
-                        <li
-                          key={skill}
-                          onClick={() => handleSkillAdd(skill)}
-                          className="p-2 cursor-pointer hover:bg-gray-100"
-                        >
-                          {skill}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-                {formData.jobSkillset.length > 0 && (
-                  <div className="w-full mt-4">
-                    <label className="block mb-2 font-bold">Selected Skills:</label>
-                    <ul className="flex flex-wrap gap-2">
-                      {formData.jobSkillset.map((skill) => (
-                        <li
-                          key={skill}
-                          className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-lg"
-                        >
-                          {skill}
-                          <button
-                            type="button"
-                            onClick={() => handleSkillRemove(skill)}
-                            className="text-white hover:text-gray-300"
-                          >
-                            &times;
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                {filteredSkills.length > 0 && (
+                  <ul className="border mt-2 rounded-lg max-h-40 overflow-y-auto">
+                    {filteredSkills.map((skill) => (
+                      <li
+                        key={skill}
+                        onClick={() => handleSkillAdd(skill)}
+                        className="p-2 cursor-pointer hover:bg-gray-100"
+                      >
+                        {skill}
+                      </li>
+                    ))}
+                  </ul>
                 )}
-                <label className="block mt-4 mb-2 font-bold">Profile Image:</label>
+              </div>
+              {formData.jobSkillset.length > 0 && (
+                <div>
+                  <p className="font-bold">Selected Skills:</p>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {formData.jobSkillset.map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-blue-100 text-blue-600 py-1 px-3 rounded-full"
+                      >
+                        {skill}{" "}
+                        <button
+                          type="button"
+                          onClick={() => handleSkillRemove(skill)}
+                          className="ml-2 text-red-500"
+                        >
+                          x
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div>
+                <label className="block font-bold mb-2">Profile Image:</label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleFilePicker}
                   className="w-full"
                 />
-                {imageError && (
-                  <p className="text-red-500 mt-2">Please upload an image.</p>
-                )}
-                <button
-                  type="submit"
-                  className={`mt-6 w-full py-3 bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 transition ${
-                    !isFormComplete && "opacity-50 cursor-not-allowed"
-                  }`}
-                  disabled={!isFormComplete || loading}
-                >
-                  {loading ? "Submitting..." : "Complete Registration"}
-                </button>
-              </form>
-            </div>
+                {imageError && <p className="text-red-500">Please upload an image</p>}
+              </div>
+              <button
+                type="submit"
+                disabled={!isFormComplete || loading}
+                className={`w-full p-3 bg-blue-600 text-white font-bold rounded-lg shadow ${
+                  loading && "opacity-50 cursor-not-allowed"
+                }`}
+              >
+                {loading ? "Submitting..." : "Submit"}
+              </button>
+            </form>
           </div>
         </div>
       )}
@@ -324,6 +322,7 @@ const Register = () => {
 };
 
 export default Register;
+
 
 
 
