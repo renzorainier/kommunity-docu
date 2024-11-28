@@ -7,7 +7,9 @@ import { auth, db, storage } from "@/app/firebase/config";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import teen from "../img.png";
+//import teen from "./img.png";
+import logo from "./search.png";
+
 
 const skillOptions = [
   "Web Development",
@@ -190,7 +192,7 @@ const Register = () => {
       disabled={loading}
     >
       <Image
-        src=""
+        src={logo}
         width={20}
         height={20}
         alt="Google Icon"
