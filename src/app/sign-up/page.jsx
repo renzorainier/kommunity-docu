@@ -161,42 +161,42 @@ const Register = () => {
       {!formData.email ? (
         // Initial Sign-Up View
         <div className="initial-sign-up min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
-            <div className="flex flex-col items-center">
-              <Image src={teen} width={120} height={120} alt="KommUnity Logo" />
-              <h1 className="text-3xl font-bold text-gray-800 mt-4">KommUnity</h1>
-            </div>
-            <p className="text-gray-600 text-center mt-4">
-              By continuing, you are agreeing to our{" "}
-              <a href="/terms" className="text-blue-500 underline">
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a href="/privacy" className="text-blue-500 underline">
-                Privacy Policy
-              </a>.
-            </p>
-            <button
-              onClick={handleGoogleSignIn}
-              className="mt-6 w-full flex items-center justify-center gap-2 p-3 bg-white border border-gray-300 text-gray-600 font-bold rounded-lg shadow-sm hover:shadow-md transition"
-              disabled={loading}
-            >
-              <Image
-                src="/google-icon.svg"
-                width={20}
-                height={20}
-                alt="Google Icon"
-              />
-              {loading ? "Signing up with Google..." : "Continue with Google"}
-            </button>
-            <p className="text-center text-gray-600 mt-4">
-              Already have an account?{" "}
-              <a href="/login" className="text-blue-500 underline">
-                Log In
-              </a>
-            </p>
-          </div>
-        </div>
+  <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+    <div className="flex flex-col items-center">
+      <Image src={teen} width={120} height={120} alt="KommUnity Logo" />
+      <h1 className="text-3xl font-bold text-gray-800 mt-4">KommUnity</h1>
+    </div>
+    <p className="text-gray-600 text-center mt-4">
+      By continuing, you are agreeing to our{" "}
+      <a href="/terms" className="text-blue-500 underline">
+        Terms of Service
+      </a>{" "}
+      and{" "}
+      <a href="/privacy" className="text-blue-500 underline">
+        Privacy Policy
+      </a>.
+    </p>
+    <button
+      onClick={handleGoogleSignIn}
+      className="mt-6 w-full flex items-center justify-center gap-2 p-3 bg-white border border-gray-300 text-gray-600 font-bold rounded-lg shadow-sm hover:shadow-md transition"
+      disabled={loading}
+    >
+      <Image
+        src="/google-icon.svg"
+        width={20}
+        height={20}
+        alt="Google Icon"
+      />
+      {loading ? "Signing up with Google..." : "Continue with Google"}
+    </button>
+    <p className="text-center text-gray-600 mt-4">
+      Already have an account?{" "}
+      <a href="/login" className="text-blue-500 underline">
+        Log In
+      </a>
+    </p>
+  </div>
+</div>
       ) : (
         // Registration Form
         <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4 py-8">
