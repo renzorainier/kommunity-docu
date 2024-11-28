@@ -18,7 +18,7 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
               height={50}
               alt="KommUnity Logo"
             />
-            <span className="text-lg font-semibold text-gray-800">
+            <span className="text-lg font-bold text-[#323030] font-inter">
               KommUnity
             </span>
           </div>
