@@ -154,7 +154,7 @@ export default function Feed({ postData, userData }) {
               <span
                 className={`text-sm py-1 px-3 rounded-full ${
                   post.isAvailable
-                    ? "bg-[#B3BBC5] text-green-900"
+                    ? "bg-[#B3BBC5] text-[#FFFFFF] font-semibold font-inter"
                     : "bg-red-300 text-red-900"
                 }`}
               >
