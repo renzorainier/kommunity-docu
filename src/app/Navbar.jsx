@@ -1,37 +1,40 @@
-'use client';
+"use client";
+import Image from "next/image";
+import { FaUser, FaPlus, FaArrowLeft, FaSearch } from "react-icons/fa"; // Import icons
 
-import { FaUser, FaPlus, FaArrowLeft, FaSearch } from 'react-icons/fa'; // Import icons
+import logo from "./img.png";
 
 export default function Navbar({ activeComponent, setActiveComponent }) {
-  if (activeComponent === 'feed') {
+  if (activeComponent === "feed") {
     // Render navbar when activeComponent is 'feed'
     return (
       <>
         <nav className="fixed top-0 left-0 right-0 bg-[#F4F7FE] shadow-sm z-10 flex justify-between items-center px-4 py-3 border-b border-indigo-300">
           {/* App Logo and Title */}
           <div className="flex items-center gap-2">
-            <img
-              src="/path-to-logo.png" // Replace with your actual logo path
-              alt="Logo"
-              className="w-8 h-8"
+            <Image
+              src={logo} // Logo image
+              width={50}
+              height={50}
+              alt="KommUnity Logo"
             />
-            <span className="text-lg font-semibold text-gray-800">KommUnity</span>
+            <span className="text-lg font-semibold text-gray-800">
+              KommUnity
+            </span>
           </div>
 
           {/* Action Buttons */}
           <div className="flex gap-4">
             <button
-              onClick={() => setActiveComponent('search')}
+              onClick={() => setActiveComponent("search")}
               aria-label="Search"
-              className="text-gray-600 hover:text-blue-500"
-            >
+              className="text-gray-600 hover:text-blue-500">
               <FaSearch size={20} />
             </button>
             <button
-              onClick={() => setActiveComponent('profile')}
+              onClick={() => setActiveComponent("profile")}
               aria-label="Profile"
-              className="text-gray-600 hover:text-blue-500"
-            >
+              className="text-gray-600 hover:text-blue-500">
               <FaUser size={20} />
             </button>
           </div>
@@ -39,10 +42,9 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
 
         {/* Floating Create Post Button, only visible in feed */}
         <button
-          onClick={() => setActiveComponent('createPost')}
+          onClick={() => setActiveComponent("createPost")}
           aria-label="Create Post"
-          className="fixed bottom-4 right-4 bg-gradient-to-r from-orange-400 to-red-500 text-white p-4 rounded-full shadow-lg z-20 hover:shadow-xl transition-all"
-        >
+          className="fixed bottom-4 right-4 bg-gradient-to-r from-orange-400 to-red-500 text-white p-4 rounded-full shadow-lg z-20 hover:shadow-xl transition-all">
           <FaPlus size={24} />
         </button>
       </>
@@ -53,19 +55,14 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
   return (
     <>
       <button
-        onClick={() => setActiveComponent('feed')}
+        onClick={() => setActiveComponent("feed")}
         className="fixed top-4 left-4 bg-gradient-to-r from-orange-400 to-red-500 text-white p-3 rounded-full shadow-lg z-20 hover:shadow-xl transition-all"
-        aria-label="Back"
-      >
+        aria-label="Back">
         <FaArrowLeft size={24} />
       </button>
     </>
   );
 }
-
-
-
-
 
 // import React, { useState, useEffect } from "react";
 // import { useRouter } from "next/navigation";
