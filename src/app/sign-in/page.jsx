@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { auth } from "@/app/firebase/config";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import teen from "../img.png";
+import google from "./img.png"
 
 const SignIn = () => {
   const [showGoogleError, setShowGoogleError] = useState(false);
@@ -76,7 +77,7 @@ const SignIn = () => {
           disabled={googleLoading}
         >
           <Image
-            src="/googleicon.png"
+            src={google}
             alt="Google Icon"
             width={20}
             height={20}
