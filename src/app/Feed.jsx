@@ -138,7 +138,7 @@ export default function Feed({ postData, userData }) {
                 <CgProfile size={40} className="text-blue-500" />
               )}
               <div>
-                <p className="text-gray-900 font-bold text-lg">
+                <p className="text-[#496992] font-bold text-lg">
                   {post.name}
                 </p>
                 <p className="text-sm text-gray-600">{formatDate(post.date)}</p>
@@ -164,7 +164,7 @@ export default function Feed({ postData, userData }) {
           </div>
 
           {/* Caption Section */}
-          <p className="p-4 text-sm font-semibold text-indigo-800 bg-[#E0EAF6] ">
+          <p className="p-4 text-sm font-semibold text-[#496992] bg-[#E0EAF6] ">
             {post.caption}
           </p>
 
