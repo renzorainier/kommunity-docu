@@ -138,7 +138,7 @@ export default function Feed({ postData, userData }) {
                 <CgProfile size={40} className="text-blue-500" />
               )}
               <div>
-                <p className="text-[#496992] font-bold text-lg">
+                <p className="text-[#496992] font-bold text-lg font-inter">
                   {post.name}
                 </p>
                 <p className="text-sm text-gray-600">{formatDate(post.date)}</p>
