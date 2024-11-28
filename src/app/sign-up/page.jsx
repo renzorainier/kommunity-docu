@@ -161,14 +161,16 @@ const Register = () => {
       {!formData.email ? (
         // Initial Sign-Up View
 
-// Initial Sign-Up View
 <div className="min-h-screen flex flex-col items-center justify-between bg-white px-6 py-10">
   <div className="flex flex-col items-center">
     <Image src={teen} width={120} height={120} alt="KommUnity Logo" />
     <h1 className="text-3xl font-bold text-gray-800 mt-4">KommUnity</h1>
   </div>
-  <div className="w-full flex flex-col items-start pl-8 mt-0"> {/* Ensure tight placement */}
-    <p className="text-gray-600 text-center mt-4">
+
+  {/* Sign Up Header */}
+  <div className="w-full flex flex-col items-start pl-8 mt-0">
+    <h2 className="text-2xl font-extrabold text-gray-700">Sign Up</h2>
+    <p className="text-gray-600 text-sm mt-0"> {/* Zero margin-top to bring them closer */}
       By continuing, you are agreeing to our{" "}
       <a href="/terms" className="text-blue-500 hover:underline">
         Terms of Service
@@ -179,6 +181,8 @@ const Register = () => {
       </a>.
     </p>
   </div>
+
+  {/* Google Sign-In Button */}
   <div className="w-full mt-6">
     <button
       onClick={handleGoogleSignIn}
@@ -186,7 +190,7 @@ const Register = () => {
       disabled={loading}
     >
       <Image
-        src="/google-icon.svg"
+        src=""
         width={20}
         height={20}
         alt="Google Icon"
@@ -195,6 +199,8 @@ const Register = () => {
       {loading ? "Signing up with Google..." : "Continue with Google"}
     </button>
   </div>
+
+  {/* Footer Section */}
   <div className="text-center mt-6">
     <p className="text-gray-600 text-sm">
       Already have an account?{" "}
@@ -204,6 +210,7 @@ const Register = () => {
     </p>
   </div>
 </div>
+
 
 
       ) : (
