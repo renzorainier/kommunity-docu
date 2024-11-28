@@ -164,7 +164,7 @@ const Register = () => {
     <>
       {!formData.email ? (
         // Initial Sign-Up View
-        <div className="min-h-screen flex flex-col items-center justify-between bg-white px-6 py-10">
+        <div className="min-h-screen flex flex-col items-center justify-between bg-[#F8FBFF] px-6 py-10">
           <div className="flex flex-col items-center">
             <Image src={teen} width={170} height={170} alt="KommUnity Logo" />
             <h1 className="text-5xl font-bold text-gray-700 mt-4">KommUnity</h1>
@@ -190,7 +190,7 @@ const Register = () => {
           <div className="w-full mt-6">
             <button
               onClick={handleGoogleSignIn}
-              className="flex items-center justify-center w-full py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-gray-50 transition duration-300"
+              className="flex items-center justify-center w-full py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-[#F8FBFF]"
               disabled={loading}
             >
               <Image

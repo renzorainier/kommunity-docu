@@ -66,7 +66,7 @@ const SignIn = () => {
         )}
         <button
           onClick={handleGoogleSignIn}
-          className="flex items-center justify-center w-full py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-gray-50 transition duration-300"
+          className="flex items-center justify-center w-full py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-[#F8FBFF]"
           disabled={googleLoading}
         >
           <Image
