@@ -164,7 +164,7 @@ export default function Feed({ postData, userData }) {
           </div>
 
           {/* Caption Section */}
-          <p className="p-4 text-sm font-semibold text-[#496992] bg-[#E0EAF6] ">
+          <p className="p-4 text-sm font-semibold text-[#496992] bg-[#E0EAF6] font-inter ">
             {post.caption}
           </p>
 
