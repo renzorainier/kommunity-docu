@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { FaFacebook, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
 import { MdArrowBack } from "react-icons/md";
 
@@ -8,20 +8,6 @@ const Header = ({ userData }) => {
   if (!userData) return null;
 
   const { name, imageUrl, contactNumber, email, facebookLink, jobSkillset } = userData;
-
-  // State to manage visibility of contact info
-  const [showContact, setShowContact] = useState({
-    phone: false,
-    email: false
-  });
-
-  // Toggle visibility of contact details
-  const toggleContact = (contactType) => {
-    setShowContact((prevState) => ({
-      ...prevState,
-      [contactType]: !prevState[contactType]
-    }));
-  };
 
   return (
     <div className="header bg-gradient-to-r from-orange-400 via-red-500 to-blue-500 p-6 rounded-b-lg shadow-lg text-white relative">
@@ -63,25 +49,21 @@ const Header = ({ userData }) => {
               )}
 
               {contactNumber && (
-                <div className="flex items-center space-x-2 cursor-pointer" onClick={() => toggleContact("phone")}>
+                <a
+                  href={`tel:${contactNumber}`}
+                  className="flex items-center space-x-2 hover:text-green-500 transition duration-300">
                   <FaPhoneAlt className="text-xl text-green-500" />
-                  <span>Phone</span>
-                </div>
-              )}
-
-              {showContact.phone && contactNumber && (
-                <div className="mt-2 text-gray-700">{contactNumber}</div>
+                  <span>Call</span>
+                </a>
               )}
 
               {email && (
-                <div className="flex items-center space-x-2 cursor-pointer" onClick={() => toggleContact("email")}>
+                <a
+                  href={`mailto:${email}`}
+                  className="flex items-center space-x-2 hover:text-purple-500 transition duration-300">
                   <FaEnvelope className="text-xl text-purple-500" />
                   <span>Email</span>
-                </div>
-              )}
-
-              {showContact.email && email && (
-                <div className="mt-2 text-gray-700">{email}</div>
+                </a>
               )}
             </div>
           </div>
