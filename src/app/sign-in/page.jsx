@@ -45,7 +45,7 @@ const SignIn = () => {
       {/* Login Header */}
       <div className="w-full flex flex-col items-start pl-8 mt-0">
         <h2 className="text-2xl font-extrabold text-gray-700">Log In</h2>
-        <p className="text-gray-600 text-sm mt-0">
+        <p className="text-gray-600 text-sm mt-0 font-roboto-mono">
           By continuing, you are agreeing to our{" "}
           <a href="/terms" className="text-blue-500 hover:underline">
             Terms of Service
