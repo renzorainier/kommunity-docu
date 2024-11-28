@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { FaFacebook, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
 import { MdArrowBack } from "react-icons/md";
 
@@ -8,6 +8,20 @@ const Header = ({ userData }) => {
   if (!userData) return null;
 
   const { name, imageUrl, contactNumber, email, facebookLink, jobSkillset } = userData;
+
+  // State to manage visibility of contact info
+  const [showContact, setShowContact] = useState({
+    phone: false,
+    email: false
+  });
+
+  // Toggle visibility of contact details
+  const toggleContact = (contactType) => {
+    setShowContact((prevState) => ({
+      ...prevState,
+      [contactType]: !prevState[contactType]
+    }));
+  };
 
   return (
     <div className="header bg-gradient-to-r from-orange-400 via-red-500 to-blue-500 p-6 rounded-b-lg shadow-lg text-white relative">
@@ -34,6 +48,7 @@ const Header = ({ userData }) => {
           {/* User Info */}
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-gray-800">{name}</h1>
+
             {/* Icons for Contact Info */}
             <div className="flex space-x-6 mt-3 text-gray-700">
               {facebookLink && (
@@ -46,17 +61,27 @@ const Header = ({ userData }) => {
                   <span className="hidden md:inline">Facebook</span>
                 </a>
               )}
+
               {contactNumber && (
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 cursor-pointer" onClick={() => toggleContact("phone")}>
                   <FaPhoneAlt className="text-xl text-green-500" />
-                  <span>{contactNumber}</span>
+                  <span>Phone</span>
                 </div>
               )}
+
+              {showContact.phone && contactNumber && (
+                <div className="mt-2 text-gray-700">{contactNumber}</div>
+              )}
+
               {email && (
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 cursor-pointer" onClick={() => toggleContact("email")}>
                   <FaEnvelope className="text-xl text-purple-500" />
-                  <span>{email}</span>
+                  <span>Email</span>
                 </div>
+              )}
+
+              {showContact.email && email && (
+                <div className="mt-2 text-gray-700">{email}</div>
               )}
             </div>
           </div>
