@@ -30,6 +30,7 @@ const SignIn = () => {
   };
 
   return (
+
     <div className="min-h-screen flex flex-col items-center justify-between bg-[#F8FBFF] px-6 py-10">
       {/* Logo Section */}
       <div className="flex flex-col items-center">
