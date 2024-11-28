@@ -159,7 +159,7 @@ const Register = () => {
   return (
     <>
       {!formData.email ? (
-        // Initial Sign-Up View (Unchanged)
+        // Initial Sign-Up View
         <div className="initial-sign-up min-h-screen flex items-center justify-center bg-gray-50">
           <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
             <div className="flex flex-col items-center">
@@ -198,7 +198,7 @@ const Register = () => {
           </div>
         </div>
       ) : (
-        // Updated Registration Layout
+        //  Registration Layout
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-200 to-gray-400">
           <div className="bg-white shadow-xl rounded-lg max-w-2xl w-full p-8">
             <div className="text-center">

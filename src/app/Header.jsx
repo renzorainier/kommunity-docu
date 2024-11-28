@@ -10,52 +10,49 @@ const Header = ({ userData }) => {
   const { name, imageUrl, contactNumber, email, facebookLink, jobSkillset } = userData;
 
   return (
-    <div className="header bg-gradient-to-r from-orange-400 via-red-500 to-blue-500 p-6 rounded-b-lg shadow-lg text-white">
+    <div className="header bg-gradient-to-r from-orange-400 via-red-500 to-blue-500 p-6 rounded-b-lg shadow-lg text-white relative">
       {/* Back Arrow */}
-      <div className="flex items-center mb-6">
-        <button className="p-2 bg-white rounded-full shadow-md">
-          <MdArrowBack className="text-gray-700 text-xl" />
+      <div className="absolute top-4 left-4">
+        <button className="p-2 bg-white rounded-full shadow-lg hover:bg-gray-200 transition duration-300">
+          <MdArrowBack className="text-gray-700 text-2xl" />
         </button>
       </div>
 
       {/* Profile Section */}
-      <div className="flex items-center space-x-6 bg-white p-6 rounded-lg shadow-lg">
+      <div className="flex items-center space-x-6 bg-white p-6 rounded-lg shadow-xl relative z-10">
         {/* Profile Picture */}
         <div className="relative">
           <img
             src={imageUrl}
             alt={`${name}'s profile`}
-            className="w-20 h-20 rounded-full object-cover border-2 border-gray-300"
+            className="w-24 h-24 rounded-full object-cover border-4 border-gray-300 shadow-lg"
           />
-          <div className="absolute bottom-0 right-0 bg-blue-500 text-white p-1 rounded-full">
-            <FaFacebook />
-          </div>
         </div>
 
         {/* User Info */}
         <div className="flex-1">
-          <h1 className="text-xl font-semibold text-gray-800">{name}</h1>
+          <h1 className="text-2xl font-bold text-gray-800">{name}</h1>
           {/* Icons for Contact Info */}
-          <div className="flex space-x-4 mt-2 text-gray-700">
+          <div className="flex space-x-6 mt-3 text-gray-700">
             {facebookLink && (
               <a
                 href={facebookLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center space-x-2">
-                <FaFacebook className="text-blue-600" />
-                <span>Facebook</span>
+                className="flex items-center space-x-2 hover:text-blue-600 transition duration-300">
+                <FaFacebook className="text-xl" />
+                <span className="hidden md:inline">Facebook</span>
               </a>
             )}
             {contactNumber && (
               <div className="flex items-center space-x-2">
-                <FaPhoneAlt className="text-red-500" />
+                <FaPhoneAlt className="text-xl text-green-500" />
                 <span>{contactNumber}</span>
               </div>
             )}
             {email && (
               <div className="flex items-center space-x-2">
-                <FaEnvelope className="text-purple-500" />
+                <FaEnvelope className="text-xl text-purple-500" />
                 <span>{email}</span>
               </div>
             )}
@@ -63,20 +60,20 @@ const Header = ({ userData }) => {
         </div>
 
         {/* Options Menu */}
-        <button className="p-2 text-gray-600">
+        <button className="p-2 text-gray-600 hover:text-gray-800 transition duration-300">
           <span className="text-2xl">•••</span>
         </button>
       </div>
 
       {/* Skills Section */}
       {jobSkillset?.length > 0 && (
-        <div className="mt-6 bg-white p-4 rounded-lg shadow-lg">
-          <h3 className="font-semibold text-gray-700">Job Skill Sets:</h3>
-          <ul className="flex flex-wrap gap-2 mt-2">
+        <div className="mt-6 bg-white p-5 rounded-lg shadow-lg">
+          <h3 className="font-semibold text-gray-800 text-lg">Job Skill Sets:</h3>
+          <ul className="flex flex-wrap gap-3 mt-3">
             {jobSkillset.map((skill, index) => (
               <li
                 key={index}
-                className="bg-gray-200 text-gray-700 py-1 px-3 rounded-full text-sm">
+                className="bg-gray-100 text-gray-800 py-2 px-4 rounded-full shadow-sm text-sm">
                 {skill}
               </li>
             ))}
