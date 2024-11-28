@@ -44,11 +44,11 @@ const SignIn = () => {
         <h1 className="text-2xl font-bold text-gray-800 mt-4">KommUnity</h1>
       </div>
        {/* Login Header */}
-        <div className="w-full pl-8 mt-4">
+        <div className="w-full pl-8 mt-0">
         <h2 className="text-2xl font-extrabold text-gray-800 text-left">Log In</h2>
       </div>
       {/* Terms and Policy Section */}
-      <div className="w-full pl-8 mt-1">
+      <div className="w-full pl-8 mt-0">
         <p className="text-gray-600 text-sm">
           By continuing, you are agreeing to our{" "}
           <a
