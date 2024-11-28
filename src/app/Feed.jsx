@@ -12,7 +12,7 @@ export default function Feed({ postData, userData }) {
   const [visiblePosts, setVisiblePosts] = useState(5);
 
   const getAllPosts = () => {
-    if (!postData) return [];
+    if (!postData) retu2rn [];
     return Object.entries(postData)
       .flatMap(([date, posts]) =>
         Object.entries(posts).map(([postId, postDetails]) => ({
