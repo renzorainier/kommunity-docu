@@ -5,8 +5,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/app/firebase/config";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import teen from "../img.png";
-import google from "./search.png"
+import logo from "../img.png"; // Replace with your actual logo path
+import google from "./search.png"; // Replace with your actual Google icon path
 
 const SignIn = () => {
   const [showGoogleError, setShowGoogleError] = useState(false);
@@ -30,53 +30,43 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between bg-white">
-      <link rel="manifest" href="/manifest.json" />
-
-      {/* Logo and Header Section */}
-      <div className="flex flex-col items-center mt-12">
+    <div className="min-h-screen flex flex-col items-center justify-between bg-white px-6 py-10">
+      {/* Logo Section */}
+      <div className="flex flex-col items-center">
         <Image
-          src={teen} // Logo image
-          width={100}
-          height={100}
+          src={logo} // Logo image
+          width={200}
+          height={200}
           alt="KommUnity Logo"
         />
-        <h1 className="text-2xl font-bold text-gray-800 mt-4">KommUnity</h1>
+        <h1 className="text-5xl font-bold text-gray-700 mt-4">KommUnity</h1>
       </div>
-       {/* Login Header */}
-        <div className="w-full pl-8 mt-0">
-        <h2 className="text-2xl font-extrabold text-gray-800 text-left">Log In</h2>
-      </div>
-      {/* Terms and Policy Section */}
-      <div className="w-full pl-8 mt-0">
-        <p className="text-gray-600 text-sm">
+
+      {/* Login Header */}
+      <div className="w-full flex flex-col items-start pl-8 mt-0"> {/* Ensure tight placement */}
+        <h2 className="text-2xl font-extrabold text-gray-700">Log In</h2>
+        <p className="text-gray-600 text-sm mt-0"> {/* Zero margin-top to bring them closer */}
           By continuing, you are agreeing to our{" "}
-          <a
-            href="/terms"
-            className="text-blue-500 hover:underline"
-          >
+          <a href="/terms" className="text-blue-500 hover:underline">
             Terms of Service
           </a>{" "}
           and{" "}
-          <a
-            href="/privacy"
-            className="text-blue-500 hover:underline"
-          >
+          <a href="/privacy" className="text-blue-500 hover:underline">
             Privacy Policy
           </a>.
         </p>
+      </div>
 
-        {/* Error Message */}
+      {/* Google Sign-In Button */}
+      <div className="w-full mt-6">
         {showGoogleError && (
-          <p className="text-red-500 text-center mb-4">
+          <p className="text-red-500 text-center mb-2 text-sm">
             Error with Google Sign-In. Please try again.
           </p>
         )}
-
-        {/* Google Sign-In Button */}
         <button
           onClick={handleGoogleSignIn}
-          className="flex items-center justify-center w-full p-3 bg-white text-gray-800 border border-gray-300 rounded-md shadow hover:bg-gray-50 transition duration-300"
+          className="flex items-center justify-center w-full py-3 bg-white text-gray-800 border border-gray-300 rounded-md shadow-md hover:bg-gray-50 transition duration-300"
           disabled={googleLoading}
         >
           <Image
@@ -90,14 +80,11 @@ const SignIn = () => {
         </button>
       </div>
 
-      {/* Footer */}
-      <div className="w-full flex flex-col items-center pb-8">
-        <p className="text-gray-600">
+      {/* Footer Section */}
+      <div className="text-center mt-6">
+        <p className="text-gray-600 text-sm">
           Need an account?{" "}
-          <a
-            href="/sign-up"
-            className="text-blue-500 hover:underline"
-          >
+          <a href="/sign-up" className="text-blue-500 hover:underline">
             Sign up
           </a>
         </p>
@@ -107,6 +94,7 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
 
 
 
