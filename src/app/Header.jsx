@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { FiPhone, FiMail, FiFacebook } from "react-icons/fi";
 
 const Header = ({ userData }) => {
   if (!userData) return null;
@@ -19,15 +20,36 @@ const Header = ({ userData }) => {
         {/* User Info */}
         <div>
           <h1 className="text-2xl font-bold text-gray-800">{name}</h1>
-          <p className="text-gray-600">Contact: {contactNumber || "N/A"}</p>
-          <p className="text-gray-600">Email: {email || "N/A"}</p>
-          <a
-            href={facebookLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline">
-            Facebook Profile
-          </a>
+
+          <div className="mt-2 space-y-2">
+            {/* Contact Number */}
+            <div className="flex items-center space-x-3 text-gray-600">
+              <FiPhone className="text-blue-600" size={20} />
+              <span>{contactNumber || "N/A"}</span>
+            </div>
+
+            {/* Email */}
+            <div className="flex items-center space-x-3 text-gray-600">
+              <FiMail className="text-red-600" size={20} />
+              <span>{email || "N/A"}</span>
+            </div>
+
+            {/* Facebook Link */}
+            {facebookLink && (
+              <div className="flex items-center space-x-3">
+                <FiFacebook className="text-blue-600" size={20} />
+                <a
+                  href={facebookLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline">
+                  Facebook Profile
+                </a>
+              </div>
+            )}
+          </div>
+
+          {/* Skillset */}
           {jobSkillset?.length > 0 && (
             <div className="mt-4">
               <h3 className="font-semibold text-gray-700">Skillset:</h3>
