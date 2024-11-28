@@ -25,6 +25,7 @@ export default function Profile({ postData, userData }) {
       ) // Filter for user's posts only
       .sort((a, b) => b.date.seconds - a.date.seconds);
     return allPosts;
+
   };
 
   const fetchImages = async (posts) => {
@@ -115,6 +116,8 @@ export default function Profile({ postData, userData }) {
   };
 
   const allUserPosts = getUserPosts();
+
+  console.log(userData)
 
   return (
     <div className="profile max-w-3xl mx-auto p-6 bg-gray-50">
