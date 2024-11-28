@@ -147,7 +147,7 @@ export default function Feed({ postData, userData }) {
             {/* Status Badges */}
             <div className="flex items-center space-x-2">
               {post.category && (
-                <span className="text-sm py-1 px-3 rounded-full bg-[#5856D6] text-[#FFFFFF]">
+                <span className="text-sm py-1 px-3 rounded-full bg-[#5856D6] text-[#FFFFFF] font-semibold font-inter">
                   {post.category}
                 </span>
               )}
