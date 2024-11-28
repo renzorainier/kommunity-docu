@@ -10,7 +10,6 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import teen from "../img.png";
 import logo from "./search.png";
 
-
 const skillOptions = [
   "Web Development",
   "Graphic Design",
@@ -123,7 +122,10 @@ const Register = () => {
 
       let imageUrl = "";
       if (uploadedImage) {
-        const storageRef = ref(storage, `images/${user.uid}/${uploadedImage.name}`);
+        const storageRef = ref(
+          storage,
+          `images/${user.uid}/${uploadedImage.name}`
+        );
         await uploadBytes(storageRef, uploadedImage);
         imageUrl = await getDownloadURL(storageRef);
       }
@@ -163,192 +165,187 @@ const Register = () => {
       {!formData.email ? (
         // Initial Sign-Up View
 
-<div className="min-h-screen flex flex-col items-center justify-between bg-white px-6 py-10">
-  <div className="flex flex-col items-center">
-    <Image src={teen} width={120} height={120} alt="KommUnity Logo" />
-    <h1 className="text-3xl font-bold text-gray-800 mt-4">KommUnity</h1>
-  </div>
+        <div className="min-h-screen flex flex-col items-center justify-between bg-white px-6 py-10">
+          <div className="flex flex-col items-center">
+            <Image src={teen} width={170} height={170} alt="KommUnity Logo" />
+            <h1 className="text-5xl font-bold text-gray-700 mt-4">KommUnity</h1>
+          </div>
 
-  {/* Sign Up Header */}
-  <div className="w-full flex flex-col items-start pl-8 mt-0">
-    <h2 className="text-2xl font-extrabold text-gray-700">Sign Up</h2>
-    <p className="text-gray-600 text-sm mt-0"> {/* Zero margin-top to bring them closer */}
-      By continuing, you are agreeing to our{" "}
-      <a href="/terms" className="text-blue-500 hover:underline">
-        Terms of Service
-      </a>{" "}
-      and{" "}
-      <a href="/privacy" className="text-blue-500 hover:underline">
-        Privacy Policy
-      </a>.
-    </p>
-  </div>
+          {/* Sign Up Header */}
+          <div className="w-full flex flex-col items-start pl-8 mt-0">
+            <h2 className="text-2xl font-extrabold text-gray-700">Sign Up</h2>
+            <p className="text-gray-600 text-sm mt-0">
+              {" "}
+              {/* Zero margin-top to bring them closer */}
+              By continuing, you are agreeing to our{" "}
+              <a href="/terms" className="text-blue-500 hover:underline">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a href="/privacy" className="text-blue-500 hover:underline">
+                Privacy Policy
+              </a>
+              .
+            </p>
+          </div>
 
-  {/* Google Sign-In Button */}
-  <div className="w-full mt-6">
-    <button
-      onClick={handleGoogleSignIn}
-      className="flex items-center justify-center w-full py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-gray-50 transition duration-300"
-      disabled={loading}
-    >
-      <Image
-        src={logo}
-        width={20}
-        height={20}
-        alt="Google Icon"
-        className="mr-2"
-      />
-      {loading ? "Signing up with Google..." : "Continue with Google"}
-    </button>
-  </div>
+          {/* Google Sign-up Button */}
+          <div className="w-full mt-6">
+            <button
+              onClick={handleGoogleSignIn}
+              className="flex items-center justify-center w-full py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-gray-50 transition duration-300"
+              disabled={loading}>
+              <Image
+                src={logo}
+                width={20}
+                height={20}
+                alt="Google Icon"
+                className="mr-2"
+              />
+              {loading ? "Signing up with Google..." : "Continue with Google"}
+            </button>
+          </div>
 
-  {/* Footer Section */}
-  <div className="text-center mt-6">
-    <p className="text-gray-600 text-sm">
-      Already have an account?{" "}
-      <a href="/sign-in" className="text-blue-500 hover:underline">
-        Log In
-      </a>
-    </p>
-  </div>
-</div>
-
-
-
+          {/* Footer Section */}
+          <div className="text-center mt-6">
+            <p className="text-gray-600 text-sm">
+              Already have an account?{" "}
+              <a href="/sign-in" className="text-blue-500 hover:underline">
+                Log In
+              </a>
+            </p>
+          </div>
+        </div>
       ) : (
         // Registration Form
         <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4 py-8">
-  {/* Logo Section */}
-  <div className="flex flex-center items-center mb-8">
-    <Image
-      src={teen} // Replace with the actual path to your logo
-      alt="KommUnity Logo"
-      width={100}
-      height={40}
-    />
-    <h1 className="text-5xl font-bold text-gray-800 mt-4">KommUnity</h1>
-  </div>
+          {/* Logo Section */}
+          <div className="flex flex-center items-center mb-8">
+            <Image
+              src={teen} // Replace with the actual path to your logo
+              alt="KommUnity Logo"
+              width={100}
+              height={40}
+            />
+            <h1 className="text-5xl font-bold text-gray-800 mt-4">KommUnity</h1>
+          </div>
 
-  {/* Form Section */}
-  <form
-    onSubmit={handleSubmit}
-    className="w-full max-w-md space-y-6"
-  >
-    <h2 className="text-3xl font-bold text-gray-800 text-left">Sign Up</h2>
+          {/* Form Section */}
+          <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
+            <h2 className="text-3xl font-bold text-gray-800 text-left">
+              Sign Up
+            </h2>
 
-    {/* First Name */}
-    <div>
-      <label
-        htmlFor="firstName"
-        className="block text-sm font-semibold text-gray-700"
-      >
-        First Name <span className="text-red-500">*</span>
-      </label>
-      <input
-        type="text"
-        id="firstName"
-        placeholder="Juan"
-        value={formData.firstName}
-        onChange={handleInputChange}
-        required
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
-      />
-    </div>
+            {/* First Name */}
+            <div>
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-semibold text-gray-700">
+                First Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="firstName"
+                placeholder="Juan"
+                value={formData.firstName}
+                onChange={handleInputChange}
+                required
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
+              />
+            </div>
 
-    {/* Surname */}
-    <div>
-      <label
-        htmlFor="surname"
-        className="block text-sm font-semibold text-gray-700"
-      >
-        Surname <span className="text-red-500">*</span>
-      </label>
-      <input
-        type="text"
-        id="surname"
-        placeholder="Cruz"
-        value={formData.surname}
-        onChange={handleInputChange}
-        required
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
-      />
-    </div>
+            {/* Surname */}
+            <div>
+              <label
+                htmlFor="surname"
+                className="block text-sm font-semibold text-gray-700">
+                Surname <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="surname"
+                placeholder="Cruz"
+                value={formData.surname}
+                onChange={handleInputChange}
+                required
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
+              />
+            </div>
 
-    {/* Contact Number */}
-    <div>
-      <label
-        htmlFor="contactNumber"
-        className="block text-sm font-semibold text-gray-700"
-      >
-        Contact Number
-      </label>
-      <input
-        type="text"
-        id="contactNumber"
-        placeholder="09** *** ****"
-        value={formData.contactNumber}
-        onChange={handleInputChange}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
-      />
-    </div>
+            {/* Contact Number */}
+            <div>
+              <label
+                htmlFor="contactNumber"
+                className="block text-sm font-semibold text-gray-700">
+                Contact Number
+              </label>
+              <input
+                type="text"
+                id="contactNumber"
+                placeholder="09** *** ****"
+                value={formData.contactNumber}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
+              />
+            </div>
 
-    {/* Facebook Link */}
-    <div>
-      <label
-        htmlFor="facebookLink"
-        className="block text-sm font-semibold text-gray-700"
-      >
-        Facebook Link
-      </label>
-      <input
-        type="url"
-        id="facebookLink"
-        placeholder="https://www.facebook.com/juan.cruz.1898"
-        value={formData.facebookLink}
-        onChange={handleInputChange}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
-      />
-    </div>
+            {/* Facebook Link */}
+            <div>
+              <label
+                htmlFor="facebookLink"
+                className="block text-sm font-semibold text-gray-700">
+                Facebook Link
+              </label>
+              <input
+                type="url"
+                id="facebookLink"
+                placeholder="https://www.facebook.com/juan.cruz.1898"
+                value={formData.facebookLink}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
+              />
+            </div>
 
-    {/* Job Skill Sets */}
-    <div>
-      <label
-        htmlFor="jobSkillset"
-        className="block text-sm font-semibold text-gray-700"
-      >
-        Job Skill sets
-      </label>
-      <select
-        id="jobSkillset"
-        value={searchText}
-        onChange={handleSkillSearch}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none"
-      >
-        <option value="" disabled>
-          Select Skill Set/s
-        </option>
-        {skillOptions.map((skill) => (
-          <option key={skill} value={skill}>
-            {skill}
-          </option>
-        ))}
-      </select>
-    </div>
+            {/* Job Skill Sets */}
+            <div>
+              <label
+                htmlFor="jobSkillset"
+                className="block text-sm font-semibold text-gray-700">
+                Job Skill sets
+              </label>
+              <select
+                id="jobSkillset"
+                value={searchText}
+                onChange={handleSkillSearch}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 text-sm focus:ring focus:ring-blue-500 focus:outline-none">
+                <option value="" disabled>
+                  Select Skill Set/s
+                </option>
+                {skillOptions.map((skill) => (
+                  <option key={skill} value={skill}>
+                    {skill}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-    {/* Terms and Privacy */}
-    <p className="text-sm text-center text-gray-600">
-      By continuing, you are agreeing to our{" "}
-      <a href="/terms" className="text-blue-500 underline">
-        Terms of Service
-      </a>{" "}
-      and{" "}
-      <a href="/privacy" className="text-blue-500 underline">
-        Privacy Policy
-      </a>.
-    </p>
- {/* Profile Image Upload */}
- <div className="w-full p-4 border border-dashed rounded-lg text-center cursor-pointer">
-              <label htmlFor="file-upload" className="block w-full cursor-pointer">
+            {/* Terms and Privacy */}
+            <p className="text-sm text-center text-gray-600">
+              By continuing, you are agreeing to our{" "}
+              <a href="/terms" className="text-blue-500 underline">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a href="/privacy" className="text-blue-500 underline">
+                Privacy Policy
+              </a>
+              .
+            </p>
+            {/* Profile Image Upload */}
+            <div className="w-full p-4 border border-dashed rounded-lg text-center cursor-pointer">
+              <label
+                htmlFor="file-upload"
+                className="block w-full cursor-pointer">
                 {uploadedImage ? (
                   <div className="flex flex-col items-center">
                     <img
@@ -371,19 +368,19 @@ const Register = () => {
               />
             </div>
             {imageError && (
-              <p className="text-red-500 text-sm mt-2">Please upload a valid image.</p>
+              <p className="text-red-500 text-sm mt-2">
+                Please upload a valid image.
+              </p>
             )}
-    {/* Submit Button */}
-    <button
-      type="submit"
-      disabled={!isFormComplete || loading}
-      className="w-full bg-red-500 text-white px-3 py-2 rounded-lg font-bold text-lg hover:bg-red-600 transition focus:ring focus:ring-red-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
-    >
-      {loading ? "Submitting..." : "Sign Up"}
-    </button>
-  </form>
-  </div>
-
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={!isFormComplete || loading}
+              className="w-full bg-red-500 text-white px-3 py-2 rounded-lg font-bold text-lg hover:bg-red-600 transition focus:ring focus:ring-red-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
+              {loading ? "Submitting..." : "Sign Up"}
+            </button>
+          </form>
+        </div>
       )}
     </>
   );
@@ -391,13 +388,7 @@ const Register = () => {
 
 export default Register;
 
-
-
-
-
-
 //workin ver 26
-
 
 // 'use client';
 
@@ -510,7 +501,6 @@ export default Register;
 //       setLoading(false);
 //     }
 //   };
-
 
 //   const isFormComplete = formData.age && formData.yearLevel && uploadedImage;
 
