@@ -7,7 +7,7 @@ import { auth, db, storage } from "@/app/firebase/config";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-//import teen from "./img.png";
+import teen from "../img.png";
 import logo from "./search.png";
 
 
