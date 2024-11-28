@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { auth } from "@/app/firebase/config";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import teen from "../img.png";
-import google from "./img.png"
+import google from "./search.png"
 
 const SignIn = () => {
   const [showGoogleError, setShowGoogleError] = useState(false);
