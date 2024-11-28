@@ -121,7 +121,7 @@ export default function Profile({ postData, userData }) {
   console.log(userData)
 
   return (
-    <div className="profile max-w-3xl mx-auto p-6 bg-gray-50">
+    <div >
       {/* Header Section */}
       <Header userData={userData} />
 
