@@ -124,7 +124,7 @@ function CreatePost({ userData }) {
   };
 
   return (
-    <div className="create-post max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
+    <div className="create-post w-full mx-auto bg-white shadow-md rounded-lg p-6">
 <h2 className="text-2xl font-bold text-gray-800 mb-4 text-right">
   Create a New Post
 </h2>
