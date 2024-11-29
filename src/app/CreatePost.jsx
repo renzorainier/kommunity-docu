@@ -128,7 +128,7 @@ function CreatePost({ userData }) {
 <h2 className="text-2xl font-bold text-gray-800 mb-4 text-right">
   Create a New Post
 </h2>
-      {error && <p className="error text-red-500 mb-4">{error}</p>}
+      {error && <p className="error text-red-400 mb-4">{error}</p>}
       {successMessage && <p className="success text-green-500 mb-4">{successMessage}</p>}
 
       {/* Caption Input */}
