@@ -170,7 +170,7 @@ export default function Feed({ postData, userData }) {
           </div>
 
           {/* Caption Section */}
-          <p className="mt-4 text-gray-800">{post.caption}</p>
+          <p className="mt-4 text-gray-800 font-bold">{post.caption}</p>
 
           {/* Post Image */}
           {post.postPicRef && postImages[post.postId] ? (
