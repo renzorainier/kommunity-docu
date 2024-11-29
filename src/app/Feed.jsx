@@ -123,91 +123,87 @@ export default function Feed({ postData, userData }) {
       {recentPosts.map((post) => (
         <div
           key={post.postId}
-          className="post bg-gradient-to-r from-white via-blue-50 to-indigo-100 rounded-lg shadow-lg mb-6 overflow-hidden"
+          className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden"
         >
           {/* Header Section */}
-          <div className="flex items-center justify-between p-4 bg-[#E0EAF6]">
-            <div className="flex items-center space-x-2">
-              {profileImages[post.postId] ? (
-                <img
-                  src={profileImages[post.postId]}
-                  alt="Profile"
-                  className="w-12 h-12 rounded-full object-cover border-2 border-indigo-400"
-                />
-              ) : (
-                <CgProfile size={40} className="text-blue-500" />
-              )}
-              <div>
-                <p className="text-[#496992] font-bold text-lg font-inter">
-                  {post.name}
-                </p>
-                <p className="text-sm text-gray-600">{formatDate(post.date)}</p>
-              </div>
+          <div className="flex items-center space-x-4 mb-4">
+            {profileImages[post.postId] ? (
+              <img
+                src={profileImages[post.postId]}
+                alt="Profile"
+                className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
+              />
+            ) : (
+              <CgProfile size={48} className="text-gray-400" />
+            )}
+            <div>
+              <p className="text-lg text-gray-700 font-medium">{post.name}</p>
+              <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
             </div>
-            {/* Status Badges */}
-            <div className="flex flex-wrap gap-2 mt-2 md:mt-0">
-              {post.category && (
-                <span className="text-sm py-1 px-3 rounded-full bg-[#5856D6] text-[#FFFFFF] font-semibold font-inter">
-                  {post.category}
-                </span>
-              )}
-              <span
-                className={`text-sm py-1 px-3 rounded-full ${
-                  post.isAvailable
-                    ? "bg-[#B3BBC5] text-[#FFFFFF] font-semibold font-inter"
-                    : "bg-red-300 text-red-900"
-                }`}
-              >
-                {post.isAvailable ? "Available" : "Not Available"}
-              </span>
+          </div>
 
-              {/* Paid/Volunteer Badge */}
-              <span
-                className={`text-sm py-1 px-3 rounded-full ${
-                  post.isVolunteer
-                    ? "bg-green-500 text-white font-semibold"
-                    : "bg-red-500 text-white font-semibold"
-                }`}
-              >
-                {post.isVolunteer ? "Volunteer" : "Paid"}
+          {/* Badges Section */}
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {post.category && (
+              <span className="bg-[#5856D6] text-white font-bold py-1 px-3 rounded-full">
+                {post.category}
               </span>
-            </div>
+            )}
+            <span
+              className={`py-1 px-3 rounded-full ${
+                post.isAvailable
+                  ? "bg-[#B3BBC5] text-white font-bold"
+                  : "bg-red-100 text-red-800 font-bold"
+              }`}
+            >
+              {post.isAvailable ? "Available" : "Not Available"}
+            </span>
+            <span
+              className={`py-1 px-3 rounded-full ${
+                post.isVolunteer
+                  ? "bg-[#FBBC2E] text-black font-bold"
+                  : "bg-[#FF3B30] text-white font-bold"
+              }`}
+            >
+              {post.isVolunteer ? "Volunteer" : "Paid"}
+            </span>
           </div>
 
           {/* Caption Section */}
-          <p className="p-4 text-sm font-semibold text-[#496992] bg-[#E0EAF6] font-inter ">
-            {post.caption}
-          </p>
+          <p className="mt-4 text-gray-800">{post.caption}</p>
 
           {/* Post Image */}
           {post.postPicRef && postImages[post.postId] ? (
-          <div className="relative pb-9 bg-[#E0EAF6]">
-          <img
-          src={postImages[post.postId]}
-          alt="Post"
-          className="w-full object-cover" // Keeps the image proportional without stretching
-          />
-          </div>
-        ) : (
-        post.postPicRef && (
-    <p className="text-gray-500 p-4">Loading post image...</p>
-  )
+            <div className="mt-6">
+              <img
+                src={postImages[post.postId]}
+                alt="Post"
+                className="w-full rounded-lg shadow-md object-cover"
+              />
+            </div>
+          ) : (
+            post.postPicRef && (
+              <p className="text-gray-500 mt-4">Loading post image...</p>
+            )
           )}
         </div>
       ))}
 
       {/* Load More Button */}
-      <div className="text-center mt-8">
-        <button
-          onClick={() => setVisiblePosts((prev) => prev + 5)}
-          className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
-        >
-          Load More Posts
-        </button>
-      </div>
+      {recentPosts.length < allPosts.length && (
+        <div className="text-center mt-8">
+          <button
+            onClick={() => setVisiblePosts((prev) => prev + 5)}
+            className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+          >
+            Load More Posts
+          </button>
+        </div>
+      )}
     </div>
   );
 }
+
 
 
 

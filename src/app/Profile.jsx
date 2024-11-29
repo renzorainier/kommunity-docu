@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "./firebase"; // Ensure correct Firebase configuration
 import { CgProfile } from "react-icons/cg";
-import Header from "./Header"
+import Header from "./Header";
 
 export default function Profile({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
@@ -12,6 +12,7 @@ export default function Profile({ postData, userData }) {
   const [error, setError] = useState({});
   const [visiblePosts, setVisiblePosts] = useState(5);
 
+  // Function to get posts of the current user
   const getUserPosts = () => {
     if (!postData || !userData?.userID) return [];
     const allPosts = Object.entries(postData)
@@ -23,12 +24,12 @@ export default function Profile({ postData, userData }) {
       )
       .filter(
         (post) => post.userID === userData.userID && post.date?.seconds
-      ) // Filter for user's posts only
+      )
       .sort((a, b) => b.date.seconds - a.date.seconds);
     return allPosts;
-
   };
 
+  // Function to fetch profile and post images from Firebase Storage
   const fetchImages = async (posts) => {
     const profileImagePromises = [];
     const postImagePromises = [];
@@ -118,12 +119,42 @@ export default function Profile({ postData, userData }) {
 
   const allUserPosts = getUserPosts();
 
-  console.log(userData)
+  // Extract skill sets from userData (assuming userData has skillSets)
+  const skillSets = userData?.skillSets || [];
 
   return (
-    <div >
+    <div>
       {/* Header Section */}
       <Header userData={userData} />
+
+      {/* Profile Section */}
+      <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
+        <div className="flex items-center space-x-4">
+          <img
+            src={profileImages[userData?.userID]}
+            alt="Profile"
+            className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
+          />
+          <div>
+            <p className="text-lg text-gray-700 font-medium">{userData?.name}</p>
+            <div className="text-sm text-gray-500">
+              {/* Display Skill Sets */}
+              <p className="font-semibold">Job Skill Sets:</p>
+              <ul className="list-disc pl-6">
+                {skillSets.length ? (
+                  skillSets.map((skill, index) => (
+                    <li key={index} className="text-gray-700">
+                      {skill}
+                    </li>
+                  ))
+                ) : (
+                  <p className="text-gray-500">No skills listed.</p>
+                )}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Posts Section */}
       {visibleUserPosts.length === 0 ? (
@@ -132,8 +163,10 @@ export default function Profile({ postData, userData }) {
         visibleUserPosts.map((post) => (
           <div
             key={post.postId}
-            className="post bg-white p-6 rounded-lg shadow-xl transition-all duration-300 mb-6">
-            <div className="flex items-center space-x-4">
+            className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden"
+          >
+            {/* Post Header */}
+            <div className="flex items-center space-x-4 mb-4">
               {profileImages[post.postId] ? (
                 <img
                   src={profileImages[post.postId]}
@@ -152,24 +185,38 @@ export default function Profile({ postData, userData }) {
                 <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
               </div>
             </div>
-            <p className="text-gray-800 mt-4 text-base">{post.caption}</p>
 
-            <div className="mt-4 flex items-center space-x-2 text-sm text-gray-600">
+            {/* Post Badges Section */}
+            <div className="mt-2 flex flex-wrap items-center gap-2">
               {post.category && (
-                <span className="bg-blue-100 text-blue-800 py-1 px-3 rounded-full">
+                <span className="bg-[#5856D6] text-white font-bold py-1 px-3 rounded-full">
                   {post.category}
                 </span>
               )}
               <span
                 className={`py-1 px-3 rounded-full ${
                   post.isAvailable
-                    ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-800"
-                }`}>
+                    ? "bg-[#B3BBC5] text-white font-bold"
+                    : "bg-red-100 text-red-800 font-bold"
+                }`}
+              >
                 {post.isAvailable ? "Available" : "Not Available"}
+              </span>
+              <span
+                className={`py-1 px-3 rounded-full ${
+                  post.isVolunteer
+                    ? "bg-[#FBBC2E] text-black font-bold"
+                    : "bg-[#FF3B30] text-white font-bold"
+                }`}
+              >
+                {post.isVolunteer ? "Volunteer" : "Paid"}
               </span>
             </div>
 
+            {/* Post Caption */}
+            <p className="mt-4 text-gray-800">{post.caption}</p>
+
+            {/* Post Image */}
             {post.postPicRef && postImages[post.postId] ? (
               <div className="mt-6">
                 <img
@@ -186,11 +233,14 @@ export default function Profile({ postData, userData }) {
           </div>
         ))
       )}
+
+      {/* Load More Posts Button */}
       {visibleUserPosts.length < allUserPosts.length && (
         <div className="text-center mt-8">
           <button
             onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-full text-lg font-semibold hover:bg-blue-700 transition-all duration-200">
+            className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+          >
             Load More Posts
           </button>
         </div>
@@ -198,6 +248,8 @@ export default function Profile({ postData, userData }) {
     </div>
   );
 }
+
+
 
 
 // "use client";
