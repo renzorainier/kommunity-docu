@@ -174,7 +174,7 @@ function CreatePost({ userData }) {
         <div
           onClick={() => setIsVolunteer(!isVolunteer)}
           className={`cursor-pointer flex items-center px-4 py-2 rounded-full transition-all ${
-            isVolunteer ? 'bg-green-500 text-white' : 'bg-[#FF3B30] text-white'
+            isVolunteer ? 'bg-green-500 text-white font-semibold' : 'bg-[#FF3B30] text-white font-semibold'
           }`}
         >
           {isVolunteer ? 'Volunteer' : 'Paid'}
