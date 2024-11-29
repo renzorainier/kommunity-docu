@@ -29,37 +29,13 @@ export default function Search({ postData, currentUser }) {
         }));
 
         // Filter out the logged-in user
-        const filteredUsers = usersData.filter(
-          (user) => user.id !== currentUser?.id
-        );
+        const filteredUsers = usersData.filter(user => user.id !== currentUser?.id);
 
         setUsers(filteredUsers);
         setFilteredUsers(filteredUsers);
-
-        // Fetch profile images for all users
-        const profileImagePromises = filteredUsers.map((user) =>
-          fetchUserProfileImage(user.id)
-        );
-
-        const profileImagesMap = await Promise.all(profileImagePromises);
-        setProfileImages(Object.assign({}, ...profileImagesMap));
       } catch (error) {
         console.error('Error fetching users:', error);
       }
-    };
-
-    const fetchUserProfileImage = async (userId) => {
-      const profileImageRef = ref(storage, `images/${userId}/`);
-      try {
-        const response = await listAll(profileImageRef);
-        if (response.items.length > 0) {
-          const url = await getDownloadURL(response.items[0]);
-          return { [userId]: url };
-        }
-      } catch (err) {
-        console.error(`Error fetching profile image for user ${userId}:`, err);
-      }
-      return { [userId]: null };
     };
 
     fetchUsers();
@@ -98,7 +74,72 @@ export default function Search({ postData, currentUser }) {
   };
 
   const fetchImages = async (posts) => {
-    // ... Existing image fetching logic for posts
+    const profileImagePromises = [];
+    const postImagePromises = [];
+
+    posts.forEach((post) => {
+      const { postId, userProfileRef, postPicRef } = post;
+
+      if (userProfileRef) {
+        const profileImageRef = ref(storage, `images/${userProfileRef}/`);
+        const profilePromise = listAll(profileImageRef)
+          .then((response) => {
+            if (response.items.length === 0) {
+              setError((prev) => ({ ...prev, [postId]: true }));
+              return { postId, url: null };
+            }
+            return getDownloadURL(response.items[0]).then((url) => ({
+              postId,
+              url,
+            }));
+          })
+          .catch(() => {
+            setError((prev) => ({ ...prev, [postId]: true }));
+            return { postId, url: null };
+          });
+        profileImagePromises.push(profilePromise);
+      }
+
+      if (postPicRef) {
+        const postImageRef = ref(storage, `posts/${postPicRef}/`);
+        const postPromise = listAll(postImageRef)
+          .then((response) => {
+            if (response.items.length === 0) {
+              setError((prev) => ({ ...prev, [postId]: true }));
+              return { postId, url: null };
+            }
+            return getDownloadURL(response.items[0]).then((url) => ({
+              postId,
+              url,
+            }));
+          })
+          .catch(() => {
+            setError((prev) => ({ ...prev, [postId]: true }));
+            return { postId, url: null };
+          });
+        postImagePromises.push(postPromise);
+      }
+    });
+
+    const [resolvedProfileImages, resolvedPostImages] = await Promise.all([
+      Promise.all(profileImagePromises),
+      Promise.all(postImagePromises),
+    ]);
+
+    const profileImageMap = resolvedProfileImages.reduce(
+      (acc, { postId, url }) => {
+        if (url) acc[postId] = url;
+        return acc;
+      },
+      {}
+    );
+    const postImageMap = resolvedPostImages.reduce((acc, { postId, url }) => {
+      if (url) acc[postId] = url;
+      return acc;
+    }, {});
+
+    setProfileImages((prev) => ({ ...prev, ...profileImageMap }));
+    setPostImages((prev) => ({ ...prev, ...postImageMap }));
   };
 
   useEffect(() => {
@@ -122,18 +163,9 @@ export default function Search({ postData, currentUser }) {
             <li
               key={user.id}
               onClick={() => setSelectedUser(user)}
-              className="flex items-center space-x-4 p-2 border border-gray-200 rounded hover:bg-gray-100 cursor-pointer"
+              className="p-2 border border-gray-200 rounded hover:bg-gray-100 cursor-pointer"
             >
-              {profileImages[user.id] ? (
-                <img
-                  src={profileImages[user.id]}
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-              ) : (
-                <CgProfile size={40} className="text-gray-400" />
-              )}
-              <span>{user.name}</span>
+              {user.name}
             </li>
           ))}
         </ul>
@@ -142,6 +174,7 @@ export default function Search({ postData, currentUser }) {
   }
 
   const userPosts = getUserPosts();
+
   return (
     <div className="profile max-w-3xl mx-auto p-6 bg-gray-50">
       <button
