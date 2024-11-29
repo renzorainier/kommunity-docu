@@ -16,7 +16,7 @@ export default function Search({ postData, currentUser }) {
   const [postImages, setPostImages] = useState({});
   const [error, setError] = useState({});
 
-  // Fetch all users from Firestore
+  // Fetch all users and their profile pictures
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -29,10 +29,32 @@ export default function Search({ postData, currentUser }) {
         }));
 
         // Filter out the logged-in user
-        const filteredUsers = usersData.filter(user => user.id !== currentUser?.id);
-
+        const filteredUsers = usersData.filter((user) => user.id !== currentUser?.id);
         setUsers(filteredUsers);
         setFilteredUsers(filteredUsers);
+
+        // Fetch profile pictures for users
+        const profilePicturePromises = filteredUsers.map(async (user) => {
+          const profileImageRef = ref(storage, `images/${user.id}/`);
+          try {
+            const response = await listAll(profileImageRef);
+            if (response.items.length > 0) {
+              const url = await getDownloadURL(response.items[0]);
+              return { userId: user.id, url };
+            }
+          } catch {
+            // Handle errors gracefully by not setting a profile picture
+          }
+          return { userId: user.id, url: null };
+        });
+
+        const resolvedImages = await Promise.all(profilePicturePromises);
+        const profileImageMap = resolvedImages.reduce((acc, { userId, url }) => {
+          if (url) acc[userId] = url;
+          return acc;
+        }, {});
+
+        setProfileImages(profileImageMap);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -74,71 +96,35 @@ export default function Search({ postData, currentUser }) {
   };
 
   const fetchImages = async (posts) => {
-    const profileImagePromises = [];
-    const postImagePromises = [];
-
-    posts.forEach((post) => {
-      const { postId, userProfileRef, postPicRef } = post;
-
-      if (userProfileRef) {
-        const profileImageRef = ref(storage, `images/${userProfileRef}/`);
-        const profilePromise = listAll(profileImageRef)
+    const postImagePromises = posts.map((post) => {
+      if (post.postPicRef) {
+        const postImageRef = ref(storage, `posts/${post.postPicRef}/`);
+        return listAll(postImageRef)
           .then((response) => {
             if (response.items.length === 0) {
-              setError((prev) => ({ ...prev, [postId]: true }));
-              return { postId, url: null };
+              setError((prev) => ({ ...prev, [post.postId]: true }));
+              return { postId: post.postId, url: null };
             }
             return getDownloadURL(response.items[0]).then((url) => ({
-              postId,
+              postId: post.postId,
               url,
             }));
           })
           .catch(() => {
-            setError((prev) => ({ ...prev, [postId]: true }));
-            return { postId, url: null };
+            setError((prev) => ({ ...prev, [post.postId]: true }));
+            return { postId: post.postId, url: null };
           });
-        profileImagePromises.push(profilePromise);
       }
-
-      if (postPicRef) {
-        const postImageRef = ref(storage, `posts/${postPicRef}/`);
-        const postPromise = listAll(postImageRef)
-          .then((response) => {
-            if (response.items.length === 0) {
-              setError((prev) => ({ ...prev, [postId]: true }));
-              return { postId, url: null };
-            }
-            return getDownloadURL(response.items[0]).then((url) => ({
-              postId,
-              url,
-            }));
-          })
-          .catch(() => {
-            setError((prev) => ({ ...prev, [postId]: true }));
-            return { postId, url: null };
-          });
-        postImagePromises.push(postPromise);
-      }
+      return Promise.resolve({ postId: post.postId, url: null });
     });
 
-    const [resolvedProfileImages, resolvedPostImages] = await Promise.all([
-      Promise.all(profileImagePromises),
-      Promise.all(postImagePromises),
-    ]);
+    const resolvedPostImages = await Promise.all(postImagePromises);
 
-    const profileImageMap = resolvedProfileImages.reduce(
-      (acc, { postId, url }) => {
-        if (url) acc[postId] = url;
-        return acc;
-      },
-      {}
-    );
     const postImageMap = resolvedPostImages.reduce((acc, { postId, url }) => {
       if (url) acc[postId] = url;
       return acc;
     }, {});
 
-    setProfileImages((prev) => ({ ...prev, ...profileImageMap }));
     setPostImages((prev) => ({ ...prev, ...postImageMap }));
   };
 
@@ -158,14 +144,23 @@ export default function Search({ postData, currentUser }) {
           placeholder="Search by name..."
           className="w-full p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
-        <ul className="space-y-2">
+        <ul className="space-y-4">
           {filteredUsers.map((user) => (
             <li
               key={user.id}
               onClick={() => setSelectedUser(user)}
-              className="p-2 border border-gray-200 rounded hover:bg-gray-100 cursor-pointer"
+              className="flex items-center p-2 border border-gray-200 rounded hover:bg-gray-100 cursor-pointer"
             >
-              {user.name}
+              {profileImages[user.id] ? (
+                <img
+                  src={profileImages[user.id]}
+                  alt={`${user.name}'s profile`}
+                  className="w-10 h-10 rounded-full object-cover mr-3"
+                />
+              ) : (
+                <CgProfile size={40} className="text-gray-400 mr-3" />
+              )}
+              <span className="text-lg text-gray-700">{user.name}</span>
             </li>
           ))}
         </ul>
@@ -192,55 +187,28 @@ export default function Search({ postData, currentUser }) {
           className="post bg-white p-6 rounded-lg shadow-xl transition-all duration-300 mb-6"
         >
           <div className="flex items-center space-x-4">
-            {profileImages[post.postId] ? (
-              <img
-                src={profileImages[post.postId]}
-                alt="Profile"
-                className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
-              />
-            ) : (
-              <CgProfile size={48} className="text-gray-400" />
-            )}
+            <img
+              src={profileImages[selectedUser.id] || ''}
+              alt={`${selectedUser.name}'s profile`}
+              className="w-16 h-16 rounded-full object-cover"
+            />
             <div>
               <p className="text-lg text-gray-700 font-medium">{post.name}</p>
               <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
             </div>
           </div>
           <p className="text-gray-800 mt-4">{post.caption}</p>
-
-          {/* Show Category and Availability */}
-          <div className="mt-4 flex items-center space-x-2 text-sm text-gray-600">
-            {post.category && (
-              <span className="bg-blue-100 text-blue-800 py-1 px-3 rounded-full">
-                {post.category}
-              </span>
-            )}
-            <span
-              className={`py-1 px-3 rounded-full ${
-                post.isAvailable
-                  ? 'bg-green-100 text-green-800'
-                  : 'bg-red-100 text-red-800'
-              }`}
-            >
-              {post.isAvailable ? 'Available' : 'Not Available'}
-            </span>
-          </div>
-
-          {post.postPicRef && postImages[post.postId] ? (
-            <div className="mt-6">
-              <img
-                src={postImages[post.postId]}
-                alt="Post"
-                className="w-full rounded-lg shadow-md object-cover"
-              />
-            </div>
-          ) : (
-            post.postPicRef && (
-              <p className="text-gray-500 mt-4">Loading post image...</p>
-            )
+          {post.postPicRef && postImages[post.postId] && (
+            <img
+              src={postImages[post.postId]}
+              alt="Post"
+              className="mt-6 rounded-lg shadow-md w-full"
+            />
           )}
         </div>
+
       ))}
+      
     </div>
   );
 }
