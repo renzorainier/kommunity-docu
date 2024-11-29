@@ -174,7 +174,7 @@ function CreatePost({ userData }) {
         <div
           onClick={() => setIsVolunteer(!isVolunteer)}
           className={`cursor-pointer flex items-center px-4 py-2 rounded-full transition-all ${
-            isVolunteer ? 'bg-green-500 text-white' : 'bg-gray-500 text-white'
+            isVolunteer ? 'bg-green-500 text-white' : 'bg-[#FF3B30] text-white'
           }`}
         >
           {isVolunteer ? 'Volunteer' : 'Paid'}
@@ -219,15 +219,23 @@ function CreatePost({ userData }) {
       )}
 
       {/* Submit Button */}
+      <div className="w-full flex justify-end mt-4">
       <button
-        onClick={handleCreatePost}
-        className={`w-full bg-blue-500 text-white px-4 py-2 rounded mt-4 font-medium hover:bg-blue-600 transition-all ${
-          !caption || !uploadedImage || !category ? 'opacity-50 cursor-not-allowed' : ''
-        }`}
-        disabled={!caption || !uploadedImage || !category}
-      >
-        Create Post
-      </button>
+      onClick={handleCreatePost}
+        className={`bg-[#EC3145] text-white px-6 py-2 rounded-full font-semibold ${
+      !caption || !uploadedImage || !category ? 'opacity-50 cursor-not-allowed' : ''
+    }`}
+    style={{
+      width: '90px',
+      height: '40px',
+      textAlign: 'center',
+      fontSize: '17px',
+    }}
+    disabled={!caption || !uploadedImage || !category}
+  >
+    Post
+  </button>
+</div>
     </div>
   );
 }
