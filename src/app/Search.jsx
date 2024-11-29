@@ -208,7 +208,7 @@ export default function Search({ postData, currentUser }) {
         </div>
 
       ))}
-      
+        
     </div>
   );
 }
