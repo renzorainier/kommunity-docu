@@ -50,9 +50,9 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
         <button
           onClick={() => setActiveComponent("createPost")}
           aria-label="Create Post"
-          className="fixed bottom-4 right-4 bg-gradient-to-r from-orange-400 to-red-500 text-white p-4 rounded-full shadow-lg z-[1100] hover:shadow-xl transition-all"
+          className="fixed bottom-4 right-4 bg-gradient-to-r from-orange-400 to-red-500 text-white p-5 rounded-full shadow-lg z-[1100] hover:shadow-xl transition-all"
         >
-          <FaPlus size={24} />
+          <FaPlus className="w-12 h-120 text-1xl" />
         </button>
       </>
     );
