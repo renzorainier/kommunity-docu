@@ -160,6 +160,17 @@ export default function Feed({ postData, userData }) {
               >
                 {post.isAvailable ? "Available" : "Not Available"}
               </span>
+
+              {/* Paid/Volunteer Badge */}
+              <span
+                className={`text-sm py-1 px-3 rounded-full ${
+                  post.isVolunteer
+                    ? "bg-green-500 text-white font-semibold"
+                    : "bg-red-500 text-white font-semibold"
+                }`}
+              >
+                {post.isVolunteer ? "Volunteer" : "Paid"}
+              </span>
             </div>
           </div>
 
