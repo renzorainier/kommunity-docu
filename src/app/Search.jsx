@@ -201,11 +201,11 @@ export default function Search({ postData, currentUser }) {
               className="w-16 h-16 rounded-full object-cover"
             />
             <div>
-              <p className="text-lg text-gray-700 font-bold">{post.name}</p>
-              <p className="text-sm text-gray-500 font-bold">{formatDate(post.date)}</p>
+              <p className="text-lg text-[#496992] font-bold">{post.name}</p>
+              <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
             </div>
           </div>
-          <p className="text-gray-800 mt-4">{post.caption}</p>
+          <p className="text-[#496992] mt-4 font-bold">{post.caption}</p>
           {post.postPicRef && postImages[post.postId] && (
             <img
               src={postImages[post.postId]}
