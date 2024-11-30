@@ -137,33 +137,35 @@ export default function Search({ postData, currentUser }) {
     return (
       <div className="p-4">
         <h1 className="text-xl font-bold mb-4">Search Users</h1>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search by name..."
-          className="w-full p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <ul className="space-y-4">
+        <div className="relative mb-4">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search"
+            className="w-full p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm"
+          />
+        </div>
+        <div className="flex items-center space-x-3 overflow-x-auto py-2">
           {filteredUsers.map((user) => (
-            <li
+            <div
               key={user.id}
               onClick={() => setSelectedUser(user)}
-              className="flex items-center p-2 border border-gray-200 rounded hover:bg-gray-100 cursor-pointer"
+              className="flex-shrink-0 text-center cursor-pointer"
             >
               {profileImages[user.id] ? (
                 <img
                   src={profileImages[user.id]}
                   alt={`${user.name}'s profile`}
-                  className="w-10 h-10 rounded-full object-cover mr-3"
+                  className="w-16 h-16 rounded-full border-2 border-gray-300 shadow-sm"
                 />
               ) : (
-                <CgProfile size={40} className="text-gray-400 mr-3" />
+                <CgProfile size={64} className="text-gray-400 mx-auto" />
               )}
-              <span className="text-lg text-gray-700">{user.name}</span>
-            </li>
+              <span className="block text-sm text-gray-600 mt-2">{user.name}</span>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     );
   }
@@ -172,12 +174,6 @@ export default function Search({ postData, currentUser }) {
 
   return (
     <div className="profile max-w-3xl mx-auto p-6 bg-gray-50">
-      <button
-        onClick={() => setSelectedUser(null)}
-        className="mb-4 px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
-      >
-        Back to Search
-      </button>
       <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800">
         Posts by {selectedUser.name}
       </h2>
@@ -206,9 +202,7 @@ export default function Search({ postData, currentUser }) {
             />
           )}
         </div>
-
       ))}
-        
     </div>
   );
 }
