@@ -129,10 +129,10 @@ export default function Search({ postData, currentUser }) {
                 )}
               </div>
               <span
-                className="block text-center mt-2 text-sm text-gray-700 truncate"
-                style={{ maxWidth: '70px' }}
+              className="block text-center mt-2 text-sm text-gray-700"
+              style={{ maxWidth: '70px', whiteSpace: 'normal', wordWrap: 'break-word', lineHeight: '1.2' }}
               >
-                {user.name}
+              {user.name}
               </span>
             </li>
           ))}
