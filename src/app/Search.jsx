@@ -141,9 +141,8 @@ export default function Search({ postData, currentUser }) {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search"
-          className="w-full p-2 rounded-full bg-gray-100 border-0 focus:outline-none focus:ring-0"
-          style={{ paddingLeft: '1rem' }}
+          placeholder="Search by name..."
+          className="w-full p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
         <ul className="flex space-x-6 overflow-auto">
           {filteredUsers.map((user) => (
@@ -193,7 +192,7 @@ export default function Search({ postData, currentUser }) {
       {userPosts.map((post) => (
         <div
           key={post.postId}
-          className="post bg-white p-6 rounded-lg shadow-xl transition-all duration-300 mb-6"
+          className="post bg-[#E0EAF6] p-6 rounded-lg shadow-xl transition-all duration-300 mb-6"
         >
           <div className="flex items-center space-x-4">
             <img
@@ -202,8 +201,8 @@ export default function Search({ postData, currentUser }) {
               className="w-16 h-16 rounded-full object-cover"
             />
             <div>
-              <p className="text-lg text-gray-700 font-medium">{post.name}</p>
-              <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
+              <p className="text-lg text-gray-700 font-bold">{post.name}</p>
+              <p className="text-sm text-gray-500 font-bold">{formatDate(post.date)}</p>
             </div>
           </div>
           <p className="text-gray-800 mt-4">{post.caption}</p>
@@ -219,6 +218,5 @@ export default function Search({ postData, currentUser }) {
     </div>
   );
 }
-
 
 
