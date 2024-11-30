@@ -59,7 +59,7 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
   }
 
   // Render a floating back button for other components
-  if (activeComponent === "search") {
+  if (activeComponent === "search" || "createPost") {
     return (
       <>
         <button
