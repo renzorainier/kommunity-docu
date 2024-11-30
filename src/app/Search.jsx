@@ -192,7 +192,7 @@ export default function Search({ postData, currentUser }) {
       {userPosts.map((post) => (
         <div
           key={post.postId}
-          className="post bg-white p-6 rounded-lg shadow-xl transition-all duration-300 mb-6"
+          className="post bg-[#E0EAF6] p-6 rounded-lg shadow-xl transition-all duration-300 mb-6"
         >
           <div className="flex items-center space-x-4">
             <img
