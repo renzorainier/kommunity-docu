@@ -144,9 +144,9 @@ export default function Search({ postData, currentUser }) {
           placeholder="Search by name..."
           className="w-full p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
-        <div className="flex items-center justify-start overflow-x-auto space-x-6 py-2">
+        <ul className="flex space-x-6 overflow-auto">
           {filteredUsers.map((user) => (
-            <div
+            <li
               key={user.id}
               onClick={() => setSelectedUser(user)}
               className="flex flex-col items-center text-center cursor-pointer"
@@ -164,14 +164,14 @@ export default function Search({ postData, currentUser }) {
                 )}
               </div>
               <span
-                className="block text-sm text-gray-700 mt-2 truncate w-full"
-                style={{ maxWidth: '80px' }}
+                className="block text-sm text-gray-700 mt-2 break-words"
+                style={{ maxWidth: '80px', wordWrap: 'break-word', lineHeight: '1.2' }}
               >
                 {user.name}
               </span>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     );
   }
@@ -218,4 +218,5 @@ export default function Search({ postData, currentUser }) {
     </div>
   );
 }
+
 
