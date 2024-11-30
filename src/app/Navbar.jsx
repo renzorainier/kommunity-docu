@@ -1,20 +1,39 @@
 "use client";
 import Image from "next/image";
-import { FaUser, FaPlus, FaArrowLeft, FaSearch } from "react-icons/fa"; // Import icons
-
+import { useState } from "react";
+import { FaUser, FaPlus, FaArrowLeft, FaSearch, FaSignOutAlt } from "react-icons/fa";
+import { auth } from "@/app/firebase/config";
+import { useRouter } from "next/navigation";
 import logo from "./img.png";
 
 export default function Navbar({ activeComponent, setActiveComponent }) {
+  const router = useRouter();
+  const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut(); // Log out the user
+      router.push("/sign-in"); // Redirect to login page
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
+
+  const handleLogoutClick = () => {
+    setShowLogoutConfirmation(true); // Show confirmation dialog
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutConfirmation(false); // Hide confirmation dialog
+  };
+
   if (activeComponent === "feed") {
-    // Render navbar when activeComponent is 'feed'
     return (
       <>
-        {/* Navbar */}
         <nav className="fixed top-0 left-0 right-0 bg-[#E0EAF6] shadow-sm z-[1000] flex justify-between items-center px-4 py-0 border-b border-grey-600">
-          {/* App Logo and Title */}
           <div className="flex items-center ml-[-20px]">
             <Image
-              src={logo} // Logo image
+              src={logo}
               width={90}
               height={70}
               alt="KommUnity Logo"
@@ -40,10 +59,17 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
             >
               <FaUser size={20} />
             </button>
+            <button
+              onClick={handleLogoutClick}
+              aria-label="Logout"
+              className="text-gray-600 hover:text-red-500"
+            >
+              <FaSignOutAlt size={20} />
+            </button>
           </div>
         </nav>
 
-        {/* Horizontal line */}
+        {/* Horizontal Line */}
         <hr className="fixed top-[70px] left-0 right-0 border-t border-gray-300 z-[900]" />
 
         {/* Floating Create Post Button */}
@@ -54,11 +80,36 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
         >
           <FaPlus size={25} />
         </button>
+
+        {/* Logout Confirmation Dialog */}
+        {showLogoutConfirmation && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[1200]">
+            <div className="bg-white rounded-lg p-6 shadow-lg w-[90%] max-w-md">
+              <p className="text-gray-800 text-lg font-semibold mb-4">
+                Are you sure you want to Log out?
+              </p>
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={cancelLogout}
+                  className="px-4 py-2 text-gray-600 bg-gray-200 rounded-md hover:bg-gray-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"
+                >
+                  Log out
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </>
     );
   }
 
-  // Render a floating back button for other components
+  // Render back button for other components
   if (activeComponent === "search" || "createPost") {
     return (
       <>
@@ -73,5 +124,7 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
     );
   }
 
-  return null; // Don't render back button or navbar for other components
+  return null;
 }
+
+

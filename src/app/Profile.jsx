@@ -121,7 +121,7 @@ export default function Profile({ postData, userData }) {
       <Header userData={userData} />
 
       {/* Profile Section */}
-      <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center font-inter">
 
       </div>
 
@@ -149,7 +149,7 @@ export default function Profile({ postData, userData }) {
                 </div>
               )}
               <div>
-                <p className="text-lg text-[#496992] font-bold">{post.name}</p>
+                <p className="text-lg text-[#496992] font-bold font-inter">{post.name}</p>
                 <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
               </div>
             </div>

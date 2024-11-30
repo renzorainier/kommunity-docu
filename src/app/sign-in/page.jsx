@@ -33,19 +33,19 @@ const SignIn = () => {
 
     <div className="min-h-screen flex flex-col items-center justify-between bg-[#F8FBFF] px-6 py-10">
       {/* Logo Section */}
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center ">
         <Image
           src={logo} // Logo image
-          width={170}
-          height={170}
+          width={220}
+          height={200}
           alt="KommUnity Logo"
         />
-        <h1 className="text-4xl font-black text-[#323030] mt-[-6px]">KommUnity</h1>
+        <h1 className=" text-6xl font-bold text-gray-700 mt-4 ">KommUnity</h1>
       </div>
 
       {/* Login Header */}
       <div className="w-full flex flex-col items-start pl-8 mt-0">
-        <h2 className="text-2xl font-extrabold text-gray-700">Log In</h2>
+        <h2 className="top-[400px] w-[350px] flex  text-2xl font-extrabold text-gray-700">Log In</h2>
         <p className="text-gray-600 text-sm mt-0 font-roboto-mono">
           By continuing, you are agreeing to our{" "}
           <a href="/terms" className="text-blue-500 hover:underline">
@@ -61,13 +61,13 @@ const SignIn = () => {
       {/* Google Sign-In Button */}
       <div className="w-full mt-6">
         {showGoogleError && (
-          <p className="text-red-500 text-center mb-2 text-sm">
+          <p className="text-red-500 text-center mb-4 text-sm">
             Error with Google Sign-In. Please try again.
           </p>
         )}
         <button
           onClick={handleGoogleSignIn}
-          className="flex items-center justify-center w-full py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-[#F8FBFF]"
+          className="absolute left-[50%] transform -translate-x-[50%] top-[550px] w-[350px] flex items-center justify-center py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-[#F8FBFF]  font-roboto-mono"
           disabled={googleLoading}
         >
           <Image
@@ -83,7 +83,7 @@ const SignIn = () => {
 
       {/* Footer Section */}
       <div className="text-center mt-6">
-        <p className="text-gray-600 text-sm">
+        <p className="text-gray-600 text-sm absolute left-[30%] transform -translate-x-[45%] top-[650px] font-roboto-mono">
           Need an account?{" "}
           <a href="/sign-up" className="text-blue-500 hover:underline">
             Sign up
