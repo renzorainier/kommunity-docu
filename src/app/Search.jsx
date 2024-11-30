@@ -182,7 +182,7 @@ export default function Search({ postData, currentUser }) {
     <div className="profile max-w-3xl mx-auto p-6 bg-gray-50">
       <button
         onClick={() => setSelectedUser(null)}
-        className="mb-4 px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+        className="mb-4 px-4 py-2 bg-[#F8FBFF] text-gray-700 rounded hover:bg-gray-400"
       >
         Back to Search
       </button>
