@@ -142,7 +142,7 @@ export default function Search({ postData, currentUser }) {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search by name..."
-          className="w-full p-2 bg-[#F4F8FE] text-gray-500 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-[#B7CCE5]"
+          className="w-full p-2 bg-[#E0EAF6] text-gray-500 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-[#B7CCE5]"
         />
         <ul className="flex space-x-6 overflow-auto">
           {filteredUsers.map((user) => (
