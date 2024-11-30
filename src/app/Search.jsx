@@ -96,35 +96,44 @@ export default function Search({ postData, currentUser }) {
     return (
       <div className="p-6 bg-[#F8FAFB] min-h-screen">
         {/* Search Input */}
-        <div className="mb-6">
+        <div className="flex items-center bg-[#EDF4FB] p-3 rounded-full shadow-md">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search for users..."
-            className="w-full p-3 rounded-lg bg-[#E0EAF6] text-gray-500 border-none shadow-md focus:outline-none focus:ring-2 focus:ring-[#B7CCE5]"
+            placeholder="Search"
+            className="flex-grow bg-transparent outline-none text-gray-600 placeholder-gray-500"
           />
         </div>
+        <hr className="my-4 border-gray-300" />
 
         {/* Recent Users */}
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Recent Users</h2>
-        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+        <h2 className="text-lg font-bold text-gray-800 mb-4">Recent</h2>
+        <ul className="flex space-x-4 overflow-x-auto">
           {filteredUsers.map((user) => (
             <li
               key={user.id}
               onClick={() => setSelectedUser(user)}
-              className="cursor-pointer text-center bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition"
+              className="flex flex-col items-center cursor-pointer"
+              style={{ width: '80px', minWidth: '80px' }}
             >
-              {profileImages[user.id] ? (
-                <img
-                  src={profileImages[user.id]}
-                  alt={`${user.name}'s profile`}
-                  className="w-20 h-20 mx-auto rounded-full border-2 border-gray-300 shadow-sm object-cover"
-                />
-              ) : (
-                <CgProfile size={80} className="text-gray-400 mx-auto" />
-              )}
-              <span className="block mt-4 text-gray-700 font-medium">{user.name}</span>
+              <div className="relative">
+                {profileImages[user.id] ? (
+                  <img
+                    src={profileImages[user.id]}
+                    alt={`${user.name}'s profile`}
+                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-300 shadow-sm"
+                  />
+                ) : (
+                  <CgProfile size={64} className="text-gray-400 mx-auto" />
+                )}
+              </div>
+              <span
+                className="block text-center mt-2 text-sm text-gray-700 truncate"
+                style={{ maxWidth: '70px' }}
+              >
+                {user.name}
+              </span>
             </li>
           ))}
         </ul>
@@ -176,6 +185,7 @@ export default function Search({ postData, currentUser }) {
     </div>
   );
 }
+
 
 
 
