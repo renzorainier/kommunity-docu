@@ -149,7 +149,7 @@ export default function Profile({ postData, userData }) {
                 </div>
               )}
               <div>
-                <p className="text-lg text-gray-700 font-medium">{post.name}</p>
+                <p className="text-lg text-[#496992] font-bold">{post.name}</p>
                 <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
               </div>
             </div>
@@ -182,7 +182,7 @@ export default function Profile({ postData, userData }) {
             </div>
 
             {/* Caption Section */}
-            <p className="mt-4 text-gray-800">{post.caption}</p>
+            <p className="mt-4 text-[#496992] font-bold">{post.caption}</p>
 
             {/* Post Image */}
             {post.postPicRef && postImages[post.postId] ? (
