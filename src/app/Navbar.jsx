@@ -59,15 +59,19 @@ export default function Navbar({ activeComponent, setActiveComponent }) {
   }
 
   // Render a floating back button for other components
-  return (
-    <>
-      <button
-        onClick={() => setActiveComponent("feed")}
-        className="fixed top-6 left-4 bg-gradient-to-r from-orange-400 to-red-500 text-white p-3 rounded-full shadow-lg z-[1100] hover:shadow-xl transition-all"
-        aria-label="Back"
-      >
-        <FaArrowLeft size={24} />
-      </button>
-    </>
-  );
+  if (activeComponent === "search") {
+    return (
+      <>
+        <button
+          onClick={() => setActiveComponent("feed")}
+          className="fixed top-6 left-4 bg-gradient-to-r from-orange-400 to-red-500 text-white p-3 rounded-full shadow-lg z-[1100] hover:shadow-xl transition-all"
+          aria-label="Back"
+        >
+          <FaArrowLeft size={24} />
+        </button>
+      </>
+    );
+  }
+
+  return null; // Don't render back button or navbar for other components
 }
