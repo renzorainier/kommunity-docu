@@ -5,6 +5,8 @@ import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "./firebase"; // Ensure correct Firebase configuration
 import { CgProfile } from "react-icons/cg";
 import Header from "./Header";
+import { Menu, Transition } from "@headlessui/react";
+import { FaEdit, FaTrashAlt, FaCheckCircle, FaRegCheckCircle, FaDollarSign, FaHandshake } from "react-icons/fa";
 
 export default function Profile({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
@@ -95,6 +97,28 @@ export default function Profile({ postData, userData }) {
     setPostImages((prev) => ({ ...prev, ...postImageMap }));
   };
 
+  const toggleAvailability = async (date, postId, currentStatus) => {
+    try {
+      const postRef = ref(storage, `posts/${postId}`);
+      await updateDoc(postRef, {
+        [`${date}.${postId}.isAvailable`]: !currentStatus,
+      });
+    } catch (error) {
+      console.error("Error updating availability:", error);
+    }
+  };
+
+  const toggleVolunteerPaidStatus = async (date, postId, currentStatus) => {
+    try {
+      const postRef = ref(storage, `posts/${postId}`);
+      await updateDoc(postRef, {
+        [`${date}.${postId}.isVolunteer`]: !currentStatus,
+      });
+    } catch (error) {
+      console.error("Error updating volunteer/paid status:", error);
+    }
+  };
+
   const visibleUserPosts = getUserPosts().slice(0, visiblePosts);
 
   useEffect(() => {
@@ -122,7 +146,7 @@ export default function Profile({ postData, userData }) {
 
       {/* Profile Section */}
       <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center font-inter">
-
+        {/* Profile details can be added here */}
       </div>
 
       {/* Posts Section */}
@@ -130,17 +154,10 @@ export default function Profile({ postData, userData }) {
         <div className="text-center text-gray-600">No posts to display.</div>
       ) : (
         visibleUserPosts.map((post) => (
-          <div
-            key={post.postId}
-            className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden"
-          >
+          <div key={post.postId} className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden">
             <div className="flex items-center space-x-4 mb-4">
               {profileImages[post.postId] ? (
-                <img
-                  src={profileImages[post.postId]}
-                  alt="Profile"
-                  className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
-                />
+                <img src={profileImages[post.postId]} alt="Profile" className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md" />
               ) : error[post.postId] ? (
                 <CgProfile size={48} className="text-gray-400" />
               ) : (
@@ -154,67 +171,310 @@ export default function Profile({ postData, userData }) {
               </div>
             </div>
 
-            {/* Badges Section */}
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              {post.category && (
-                <span className="bg-[#5856D6] text-white font-bold py-1 px-3 rounded-full">
-                  {post.category}
-                </span>
-              )}
-              <span
-                className={`py-1 px-3 rounded-full ${
-                  post.isAvailable
-                    ? "bg-[#B3BBC5] text-white font-bold"
-                    : "bg-red-100 text-red-800 font-bold"
-                }`}
-              >
-                {post.isAvailable ? "Available" : "Not Available"}
-              </span>
-              <span
-                className={`py-1 px-3 rounded-full ${
-                  post.isVolunteer
-                    ? "bg-[#FBBC2E] text-black font-bold"
-                    : "bg-[#FF3B30] text-white font-bold"
-                }`}
-              >
-                {post.isVolunteer ? "Volunteer" : "Paid"}
-              </span>
-            </div>
+            {/* Post Options (Dropdown Menu) */}
+            {post.userID === userData.userID && (
+              <div className="absolute top-4 right-4">
+                <Menu as="div" className="relative">
+                  {({ open }) => (
+                    <>
+                      <Menu.Button className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md">
+                        <FaEdit className="w-5 h-5 text-gray-700" />
+                      </Menu.Button>
 
-            {/* Caption Section */}
-            <p className="mt-4 text-[#496992] font-bold">{post.caption}</p>
+                      <Transition
+                        show={open}
+                        enter="transition-transform duration-200 ease-out"
+                        enterFrom="transform scale-95 opacity-0"
+                        enterTo="transform scale-100 opacity-100"
+                        leave="transition-transform duration-150 ease-in"
+                        leaveFrom="transform scale-100 opacity-100"
+                        leaveTo="transform scale-95 opacity-0">
+                        <Menu.Items className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
+                          <Menu.Item>
+                            {({ active }) => (
+                              <button
+                                onClick={() => toggleAvailability(post.dateString, post.postId, post.isAvailable)}
+                                className={`${active ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'} flex items-center w-full px-4 py-2 text-sm`}>
+                                {post.isAvailable ? <FaRegCheckCircle className="w-5 h-5 mr-3" /> : <FaCheckCircle className="w-5 h-5 mr-3" />}
+                                {post.isAvailable ? "Mark as Completed" : "Mark as Available"}
+                              </button>
+                            )}
+                          </Menu.Item>
 
-            {/* Post Image */}
-            {post.postPicRef && postImages[post.postId] ? (
-              <div className="mt-6">
-                <img
-                  src={postImages[post.postId]}
-                  alt="Post"
-                  className="w-full rounded-lg shadow-md object-cover"
-                />
+                          <Menu.Item>
+                            {({ active }) => (
+                              <button
+                                onClick={() => toggleVolunteerPaidStatus(post.dateString, post.postId, post.isVolunteer)}
+                                className={`${active ? 'bg-yellow-100 text-yellow-700' : 'text-gray-700 hover:bg-gray-100'} flex items-center w-full px-4 py-2 text-sm`}>
+                                {post.isVolunteer ? <FaHandshake className="w-5 h-5 mr-3" /> : <FaDollarSign className="w-5 h-5 mr-3" />}
+                                {post.isVolunteer ? "Mark as Paid" : "Mark as Volunteer"}
+                              </button>
+                            )}
+                          </Menu.Item>
+
+                          <Menu.Item>
+                            {({ active }) => (
+                              <button
+                                onClick={() => console.log(`Delete post ${post.postId}`)} // Add delete logic here
+                                className={`${active ? 'bg-red-100 text-red-700' : 'text-gray-700 hover:bg-gray-100'} flex items-center w-full px-4 py-2 text-sm`}>
+                                <FaTrashAlt className="w-5 h-5 mr-3" />
+                                Delete Post
+                              </button>
+                            )}
+                          </Menu.Item>
+                        </Menu.Items>
+                      </Transition>
+                    </>
+                  )}
+                </Menu>
               </div>
-            ) : (
-              post.postPicRef && (
-                <p className="text-gray-500 mt-4">Loading post image...</p>
-              )
             )}
+
+            <div className="post-content">
+              {postImages[post.postId] ? (
+                <img src={postImages[post.postId]} alt="Post" className="w-full h-72 object-cover rounded-lg" />
+              ) : (
+                <div className="w-full h-72 bg-gray-300 flex items-center justify-center rounded-lg">
+                  <span className="text-gray-500">Loading...</span>
+                </div>
+              )}
+            </div>
           </div>
         ))
       )}
 
-      {visibleUserPosts.length < allUserPosts.length && (
-        <div className="text-center mt-8">
-          <button
-            onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
-          >
-            Load More Posts
-          </button>
-        </div>
+      {/* Show more posts button */}
+      {allUserPosts.length > visiblePosts && (
+        <button
+          onClick={() => setVisiblePosts(visiblePosts + 5)}
+          className="block mx-auto mt-6 text-sm text-blue-600 hover:text-blue-800">
+          Show More Posts
+        </button>
       )}
     </div>
   );
 }
+
+
+
+//wprking ver dec 1
+// "use client";
+
+// import React, { useState, useEffect } from "react";
+// import { ref, getDownloadURL, listAll } from "firebase/storage";
+// import { storage } from "./firebase"; // Ensure correct Firebase configuration
+// import { CgProfile } from "react-icons/cg";
+// import Header from "./Header";
+
+// export default function Profile({ postData, userData }) {
+//   const [profileImages, setProfileImages] = useState({});
+//   const [postImages, setPostImages] = useState({});
+//   const [error, setError] = useState({});
+//   const [visiblePosts, setVisiblePosts] = useState(5);
+
+//   const getUserPosts = () => {
+//     if (!postData || !userData?.userID) return [];
+//     const allPosts = Object.entries(postData)
+//       .flatMap(([date, posts]) =>
+//         Object.entries(posts).map(([postId, postDetails]) => ({
+//           postId,
+//           ...postDetails,
+//         }))
+//       )
+//       .filter((post) => post.userID === userData.userID && post.date?.seconds) // Filter for user's posts only
+//       .sort((a, b) => b.date.seconds - a.date.seconds);
+//     return allPosts;
+//   };
+
+//   const fetchImages = async (posts) => {
+//     const profileImagePromises = [];
+//     const postImagePromises = [];
+
+//     posts.forEach((post) => {
+//       const { postId, userProfileRef, postPicRef } = post;
+
+//       if (userProfileRef) {
+//         const profileImageRef = ref(storage, `images/${userProfileRef}/`);
+//         const profilePromise = listAll(profileImageRef)
+//           .then((response) => {
+//             if (response.items.length === 0) {
+//               setError((prev) => ({ ...prev, [postId]: true }));
+//               return { postId, url: null };
+//             }
+//             return getDownloadURL(response.items[0]).then((url) => ({
+//               postId,
+//               url,
+//             }));
+//           })
+//           .catch(() => {
+//             setError((prev) => ({ ...prev, [postId]: true }));
+//             return { postId, url: null };
+//           });
+//         profileImagePromises.push(profilePromise);
+//       }
+
+//       if (postPicRef) {
+//         const postImageRef = ref(storage, `posts/${postPicRef}/`);
+//         const postPromise = listAll(postImageRef)
+//           .then((response) => {
+//             if (response.items.length === 0) {
+//               setError((prev) => ({ ...prev, [postId]: true }));
+//               return { postId, url: null };
+//             }
+//             return getDownloadURL(response.items[0]).then((url) => ({
+//               postId,
+//               url,
+//             }));
+//           })
+//           .catch(() => {
+//             setError((prev) => ({ ...prev, [postId]: true }));
+//             return { postId, url: null };
+//           });
+//         postImagePromises.push(postPromise);
+//       }
+//     });
+
+//     const [resolvedProfileImages, resolvedPostImages] = await Promise.all([
+//       Promise.all(profileImagePromises),
+//       Promise.all(postImagePromises),
+//     ]);
+
+//     const profileImageMap = resolvedProfileImages.reduce(
+//       (acc, { postId, url }) => {
+//         if (url) acc[postId] = url;
+//         return acc;
+//       },
+//       {}
+//     );
+//     const postImageMap = resolvedPostImages.reduce((acc, { postId, url }) => {
+//       if (url) acc[postId] = url;
+//       return acc;
+//     }, {});
+
+//     setProfileImages((prev) => ({ ...prev, ...profileImageMap }));
+//     setPostImages((prev) => ({ ...prev, ...postImageMap }));
+//   };
+
+//   const visibleUserPosts = getUserPosts().slice(0, visiblePosts);
+
+//   useEffect(() => {
+//     fetchImages(visibleUserPosts);
+//   }, [postData, visiblePosts]);
+
+//   if (!postData) {
+//     return <div className="text-center text-gray-600">No posts available.</div>;
+//   }
+
+//   const formatDate = (timestamp) => {
+//     if (!timestamp || !timestamp.seconds) {
+//       return "Unknown Date";
+//     }
+//     const dateObj = new Date(timestamp.seconds * 1000);
+//     return dateObj.toLocaleString();
+//   };
+
+//   const allUserPosts = getUserPosts();
+
+//   return (
+//     <div>
+//       {/* Header Section */}
+//       <Header userData={userData} />
+
+//       {/* Profile Section */}
+//       <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center font-inter">
+
+//       </div>
+
+//       {/* Posts Section */}
+//       {visibleUserPosts.length === 0 ? (
+//         <div className="text-center text-gray-600">No posts to display.</div>
+//       ) : (
+//         visibleUserPosts.map((post) => (
+//           <div
+//             key={post.postId}
+//             className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden"
+//           >
+//             <div className="flex items-center space-x-4 mb-4">
+//               {profileImages[post.postId] ? (
+//                 <img
+//                   src={profileImages[post.postId]}
+//                   alt="Profile"
+//                   className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
+//                 />
+//               ) : error[post.postId] ? (
+//                 <CgProfile size={48} className="text-gray-400" />
+//               ) : (
+//                 <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
+//                   <span className="text-gray-500">Loading...</span>
+//                 </div>
+//               )}
+//               <div>
+//                 <p className="text-lg text-[#496992] font-bold font-inter">{post.name}</p>
+//                 <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
+//               </div>
+//             </div>
+
+//             {/* Badges Section */}
+//             <div className="mt-2 flex flex-wrap items-center gap-2">
+//               {post.category && (
+//                 <span className="bg-[#5856D6] text-white font-bold py-1 px-3 rounded-full">
+//                   {post.category}
+//                 </span>
+//               )}
+//               <span
+//                 className={`py-1 px-3 rounded-full ${
+//                   post.isAvailable
+//                     ? "bg-[#B3BBC5] text-white font-bold"
+//                     : "bg-red-100 text-red-800 font-bold"
+//                 }`}
+//               >
+//                 {post.isAvailable ? "Available" : "Not Available"}
+//               </span>
+//               <span
+//                 className={`py-1 px-3 rounded-full ${
+//                   post.isVolunteer
+//                     ? "bg-[#FBBC2E] text-black font-bold"
+//                     : "bg-[#FF3B30] text-white font-bold"
+//                 }`}
+//               >
+//                 {post.isVolunteer ? "Volunteer" : "Paid"}
+//               </span>
+//             </div>
+
+//             {/* Caption Section */}
+//             <p className="mt-4 text-[#496992] font-bold">{post.caption}</p>
+
+//             {/* Post Image */}
+//             {post.postPicRef && postImages[post.postId] ? (
+//               <div className="mt-6">
+//                 <img
+//                   src={postImages[post.postId]}
+//                   alt="Post"
+//                   className="w-full rounded-lg shadow-md object-cover"
+//                 />
+//               </div>
+//             ) : (
+//               post.postPicRef && (
+//                 <p className="text-gray-500 mt-4">Loading post image...</p>
+//               )
+//             )}
+//           </div>
+//         ))
+//       )}
+
+//       {visibleUserPosts.length < allUserPosts.length && (
+//         <div className="text-center mt-8">
+//           <button
+//             onClick={() => setVisiblePosts((prev) => prev + 5)}
+//             className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+//           >
+//             Load More Posts
+//           </button>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
 
 
 
