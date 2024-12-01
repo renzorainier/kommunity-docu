@@ -159,13 +159,91 @@ export default function Feed({ postData, userData }) {
 
   const allPosts = getAllPosts();
   const recentPosts = getRecentPosts();
-
   return (
     <div className="feed max-w-3xl mx-auto p-4 bg-[#F8FBFF] min-h-screen">
       {recentPosts.map((post) => (
         <div
           key={post.postId}
-          className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden">
+          className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden relative"
+        >
+          {/* Dropdown Menu */}
+          {post.userID === userData.userID && (
+            <div className="absolute top-4 right-4">
+              <Menu>
+                {({ open }) => (
+                  <>
+                    <Menu.Button className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6 text-gray-700"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6.75v.008M12 12v.008m0 5.25v.008"
+                        />
+                      </svg>
+                    </Menu.Button>
+                    <Transition
+                      show={open}
+                      enter="transition duration-100 ease-out"
+                      enterFrom="transform scale-95 opacity-0"
+                      enterTo="transform scale-100 opacity-100"
+                      leave="transition duration-75 ease-out"
+                      leaveFrom="transform scale-100 opacity-100"
+                      leaveTo="transform scale-95 opacity-0"
+                    >
+                      <Menu.Items
+                        static
+                        className="absolute right-0 mt-2 w-40 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg focus:outline-none"
+                      >
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() =>
+                                toggleAvailability(
+                                  post.dateString,
+                                  post.postId,
+                                  post.isAvailable
+                                )
+                              }
+                              className={`${
+                                active ? "bg-gray-100" : ""
+                              } flex w-full px-4 py-2 text-sm text-left text-gray-700`}
+                            >
+                              {post.isAvailable
+                                ? "Mark as Completed"
+                                : "Mark as Available"}
+                            </button>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() =>
+                                deletePost(post.dateString, post.postId)
+                              }
+                              className={`${
+                                active ? "bg-red-100 text-red-700" : "text-red-500"
+                              } flex w-full px-4 py-2 text-sm text-left`}
+                            >
+                              Delete Post
+                            </button>
+                          )}
+                        </Menu.Item>
+                      </Menu.Items>
+                    </Transition>
+                  </>
+                )}
+              </Menu>
+            </div>
+          )}
+
+          {/* Post Content */}
           <div className="flex items-center space-x-4 mb-4">
             {profileImages[post.postId] ? (
               <img
@@ -193,18 +271,19 @@ export default function Feed({ postData, userData }) {
             <span
               className={`py-1 px-3 rounded-full ${
                 post.isAvailable
-                  ? "bg-[#B3BBC5] text-white font-bold shadow-md" // Available
-                  : "bg-green-600 text-white font-bold shadow-md" // Completed
-              }`}>
+                  ? "bg-blue-500 text-white font-bold shadow-md"
+                  : "bg-green-600 text-white font-bold shadow-md"
+              }`}
+            >
               {post.isAvailable ? "Available" : "Completed"}
             </span>
-
             <span
               className={`py-1 px-3 rounded-full ${
                 post.isVolunteer
                   ? "bg-[#FBBC2E] text-black font-bold"
                   : "bg-[#FF3B30] text-white font-bold"
-              }`}>
+              }`}
+            >
               {post.isVolunteer ? "Volunteer" : "Paid"}
             </span>
           </div>
@@ -226,20 +305,6 @@ export default function Feed({ postData, userData }) {
               <p className="text-gray-500 mt-4">Loading post image...</p>
             )
           )}
-
-          {post.userID === userData.userID && (
-            <button
-              onClick={() =>
-                toggleAvailability(
-                  post.dateString,
-                  post.postId,
-                  post.isAvailable
-                )
-              }
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
-              Toggle Availability
-            </button>
-          )}
         </div>
       ))}
 
@@ -247,7 +312,8 @@ export default function Feed({ postData, userData }) {
         <div className="text-center mt-8">
           <button
             onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all">
+            className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+          >
             Load More Posts
           </button>
         </div>
