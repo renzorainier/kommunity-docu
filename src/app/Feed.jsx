@@ -7,7 +7,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase"; // Ensure db is imported for Firestore
 import { CgProfile } from "react-icons/cg";
 import { Menu, Transition } from "@headlessui/react";
-
+import { FaEllipsisV, FaCheck, FaTrashAlt } from "react-icons/fa";
 
 export default function Feed({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
@@ -29,14 +29,14 @@ export default function Feed({ postData, userData }) {
       setLocalPostData((prev) => {
         const updatedData = { ...prev };
         delete updatedData[date][postId];
-        if (Object.keys(updatedData[date]).length === 0) delete updatedData[date];
+        if (Object.keys(updatedData[date]).length === 0)
+          delete updatedData[date];
         return updatedData;
       });
     } catch (error) {
       console.error("Error deleting post:", error);
     }
   };
-
 
   const getAllPosts = () => {
     if (!postData) return [];
@@ -164,121 +164,79 @@ export default function Feed({ postData, userData }) {
       {recentPosts.map((post) => (
         <div
           key={post.postId}
-          className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden relative"
-        >
-      {/* Dropdown Menu */}
-{post.userID === userData.userID && (
-  <div className="absolute top-4 right-4">
-    <Menu as="div" className="relative">
-      {({ open }) => (
-        <>
-          {/* Dropdown Trigger Button */}
-          <Menu.Button
-            className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md transition-all duration-150 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            aria-label="Post Options"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-5 h-5 text-gray-700"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 6.75v.008M12 12v.008m0 5.25v.008"
-              />
-            </svg>
-          </Menu.Button>
+          className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden relative">
+          {post.userID === userData.userID && (
+            <div className="absolute top-4 right-4">
+              <Menu as="div" className="relative">
+                {({ open }) => (
+                  <>
+                    {/* Dropdown Trigger Button */}
+                    <Menu.Button
+                      className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md transition-all duration-150 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                      aria-label="Post Options">
+                      <FaEllipsisV className="w-5 h-5 text-gray-700" />
+                    </Menu.Button>
 
-          {/* Dropdown Menu Items */}
-          <Transition
-            show={open}
-            enter="transition-transform duration-200 ease-out"
-            enterFrom="transform scale-95 opacity-0"
-            enterTo="transform scale-100 opacity-100"
-            leave="transition-transform duration-150 ease-in"
-            leaveFrom="transform scale-100 opacity-100"
-            leaveTo="transform scale-95 opacity-0"
-          >
-            <Menu.Items
-              static
-              className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 divide-y divide-gray-100 rounded-lg shadow-lg focus:outline-none"
-            >
-              {/* Toggle Availability Option */}
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    onClick={() =>
-                      toggleAvailability(
-                        post.dateString,
-                        post.postId,
-                        post.isAvailable
-                      )
-                    }
-                    className={`${
-                      active
-                        ? "bg-blue-100 text-blue-700"
-                        : "text-gray-700 hover:bg-gray-100"
-                    } flex items-center w-full px-4 py-2 text-sm transition-all duration-150`}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      className="w-5 h-5 mr-3"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5.121 13.621l5.178 5.178a2 2 0 002.828 0l5.178-5.178m-5.178 5.178V3m0 0L5.121 8.879M12 3l6.879 5.879"
-                      />
-                    </svg>
-                    {post.isAvailable ? "Mark as Completed" : "Mark as Available"}
-                  </button>
-                )}
-              </Menu.Item>
+                    {/* Dropdown Menu Items */}
+                    <Transition
+                      show={open}
+                      enter="transition-transform duration-200 ease-out"
+                      enterFrom="transform scale-95 opacity-0"
+                      enterTo="transform scale-100 opacity-100"
+                      leave="transition-transform duration-150 ease-in"
+                      leaveFrom="transform scale-100 opacity-100"
+                      leaveTo="transform scale-95 opacity-0">
+                      <Menu.Items
+                        static
+                        className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 divide-y divide-gray-100 rounded-lg shadow-lg focus:outline-none">
+                        {/* Toggle Availability Option */}
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() =>
+                                toggleAvailability(
+                                  post.dateString,
+                                  post.postId,
+                                  post.isAvailable
+                                )
+                              }
+                              className={`${
+                                active
+                                  ? "bg-blue-100 text-blue-700"
+                                  : "text-gray-700 hover:bg-gray-100"
+                              } flex items-center w-full px-4 py-2 text-sm transition-all duration-150`}>
+                              <FaCheck className="w-5 h-5 mr-3" />
+                              {post.isAvailable
+                                ? "Mark as Completed"
+                                : "Mark as Available"}
+                            </button>
+                          )}
+                        </Menu.Item>
 
-              {/* Delete Post Option */}
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    onClick={() => deletePost(post.dateString, post.postId)}
-                    className={`${
-                      active
-                        ? "bg-red-100 text-red-700"
-                        : "text-red-500 hover:bg-gray-100"
-                    } flex items-center w-full px-4 py-2 text-sm transition-all duration-150`}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      className="w-5 h-5 mr-3"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                    Delete Post
-                  </button>
+                        {/* Delete Post Option */}
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() =>
+                                deletePost(post.dateString, post.postId)
+                              }
+                              className={`${
+                                active
+                                  ? "bg-red-100 text-red-700"
+                                  : "text-red-500 hover:bg-gray-100"
+                              } flex items-center w-full px-4 py-2 text-sm transition-all duration-150`}>
+                              <FaTrashAlt className="w-5 h-5 mr-3" />
+                              Delete Post
+                            </button>
+                          )}
+                        </Menu.Item>
+                      </Menu.Items>
+                    </Transition>
+                  </>
                 )}
-              </Menu.Item>
-            </Menu.Items>
-          </Transition>
-        </>
-      )}
-    </Menu>
-  </div>
-)}
+              </Menu>
+            </div>
+          )}
 
           {/* Post Content */}
           <div className="flex items-center space-x-4 mb-4">
@@ -310,8 +268,7 @@ export default function Feed({ postData, userData }) {
                 post.isAvailable
                   ? "bg-[#b3bbc5] text-white font-bold shadow-md"
                   : "bg-[#34c759] text-white font-bold shadow-md"
-              }`}
-            >
+              }`}>
               {post.isAvailable ? "Available" : "Completed"}
             </span>
             <span
@@ -319,8 +276,7 @@ export default function Feed({ postData, userData }) {
                 post.isVolunteer
                   ? "bg-[#FBBC2E] text-black font-bold"
                   : "bg-[#FF3B30] text-white font-bold"
-              }`}
-            >
+              }`}>
               {post.isVolunteer ? "Volunteer" : "Paid"}
             </span>
           </div>
@@ -349,8 +305,7 @@ export default function Feed({ postData, userData }) {
         <div className="text-center mt-8">
           <button
             onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
-          >
+            className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all">
             Load More Posts
           </button>
         </div>
