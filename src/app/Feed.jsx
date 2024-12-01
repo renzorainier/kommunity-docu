@@ -6,7 +6,7 @@ import { db } from "./firebase";
 import { CgProfile } from "react-icons/cg";
 import { Menu, Transition } from "@headlessui/react";
 import {
-  FaEllipsisV,
+  FaEdit,
   FaTrashAlt,
   FaCheckCircle,
   FaRegCheckCircle,
