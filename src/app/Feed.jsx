@@ -22,12 +22,12 @@ export default function Feed({ postData, userData }) {
 
   const deletePost = async (date, postId) => {
     try {
-      // Reference to the post document in Firestore
-      const postRef = doc(db, "posts/posts", date);
+      const postRef = doc(db, "posts/posts");
+      const fieldPath = `${date}.${postId}`;
 
-      // Update Firestore by removing the post field (deleting the post)
+      // Update Firestore by setting the post to null (effectively deleting it)
       await updateDoc(postRef, {
-        [postId]: deleteField(), // Deletes the specific field (post)
+        [fieldPath]: null,
       });
 
       // Optimistic UI Update
