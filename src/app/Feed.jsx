@@ -167,13 +167,14 @@ export default function Feed({ postData, userData }) {
               </span>
             )}
             <span
-              className={`py-1 px-3 rounded-full ${
-                post.isAvailable
-                  ? "bg-[#B3BBC5] text-white font-bold"
-                  : "bg-red-100 text-red-800 font-bold"
-              }`}
+         className={`py-1 px-3 rounded-full ${
+          post.isAvailable === "Available"
+            ? "bg-[#B3BBC5 text-white font-bold shadow-md"
+            : "bg-green-600 text-white font-bold shadow-md"
+        }`}
+
             >
-              {post.isAvailable ? "Available" : "Not Available"}
+              {post.isAvailable ? "Available" : "Completed"}
             </span>
             <span
               className={`py-1 px-3 rounded-full ${
