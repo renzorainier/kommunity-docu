@@ -1,10 +1,8 @@
-"use client";
-
 import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "./firebase";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "./firebase"; // Ensure db is imported for Firestore
+import { db } from "./firebase";
 import { CgProfile } from "react-icons/cg";
 import { Menu, Transition } from "@headlessui/react";
 import { FaEllipsisV, FaCheck, FaTrashAlt } from "react-icons/fa";
@@ -128,19 +126,31 @@ export default function Feed({ postData, userData }) {
 
   const toggleAvailability = async (date, postId, currentStatus) => {
     try {
-      const postRef = doc(db, "posts/posts"); // Reference to the single document
-
-      // Construct the nested field path dynamically
+      const postRef = doc(db, "posts/posts");
       const fieldPath = `${date}.${postId}.isAvailable`;
 
       await updateDoc(postRef, {
-        [fieldPath]: !currentStatus, // Update the isAvailable field dynamically
+        [fieldPath]: !currentStatus,
       });
 
-      // Optimistic UI Update
       postData[date][postId].isAvailable = !currentStatus;
     } catch (error) {
       console.error("Error updating availability:", error);
+    }
+  };
+
+  const toggleVolunteerPaidStatus = async (date, postId, currentStatus) => {
+    try {
+      const postRef = doc(db, "posts/posts");
+      const fieldPath = `${date}.${postId}.isVolunteer`;
+
+      await updateDoc(postRef, {
+        [fieldPath]: !currentStatus,
+      });
+
+      postData[date][postId].isVolunteer = !currentStatus;
+    } catch (error) {
+      console.error("Error updating volunteer/paid status:", error);
     }
   };
 
@@ -209,6 +219,37 @@ export default function Feed({ postData, userData }) {
                               {post.isAvailable
                                 ? "Mark as Completed"
                                 : "Mark as Available"}
+                            </button>
+                          )}
+                        </Menu.Item>
+
+                        {/* Toggle Volunteer/Paid Status Option */}
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() =>
+                                toggleVolunteerPaidStatus(
+                                  post.dateString,
+                                  post.postId,
+                                  post.isVolunteer
+                                )
+                              }
+                              className={`${
+                                active
+                                  ? "bg-yellow-100 text-yellow-700"
+                                  : "text-gray-700 hover:bg-gray-100"
+                              } flex items-center w-full px-4 py-2 text-sm transition-all duration-150`}>
+                              {post.isVolunteer ? (
+                                <>
+                                  <FaCheck className="w-5 h-5 mr-3" />
+                                  Switch to Paid
+                                </>
+                              ) : (
+                                <>
+                                  <FaCheck className="w-5 h-5 mr-3" />
+                                  Switch to Volunteer
+                                </>
+                              )}
                             </button>
                           )}
                         </Menu.Item>
@@ -313,6 +354,7 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
+
 
 // "use client";
 
