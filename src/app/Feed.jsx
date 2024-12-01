@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "./firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc,deleteDoc  } from "firebase/firestore";
 import { db } from "./firebase";
 import { CgProfile } from "react-icons/cg";
 import { Menu, Transition } from "@headlessui/react";
@@ -22,12 +22,12 @@ export default function Feed({ postData, userData }) {
 
   const deletePost = async (date, postId) => {
     try {
-      const postRef = doc(db, "posts/posts");
-      const fieldPath = `${date}.${postId}`;
+      // Reference to the post document in Firestore
+      const postRef = doc(db, "posts/posts", date);
 
-      // Update Firestore by setting the post to null (effectively deleting it)
+      // Update Firestore by removing the post field (deleting the post)
       await updateDoc(postRef, {
-        [fieldPath]: null,
+        [postId]: deleteField(), // Deletes the specific field (post)
       });
 
       // Optimistic UI Update
