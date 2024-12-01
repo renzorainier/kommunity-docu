@@ -6,12 +6,37 @@ import { storage } from "./firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase"; // Ensure db is imported for Firestore
 import { CgProfile } from "react-icons/cg";
+import { Menu, Transition } from "@headlessui/react";
+
 
 export default function Feed({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
   const [postImages, setPostImages] = useState({});
   const [error, setError] = useState({});
   const [visiblePosts, setVisiblePosts] = useState(5);
+
+  const deletePost = async (date, postId) => {
+    try {
+      const postRef = doc(db, "posts/posts");
+      const fieldPath = `${date}.${postId}`;
+
+      // Update Firestore by setting the post to null (effectively deleting it)
+      await updateDoc(postRef, {
+        [fieldPath]: null,
+      });
+
+      // Optimistic UI Update
+      setLocalPostData((prev) => {
+        const updatedData = { ...prev };
+        delete updatedData[date][postId];
+        if (Object.keys(updatedData[date]).length === 0) delete updatedData[date];
+        return updatedData;
+      });
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
 
   const getAllPosts = () => {
     if (!postData) return [];
