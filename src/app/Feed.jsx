@@ -104,9 +104,13 @@ export default function Feed({ postData, userData }) {
 
   const toggleAvailability = async (date, postId, currentStatus) => {
     try {
-      const postRef = doc(db, "posts/posts", date); // Path to the date map
+      const postRef = doc(db, "posts/posts"); // Reference to the single document
+
+      // Construct the nested field path dynamically
+      const fieldPath = `${date}.${postId}.isAvailable`;
+
       await updateDoc(postRef, {
-        [`${postId}.isAvailable`]: !currentStatus, // Dynamic update within the map
+        [fieldPath]: !currentStatus, // Update the isAvailable field dynamically
       });
 
       // Optimistic UI Update
@@ -118,6 +122,7 @@ export default function Feed({ postData, userData }) {
       console.error("Error updating availability:", error);
     }
   };
+
 
   useEffect(() => {
     const recentPosts = getRecentPosts();
