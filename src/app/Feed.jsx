@@ -190,8 +190,8 @@ export default function Feed({ postData, userData }) {
                     {/* Dropdown Trigger Button */}
                     <Menu.Button
                       className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md transition-all duration-150 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                      aria-label="Post Options">
-                      <FaEllipsisV className="w-5 h-5 text-gray-700" />
+                      aria-label="Edit Post">
+                      <FaEdit className="w-5 h-5 text-gray-700" />
                     </Menu.Button>
 
                     {/* Dropdown Menu Items */}
