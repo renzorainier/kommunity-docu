@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "./firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import { CgProfile } from "react-icons/cg";
 import { Menu, Transition } from "@headlessui/react";
@@ -22,6 +22,46 @@ export default function Profile({ postData, userData }) {
   const [postImages, setPostImages] = useState({});
   const [error, setError] = useState({});
   const [visiblePosts, setVisiblePosts] = useState(5);
+
+  const deletePost = async (date, postId) => {
+    try {
+      const postRef = doc(db, "posts/posts");
+      const fieldPath = `${date}.${postId}`;
+      await updateDoc(postRef, { [fieldPath]: null });
+
+      // Optimistic UI update
+      postData[date][postId] = null;
+      if (Object.keys(postData[date]).length === 0) delete postData[date];
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
+  const toggleAvailability = async (date, postId, currentStatus) => {
+    try {
+      const postRef = doc(db, "posts/posts");
+      const fieldPath = `${date}.${postId}.isAvailable`;
+      await updateDoc(postRef, { [fieldPath]: !currentStatus });
+
+      // Optimistic UI update
+      postData[date][postId].isAvailable = !currentStatus;
+    } catch (error) {
+      console.error("Error updating availability:", error);
+    }
+  };
+
+  const toggleVolunteerPaidStatus = async (date, postId, currentStatus) => {
+    try {
+      const postRef = doc(db, "posts/posts");
+      const fieldPath = `${date}.${postId}.isVolunteer`;
+      await updateDoc(postRef, { [fieldPath]: !currentStatus });
+
+      // Optimistic UI update
+      postData[date][postId].isVolunteer = !currentStatus;
+    } catch (error) {
+      console.error("Error updating volunteer/paid status:", error);
+    }
+  };
 
   const getUserPosts = () => {
     if (!postData || !userData?.userID) return [];
@@ -120,6 +160,7 @@ export default function Profile({ postData, userData }) {
               key={post.postId}
               className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden relative"
             >
+              {/* Dropdown menu */}
               <div className="absolute top-4 right-4">
                 <Menu as="div" className="relative">
                   {({ open }) => (
@@ -133,6 +174,7 @@ export default function Profile({ postData, userData }) {
                         leave="transition-transform duration-150 ease-in"
                       >
                         <Menu.Items className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
+                          {/* Toggle Availability */}
                           <Menu.Item>
                             {({ active }) => (
                               <button
@@ -158,6 +200,7 @@ export default function Profile({ postData, userData }) {
                               </button>
                             )}
                           </Menu.Item>
+                          {/* Toggle Volunteer/Paid Status */}
                           <Menu.Item>
                             {({ active }) => (
                               <button
@@ -183,6 +226,7 @@ export default function Profile({ postData, userData }) {
                               </button>
                             )}
                           </Menu.Item>
+                          {/* Delete Post */}
                           <Menu.Item>
                             {({ active }) => (
                               <button
@@ -206,6 +250,8 @@ export default function Profile({ postData, userData }) {
                   )}
                 </Menu>
               </div>
+
+              {/* Post details */}
               <div className="flex items-center space-x-4 mb-4">
                 {profileImages[post.postId] ? (
                   <img
@@ -229,10 +275,10 @@ export default function Profile({ postData, userData }) {
         )}
         {visibleUserPosts.length < getUserPosts().length && (
           <button
+            className="load-more bg-blue-600 text-white px-4 py-2 rounded-lg mt-4"
             onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg shadow hover:bg-blue-600"
           >
-            Load More
+            Load More Posts
           </button>
         )}
       </div>
