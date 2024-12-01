@@ -5,7 +5,14 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import { CgProfile } from "react-icons/cg";
 import { Menu, Transition } from "@headlessui/react";
-import { FaEllipsisV, FaCheck, FaTrashAlt } from "react-icons/fa";
+import {
+  FaEllipsisV,
+  FaTrashAlt,
+  FaCheckCircle,
+  FaRegCheckCircle,
+  FaDollarSign,
+  FaHandshake,
+} from "react-icons/fa";
 
 export default function Feed({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
@@ -215,7 +222,11 @@ export default function Feed({ postData, userData }) {
                                   ? "bg-blue-100 text-blue-700"
                                   : "text-gray-700 hover:bg-gray-100"
                               } flex items-center w-full px-4 py-2 text-sm transition-all duration-150`}>
-                              <FaCheck className="w-5 h-5 mr-3" />
+                              {post.isAvailable ? (
+                                <FaRegCheckCircle className="w-5 h-5 mr-3" />
+                              ) : (
+                                <FaCheckCircle className="w-5 h-5 mr-3" />
+                              )}
                               {post.isAvailable
                                 ? "Mark as Completed"
                                 : "Mark as Available"}
@@ -241,12 +252,12 @@ export default function Feed({ postData, userData }) {
                               } flex items-center w-full px-4 py-2 text-sm transition-all duration-150`}>
                               {post.isVolunteer ? (
                                 <>
-                                  <FaCheck className="w-5 h-5 mr-3" />
+                                  <FaDollarSign className="w-5 h-5 mr-3" />
                                   Switch to Paid
                                 </>
                               ) : (
                                 <>
-                                  <FaCheck className="w-5 h-5 mr-3" />
+                                  <FaHandshake className="w-5 h-5 mr-3" />
                                   Switch to Volunteer
                                 </>
                               )}
@@ -354,7 +365,6 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
-
 
 // "use client";
 
