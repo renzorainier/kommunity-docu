@@ -298,8 +298,8 @@ export default function Profile({ postData, userData }) {
 
               {post.postPicRef && postImages[post.postId] ? (
                 <div className="mt-6">
-                  <img
-                    src={postImages[post.postId]}
+                 <img
+                     src={postImages[post.postId]}
                     alt="Post"
                     className="w-full rounded-lg shadow-md object-cover"
                   />
