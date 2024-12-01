@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
-import { storage } from "./firebase"; // Ensure correct Firebase configuration
+import { storage, doc } from "./firebase"; // Ensure correct Firebase configuration
+import {  updateDoc,deleteDoc  } from "firebase/firestore";
+import { db } from "./firebase";
 import { CgProfile } from "react-icons/cg";
 import { Menu, Transition } from "@headlessui/react";
 import { FaEdit, FaTrashAlt, FaCheckCircle, FaRegCheckCircle, FaDollarSign, FaHandshake } from "react-icons/fa";
