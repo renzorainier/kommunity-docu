@@ -140,8 +140,7 @@ export default function Feed({ postData, userData }) {
       {recentPosts.map((post) => (
         <div
           key={post.postId}
-          className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden"
-        >
+          className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden">
           <div className="flex items-center space-x-4 mb-4">
             {profileImages[post.postId] ? (
               <img
@@ -167,22 +166,20 @@ export default function Feed({ postData, userData }) {
               </span>
             )}
             <span
-         className={`py-1 px-3 rounded-full ${
-          post.isAvailable === "Available"
-            ? "bg-[#B3BBC5 text-white font-bold shadow-md"
-            : "bg-green-600 text-white font-bold shadow-md"
-        }`}
-
-            >
+              className={`py-1 px-3 rounded-full ${
+                post.isAvailable
+                  ? "bg-blue-500 text-white font-bold shadow-md" // Available
+                  : "bg-green-600 text-white font-bold shadow-md" // Completed
+              }`}>
               {post.isAvailable ? "Available" : "Completed"}
             </span>
+
             <span
               className={`py-1 px-3 rounded-full ${
                 post.isVolunteer
                   ? "bg-[#FBBC2E] text-black font-bold"
                   : "bg-[#FF3B30] text-white font-bold"
-              }`}
-            >
+              }`}>
               {post.isVolunteer ? "Volunteer" : "Paid"}
             </span>
           </div>
@@ -208,10 +205,13 @@ export default function Feed({ postData, userData }) {
           {post.userID === userData.userID && (
             <button
               onClick={() =>
-                toggleAvailability(post.dateString, post.postId, post.isAvailable)
+                toggleAvailability(
+                  post.dateString,
+                  post.postId,
+                  post.isAvailable
+                )
               }
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all"
-            >
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
               Toggle Availability
             </button>
           )}
@@ -222,8 +222,7 @@ export default function Feed({ postData, userData }) {
         <div className="text-center mt-8">
           <button
             onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
-          >
+            className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all">
             Load More Posts
           </button>
         </div>
@@ -231,7 +230,6 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
-
 
 // "use client";
 
