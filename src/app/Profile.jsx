@@ -2,10 +2,19 @@
 
 import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
-import { storage } from "./firebase"; // Ensure correct Firebase configuration
+import { storage } from "./firebase";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { db } from "./firebase";
 import { CgProfile } from "react-icons/cg";
 import { Menu, Transition } from "@headlessui/react";
-import { FaEdit, FaTrashAlt, FaCheckCircle, FaRegCheckCircle, FaDollarSign, FaHandshake } from "react-icons/fa";
+import {
+  FaEdit,
+  FaTrashAlt,
+  FaCheckCircle,
+  FaRegCheckCircle,
+  FaDollarSign,
+  FaHandshake,
+} from "react-icons/fa";
 import Header from "./Header";
 
 export default function Profile({ postData, userData }) {
@@ -14,18 +23,58 @@ export default function Profile({ postData, userData }) {
   const [error, setError] = useState({});
   const [visiblePosts, setVisiblePosts] = useState(5);
 
+  const deletePost = async (date, postId) => {
+    try {
+      const postRef = doc(db, "posts/posts");
+      const fieldPath = `${date}.${postId}`;
+      await updateDoc(postRef, { [fieldPath]: null });
+
+      // Optimistic UI update
+      postData[date][postId] = null;
+      if (Object.keys(postData[date]).length === 0) delete postData[date];
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
+  const toggleAvailability = async (date, postId, currentStatus) => {
+    try {
+      const postRef = doc(db, "posts/posts");
+      const fieldPath = `${date}.${postId}.isAvailable`;
+      await updateDoc(postRef, { [fieldPath]: !currentStatus });
+
+      // Optimistic UI update
+      postData[date][postId].isAvailable = !currentStatus;
+    } catch (error) {
+      console.error("Error updating availability:", error);
+    }
+  };
+
+  const toggleVolunteerPaidStatus = async (date, postId, currentStatus) => {
+    try {
+      const postRef = doc(db, "posts/posts");
+      const fieldPath = `${date}.${postId}.isVolunteer`;
+      await updateDoc(postRef, { [fieldPath]: !currentStatus });
+
+      // Optimistic UI update
+      postData[date][postId].isVolunteer = !currentStatus;
+    } catch (error) {
+      console.error("Error updating volunteer/paid status:", error);
+    }
+  };
+
   const getUserPosts = () => {
     if (!postData || !userData?.userID) return [];
-    const allPosts = Object.entries(postData)
+    return Object.entries(postData)
       .flatMap(([date, posts]) =>
         Object.entries(posts).map(([postId, postDetails]) => ({
           postId,
+          dateString: date,
           ...postDetails,
         }))
       )
-      .filter((post) => post.userID === userData.userID && post.date?.seconds) // Filter for user's posts only
+      .filter((post) => post.userID === userData.userID && post.date?.seconds)
       .sort((a, b) => b.date.seconds - a.date.seconds);
-    return allPosts;
   };
 
   const fetchImages = async (posts) => {
@@ -37,42 +86,34 @@ export default function Profile({ postData, userData }) {
 
       if (userProfileRef) {
         const profileImageRef = ref(storage, `images/${userProfileRef}/`);
-        const profilePromise = listAll(profileImageRef)
-          .then((response) => {
-            if (response.items.length === 0) {
-              setError((prev) => ({ ...prev, [postId]: true }));
-              return { postId, url: null };
-            }
-            return getDownloadURL(response.items[0]).then((url) => ({
-              postId,
-              url,
-            }));
-          })
-          .catch(() => {
-            setError((prev) => ({ ...prev, [postId]: true }));
-            return { postId, url: null };
-          });
-        profileImagePromises.push(profilePromise);
+        profileImagePromises.push(
+          listAll(profileImageRef)
+            .then((response) =>
+              response.items.length > 0
+                ? getDownloadURL(response.items[0]).then((url) => ({
+                    postId,
+                    url,
+                  }))
+                : { postId, url: null }
+            )
+            .catch(() => ({ postId, url: null }))
+        );
       }
 
       if (postPicRef) {
         const postImageRef = ref(storage, `posts/${postPicRef}/`);
-        const postPromise = listAll(postImageRef)
-          .then((response) => {
-            if (response.items.length === 0) {
-              setError((prev) => ({ ...prev, [postId]: true }));
-              return { postId, url: null };
-            }
-            return getDownloadURL(response.items[0]).then((url) => ({
-              postId,
-              url,
-            }));
-          })
-          .catch(() => {
-            setError((prev) => ({ ...prev, [postId]: true }));
-            return { postId, url: null };
-          });
-        postImagePromises.push(postPromise);
+        postImagePromises.push(
+          listAll(postImageRef)
+            .then((response) =>
+              response.items.length > 0
+                ? getDownloadURL(response.items[0]).then((url) => ({
+                    postId,
+                    url,
+                  }))
+                : { postId, url: null }
+            )
+            .catch(() => ({ postId, url: null }))
+        );
       }
     });
 
@@ -81,189 +122,120 @@ export default function Profile({ postData, userData }) {
       Promise.all(postImagePromises),
     ]);
 
-    const profileImageMap = resolvedProfileImages.reduce(
-      (acc, { postId, url }) => {
-        if (url) acc[postId] = url;
-        return acc;
-      },
-      {}
-    );
-    const postImageMap = resolvedPostImages.reduce((acc, { postId, url }) => {
-      if (url) acc[postId] = url;
-      return acc;
-    }, {});
+    setProfileImages((prev) => ({
+      ...prev,
+      ...Object.fromEntries(
+        resolvedProfileImages.map(({ postId, url }) => [postId, url])
+      ),
+    }));
 
-    setProfileImages((prev) => ({ ...prev, ...profileImageMap }));
-    setPostImages((prev) => ({ ...prev, ...postImageMap }));
+    setPostImages((prev) => ({
+      ...prev,
+      ...Object.fromEntries(
+        resolvedPostImages.map(({ postId, url }) => [postId, url])
+      ),
+    }));
   };
 
   const visibleUserPosts = getUserPosts().slice(0, visiblePosts);
-
-  const toggleAvailability = async (date, postId, currentStatus) => {
-    try {
-      const postRef = ref(storage, "posts/posts");
-      const fieldPath = `${date}.${postId}.isAvailable`;
-      await updateDoc(postRef, {
-        [fieldPath]: !currentStatus,
-      });
-      postData[date][postId].isAvailable = !currentStatus;
-    } catch (error) {
-      console.error("Error updating availability:", error);
-    }
-  };
-
-  const toggleVolunteerPaidStatus = async (date, postId, currentStatus) => {
-    try {
-      const postRef = ref(storage, "posts/posts");
-      const fieldPath = `${date}.${postId}.isVolunteer`;
-      await updateDoc(postRef, {
-        [fieldPath]: !currentStatus,
-      });
-      postData[date][postId].isVolunteer = !currentStatus;
-    } catch (error) {
-      console.error("Error updating volunteer/paid status:", error);
-    }
-  };
-
-  const deletePost = async (date, postId) => {
-    try {
-      const postRef = ref(storage, "posts/posts");
-      const fieldPath = `${date}.${postId}`;
-      await updateDoc(postRef, { [fieldPath]: null });
-
-      setPostData((prev) => {
-        const updatedData = { ...prev };
-        delete updatedData[date][postId];
-        if (Object.keys(updatedData[date]).length === 0) delete updatedData[date];
-        return updatedData;
-      });
-    } catch (error) {
-      console.error("Error deleting post:", error);
-    }
-  };
 
   useEffect(() => {
     fetchImages(visibleUserPosts);
   }, [postData, visiblePosts]);
 
   const formatDate = (timestamp) => {
-    if (!timestamp || !timestamp.seconds) {
-      return "Unknown Date";
-    }
-    const dateObj = new Date(timestamp.seconds * 1000);
-    return dateObj.toLocaleString();
+    if (!timestamp || !timestamp.seconds) return "Unknown Date";
+    return new Date(timestamp.seconds * 1000).toLocaleString();
   };
-
-  const allUserPosts = getUserPosts();
 
   return (
     <div>
-      {/* Header Section */}
       <Header userData={userData} />
-
-      {/* Profile Section */}
-      <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center font-inter">
-        {/* Profile Image */}
-        <div className="mb-4">
-          {profileImages[userData.userID] ? (
-            <img
-              src={profileImages[userData.userID]}
-              alt="Profile"
-              className="w-24 h-24 rounded-full object-cover border-2 border-gray-200 shadow-md"
-            />
-          ) : (
-            <CgProfile size={48} className="text-gray-400" />
-          )}
-        </div>
-        <p className="text-lg text-[#496992] font-bold">{userData.name}</p>
-      </div>
-
-      {/* Posts Section */}
-      {visibleUserPosts.length === 0 ? (
-        <div className="text-center text-gray-600">No posts to display.</div>
-      ) : (
-        visibleUserPosts.map((post) => (
-          <div key={post.postId} className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden">
-            {/* Post Actions for Logged-in User */}
-            {post.userID === userData.userID && (
+      <div className="feed max-w-3xl mx-auto p-4 bg-[#F8FBFF] min-h-screen">
+        {visibleUserPosts.length === 0 ? (
+          <div className="text-center text-gray-600">No posts to display.</div>
+        ) : (
+          visibleUserPosts.map((post) => (
+            <div
+              key={post.postId}
+              className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden relative"
+            >
               <div className="absolute top-4 right-4">
                 <Menu as="div" className="relative">
                   {({ open }) => (
                     <>
-                      <Menu.Button className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md transition-all duration-150 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                      <Menu.Button className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md">
                         <FaEdit className="w-5 h-5 text-gray-700" />
                       </Menu.Button>
                       <Transition
                         show={open}
                         enter="transition-transform duration-200 ease-out"
-                        enterFrom="transform scale-95 opacity-0"
-                        enterTo="transform scale-100 opacity-100"
                         leave="transition-transform duration-150 ease-in"
-                        leaveFrom="transform scale-100 opacity-100"
-                        leaveTo="transform scale-95 opacity-0"
                       >
-                        <Menu.Items
-                          static
-                          className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 divide-y divide-gray-100 rounded-lg shadow-lg focus:outline-none"
-                        >
-                          {/* Toggle Availability Option */}
+                        <Menu.Items className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
                           <Menu.Item>
                             {({ active }) => (
                               <button
                                 onClick={() =>
-                                  toggleAvailability(post.dateString, post.postId, post.isAvailable)
+                                  toggleAvailability(
+                                    post.dateString,
+                                    post.postId,
+                                    post.isAvailable
+                                  )
                                 }
                                 className={`${
                                   active
-                                    ? "bg-[#496992] text-white"
-                                    : "text-gray-700"
-                                } w-full px-4 py-2 text-left text-sm font-semibold`}
+                                    ? "bg-blue-100 text-blue-700"
+                                    : "text-gray-700 hover:bg-gray-100"
+                                } flex items-center px-4 py-2`}
                               >
                                 {post.isAvailable ? (
-                                  <FaCheckCircle className="mr-2 inline" />
+                                  <FaRegCheckCircle className="mr-3" />
                                 ) : (
-                                  <FaRegCheckCircle className="mr-2 inline" />
+                                  <FaCheckCircle className="mr-3" />
                                 )}
-                                {post.isAvailable ? "Hide Post" : "Show Post"}
+                                Toggle Availability
                               </button>
                             )}
                           </Menu.Item>
-
-                          {/* Toggle Volunteer/Paid Status Option */}
                           <Menu.Item>
                             {({ active }) => (
                               <button
                                 onClick={() =>
-                                  toggleVolunteerPaidStatus(post.dateString, post.postId, post.isVolunteer)
+                                  toggleVolunteerPaidStatus(
+                                    post.dateString,
+                                    post.postId,
+                                    post.isVolunteer
+                                  )
                                 }
                                 className={`${
                                   active
-                                    ? "bg-[#496992] text-white"
-                                    : "text-gray-700"
-                                } w-full px-4 py-2 text-left text-sm font-semibold`}
+                                    ? "bg-yellow-100 text-yellow-700"
+                                    : "text-gray-700 hover:bg-gray-100"
+                                } flex items-center px-4 py-2`}
                               >
                                 {post.isVolunteer ? (
-                                  <FaHandshake className="mr-2 inline" />
+                                  <FaDollarSign className="mr-3" />
                                 ) : (
-                                  <FaDollarSign className="mr-2 inline" />
+                                  <FaHandshake className="mr-3" />
                                 )}
-                                {post.isVolunteer ? "Mark as Paid" : "Mark as Volunteer"}
+                                Toggle Status
                               </button>
                             )}
                           </Menu.Item>
-
-                          {/* Delete Post Option */}
                           <Menu.Item>
                             {({ active }) => (
                               <button
-                                onClick={() => deletePost(post.dateString, post.postId)}
+                                onClick={() =>
+                                  deletePost(post.dateString, post.postId)
+                                }
                                 className={`${
                                   active
-                                    ? "bg-red-500 text-white"
-                                    : "text-gray-700"
-                                } w-full px-4 py-2 text-left text-sm font-semibold`}
+                                    ? "bg-red-100 text-red-700"
+                                    : "text-red-500 hover:bg-gray-100"
+                                } flex items-center px-4 py-2`}
                               >
-                                <FaTrashAlt className="mr-2 inline" />
+                                <FaTrashAlt className="mr-3" />
                                 Delete Post
                               </button>
                             )}
@@ -274,50 +246,36 @@ export default function Profile({ postData, userData }) {
                   )}
                 </Menu>
               </div>
-            )}
-
-            {/* Post Content */}
-            <div className="flex items-center mb-4">
-              {postImages[post.postId] ? (
-                <img
-                  src={postImages[post.postId]}
-                  alt="Post"
-                  className="w-32 h-32 rounded-md object-cover shadow-md"
-                />
-              ) : (
-                <div className="w-32 h-32 bg-gray-300 rounded-md flex justify-center items-center">
-                  <span className="text-gray-500">No Image</span>
-                </div>
-              )}
-
-              <div className="ml-4">
-                <h3 className="text-xl font-semibold">{post.caption}</h3>
-                <div className="flex mt-2">
-                  {post.category && (
-                    <span className="text-xs bg-gray-300 text-[#496992] px-2 py-1 rounded-full">
-                      {post.category}
-                    </span>
-                  )}
+              <div className="flex items-center space-x-4 mb-4">
+                {profileImages[post.postId] ? (
+                  <img
+                    src={profileImages[post.postId]}
+                    className="w-16 h-16 rounded-full"
+                  />
+                ) : (
+                  <CgProfile size={48} />
+                )}
+                <div>
+                  <p className="font-bold">{post.name}</p>
+                  <p className="text-gray-500">{formatDate(post.date)}</p>
                 </div>
               </div>
+              <p>{post.caption}</p>
+              {postImages[post.postId] && (
+                <img src={postImages[post.postId]} className="rounded-lg" />
+              )}
             </div>
-
-            <p className="text-gray-500 text-sm">{formatDate(post.date)}</p>
-          </div>
-        ))
-      )}
-
-      {/* Load More Button */}
-      {visibleUserPosts.length < allUserPosts.length && (
-        <div className="text-center mt-4">
+          ))
+        )}
+        {visibleUserPosts.length < getUserPosts().length && (
           <button
-            onClick={() => setVisiblePosts(visiblePosts + 5)}
-            className="bg-[#496992] text-white px-6 py-2 rounded-full"
+            onClick={() => setVisiblePosts((prev) => prev + 5)}
+            className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg shadow hover:bg-blue-600"
           >
-            Show More
+            Load More
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
