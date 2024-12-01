@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "./firebase"; // Ensure correct Firebase configuration
 import { CgProfile } from "react-icons/cg";
-import Header from "./Header";
 import { Menu, Transition } from "@headlessui/react";
 import { FaEdit, FaTrashAlt, FaCheckCircle, FaRegCheckCircle, FaDollarSign, FaHandshake } from "react-icons/fa";
+import Header from "./Header";
 
 export default function Profile({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
@@ -97,37 +97,11 @@ export default function Profile({ postData, userData }) {
     setPostImages((prev) => ({ ...prev, ...postImageMap }));
   };
 
-  const toggleAvailability = async (date, postId, currentStatus) => {
-    try {
-      const postRef = ref(storage, `posts/${postId}`);
-      await updateDoc(postRef, {
-        [`${date}.${postId}.isAvailable`]: !currentStatus,
-      });
-    } catch (error) {
-      console.error("Error updating availability:", error);
-    }
-  };
-
-  const toggleVolunteerPaidStatus = async (date, postId, currentStatus) => {
-    try {
-      const postRef = ref(storage, `posts/${postId}`);
-      await updateDoc(postRef, {
-        [`${date}.${postId}.isVolunteer`]: !currentStatus,
-      });
-    } catch (error) {
-      console.error("Error updating volunteer/paid status:", error);
-    }
-  };
-
   const visibleUserPosts = getUserPosts().slice(0, visiblePosts);
 
   useEffect(() => {
     fetchImages(visibleUserPosts);
   }, [postData, visiblePosts]);
-
-  if (!postData) {
-    return <div className="text-center text-gray-600">No posts available.</div>;
-  }
 
   const formatDate = (timestamp) => {
     if (!timestamp || !timestamp.seconds) {
@@ -135,6 +109,59 @@ export default function Profile({ postData, userData }) {
     }
     const dateObj = new Date(timestamp.seconds * 1000);
     return dateObj.toLocaleString();
+  };
+
+  const deletePost = async (date, postId) => {
+    try {
+      const postRef = ref(db, "posts/posts");
+      const fieldPath = `${date}.${postId}`;
+
+      // Update Firestore by setting the post to null (effectively deleting it)
+      await updateDoc(postRef, {
+        [fieldPath]: null,
+      });
+
+      // Optimistic UI Update
+      setLocalPostData((prev) => {
+        const updatedData = { ...prev };
+        delete updatedData[date][postId];
+        if (Object.keys(updatedData[date]).length === 0)
+          delete updatedData[date];
+        return updatedData;
+      });
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
+  const toggleAvailability = async (date, postId, currentStatus) => {
+    try {
+      const postRef = doc(db, "posts/posts");
+      const fieldPath = `${date}.${postId}.isAvailable`;
+
+      await updateDoc(postRef, {
+        [fieldPath]: !currentStatus,
+      });
+
+      postData[date][postId].isAvailable = !currentStatus;
+    } catch (error) {
+      console.error("Error updating availability:", error);
+    }
+  };
+
+  const toggleVolunteerPaidStatus = async (date, postId, currentStatus) => {
+    try {
+      const postRef = doc(db, "posts/posts");
+      const fieldPath = `${date}.${postId}.isVolunteer`;
+
+      await updateDoc(postRef, {
+        [fieldPath]: !currentStatus,
+      });
+
+      postData[date][postId].isVolunteer = !currentStatus;
+    } catch (error) {
+      console.error("Error updating volunteer/paid status:", error);
+    }
   };
 
   const allUserPosts = getUserPosts();
@@ -146,7 +173,7 @@ export default function Profile({ postData, userData }) {
 
       {/* Profile Section */}
       <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center font-inter">
-        {/* Profile details can be added here */}
+        <h2 className="text-2xl font-semibold text-gray-800">My Profile</h2>
       </div>
 
       {/* Posts Section */}
@@ -154,10 +181,17 @@ export default function Profile({ postData, userData }) {
         <div className="text-center text-gray-600">No posts to display.</div>
       ) : (
         visibleUserPosts.map((post) => (
-          <div key={post.postId} className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden">
+          <div
+            key={post.postId}
+            className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden"
+          >
             <div className="flex items-center space-x-4 mb-4">
               {profileImages[post.postId] ? (
-                <img src={profileImages[post.postId]} alt="Profile" className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md" />
+                <img
+                  src={profileImages[post.postId]}
+                  alt="Profile"
+                  className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
+                />
               ) : error[post.postId] ? (
                 <CgProfile size={48} className="text-gray-400" />
               ) : (
@@ -171,90 +205,115 @@ export default function Profile({ postData, userData }) {
               </div>
             </div>
 
-            {/* Post Options (Dropdown Menu) */}
-            {post.userID === userData.userID && (
-              <div className="absolute top-4 right-4">
-                <Menu as="div" className="relative">
-                  {({ open }) => (
-                    <>
-                      <Menu.Button className="bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md">
-                        <FaEdit className="w-5 h-5 text-gray-700" />
-                      </Menu.Button>
+            {/* Badges Section */}
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              {post.category && (
+                <span className="bg-[#5856D6] text-white font-bold py-1 px-3 rounded-full">
+                  {post.category}
+                </span>
+              )}
+              <span
+                className={`py-1 px-3 rounded-full ${
+                  post.isAvailable
+                    ? "bg-[#B3BBC5] text-white font-bold"
+                    : "bg-red-100 text-red-800 font-bold"
+                }`}
+              >
+                {post.isAvailable ? "Available" : "Not Available"}
+              </span>
+              <span
+                className={`py-1 px-3 rounded-full ${
+                  post.isVolunteer
+                    ? "bg-[#FBBC2E] text-black font-bold"
+                    : "bg-[#FF3B30] text-white font-bold"
+                }`}
+              >
+                {post.isVolunteer ? "Volunteer" : "Paid"}
+              </span>
+            </div>
 
-                      <Transition
-                        show={open}
-                        enter="transition-transform duration-200 ease-out"
-                        enterFrom="transform scale-95 opacity-0"
-                        enterTo="transform scale-100 opacity-100"
-                        leave="transition-transform duration-150 ease-in"
-                        leaveFrom="transform scale-100 opacity-100"
-                        leaveTo="transform scale-95 opacity-0">
-                        <Menu.Items className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                onClick={() => toggleAvailability(post.dateString, post.postId, post.isAvailable)}
-                                className={`${active ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'} flex items-center w-full px-4 py-2 text-sm`}>
-                                {post.isAvailable ? <FaRegCheckCircle className="w-5 h-5 mr-3" /> : <FaCheckCircle className="w-5 h-5 mr-3" />}
-                                {post.isAvailable ? "Mark as Completed" : "Mark as Available"}
-                              </button>
-                            )}
-                          </Menu.Item>
+            {/* Caption Section */}
+            <p className="mt-4 text-[#496992] font-bold">{post.caption}</p>
 
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                onClick={() => toggleVolunteerPaidStatus(post.dateString, post.postId, post.isVolunteer)}
-                                className={`${active ? 'bg-yellow-100 text-yellow-700' : 'text-gray-700 hover:bg-gray-100'} flex items-center w-full px-4 py-2 text-sm`}>
-                                {post.isVolunteer ? <FaHandshake className="w-5 h-5 mr-3" /> : <FaDollarSign className="w-5 h-5 mr-3" />}
-                                {post.isVolunteer ? "Mark as Paid" : "Mark as Volunteer"}
-                              </button>
-                            )}
-                          </Menu.Item>
-
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                onClick={() => console.log(`Delete post ${post.postId}`)} // Add delete logic here
-                                className={`${active ? 'bg-red-100 text-red-700' : 'text-gray-700 hover:bg-gray-100'} flex items-center w-full px-4 py-2 text-sm`}>
-                                <FaTrashAlt className="w-5 h-5 mr-3" />
-                                Delete Post
-                              </button>
-                            )}
-                          </Menu.Item>
-                        </Menu.Items>
-                      </Transition>
-                    </>
-                  )}
-                </Menu>
+            {/* Post Image */}
+            {post.postPicRef && postImages[post.postId] ? (
+              <div className="mt-6">
+                <img
+                  src={postImages[post.postId]}
+                  alt="Post"
+                  className="w-full rounded-lg shadow-md"
+                />
               </div>
+            ) : (
+              <div className="mt-6 text-gray-400">No image for this post</div>
             )}
 
-            <div className="post-content">
-              {postImages[post.postId] ? (
-                <img src={postImages[post.postId]} alt="Post" className="w-full h-72 object-cover rounded-lg" />
-              ) : (
-                <div className="w-full h-72 bg-gray-300 flex items-center justify-center rounded-lg">
-                  <span className="text-gray-500">Loading...</span>
-                </div>
-              )}
+            {/* Actions */}
+            <div className="mt-6 flex justify-between items-center">
+              <Menu>
+                <Menu.Button className="bg-transparent">
+                  <span className="sr-only">Actions</span>
+                  <FaEdit size={20} />
+                </Menu.Button>
+                <Transition
+                  as={React.Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Menu.Items className="absolute bg-white rounded-lg shadow-lg p-4 w-40">
+                    <Menu.Item>
+                      <button
+                        className="text-[#496992] text-sm font-semibold w-full flex items-center"
+                        onClick={() =>
+                          toggleAvailability(post.date, post.postId, post.isAvailable)
+                        }
+                      >
+                        {post.isAvailable ? (
+                          <FaCheckCircle size={16} className="mr-2" />
+                        ) : (
+                          <FaRegCheckCircle size={16} className="mr-2" />
+                        )}
+                        Toggle Availability
+                      </button>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <button
+                        className="text-[#496992] text-sm font-semibold w-full flex items-center"
+                        onClick={() =>
+                          toggleVolunteerPaidStatus(post.date, post.postId, post.isVolunteer)
+                        }
+                      >
+                        {post.isVolunteer ? (
+                          <FaHandshake size={16} className="mr-2" />
+                        ) : (
+                          <FaDollarSign size={16} className="mr-2" />
+                        )}
+                        Toggle Volunteer/Paid Status
+                      </button>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <button
+                        className="text-[#496992] text-sm font-semibold w-full flex items-center"
+                        onClick={() => deletePost(post.date, post.postId)}
+                      >
+                        <FaTrashAlt size={16} className="mr-2" />
+                        Delete Post
+                      </button>
+                    </Menu.Item>
+                  </Menu.Items>
+                </Transition>
+              </Menu>
             </div>
           </div>
         ))
       )}
-
-      {/* Show more posts button */}
-      {allUserPosts.length > visiblePosts && (
-        <button
-          onClick={() => setVisiblePosts(visiblePosts + 5)}
-          className="block mx-auto mt-6 text-sm text-blue-600 hover:text-blue-800">
-          Show More Posts
-        </button>
-      )}
     </div>
   );
 }
-
 
 
 //wprking ver dec 1
