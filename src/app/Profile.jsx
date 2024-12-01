@@ -158,8 +158,7 @@ export default function Profile({ postData, userData }) {
           visibleUserPosts.map((post) => (
             <div
               key={post.postId}
-              className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden relative"
-            >
+              className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden relative">
               {/* Dropdown menu */}
               <div className="absolute top-4 right-4">
                 <Menu as="div" className="relative">
@@ -171,8 +170,7 @@ export default function Profile({ postData, userData }) {
                       <Transition
                         show={open}
                         enter="transition-transform duration-200 ease-out"
-                        leave="transition-transform duration-150 ease-in"
-                      >
+                        leave="transition-transform duration-150 ease-in">
                         <Menu.Items className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
                           {/* Toggle Availability */}
                           <Menu.Item>
@@ -189,8 +187,7 @@ export default function Profile({ postData, userData }) {
                                   active
                                     ? "bg-blue-100 text-blue-700"
                                     : "text-gray-700 hover:bg-gray-100"
-                                } flex items-center px-4 py-2`}
-                              >
+                                } flex items-center px-4 py-2`}>
                                 {post.isAvailable ? (
                                   <FaRegCheckCircle className="mr-3" />
                                 ) : (
@@ -215,8 +212,7 @@ export default function Profile({ postData, userData }) {
                                   active
                                     ? "bg-yellow-100 text-yellow-700"
                                     : "text-gray-700 hover:bg-gray-100"
-                                } flex items-center px-4 py-2`}
-                              >
+                                } flex items-center px-4 py-2`}>
                                 {post.isVolunteer ? (
                                   <FaDollarSign className="mr-3" />
                                 ) : (
@@ -237,8 +233,7 @@ export default function Profile({ postData, userData }) {
                                   active
                                     ? "bg-red-100 text-red-700"
                                     : "text-red-500 hover:bg-gray-100"
-                                } flex items-center px-4 py-2`}
-                              >
+                                } flex items-center px-4 py-2`}>
                                 <FaTrashAlt className="mr-3" />
                                 Delete Post
                               </button>
@@ -252,40 +247,82 @@ export default function Profile({ postData, userData }) {
               </div>
 
               {/* Post details */}
+              {/* Post Content */}
               <div className="flex items-center space-x-4 mb-4">
                 {profileImages[post.postId] ? (
                   <img
                     src={profileImages[post.postId]}
-                    className="w-16 h-16 rounded-full"
+                    alt="Profile"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
                   />
                 ) : (
-                  <CgProfile size={48} />
+                  <CgProfile size={48} className="text-gray-400" />
                 )}
                 <div>
-                  <p className="font-bold">{post.name}</p>
-                  <p className="text-gray-500">{formatDate(post.date)}</p>
+                  <p className="text-lg text-[#496992] font-bold font-inter">
+                    {post.name}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {formatDate(post.date)}
+                  </p>
                 </div>
               </div>
-              <p>{post.caption}</p>
-              {postImages[post.postId] && (
-                <img src={postImages[post.postId]} className="rounded-lg" />
+
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                {post.category && (
+                  <span className="bg-[#5856D6] text-white font-bold py-1 px-3 rounded-full">
+                    {post.category}
+                  </span>
+                )}
+                <span
+                  className={`py-1 px-3 rounded-full ${
+                    post.isAvailable
+                      ? "bg-[#b3bbc5] text-white font-bold shadow-md"
+                      : "bg-[#34c759] text-white font-bold shadow-md"
+                  }`}>
+                  {post.isAvailable ? "Available" : "Completed"}
+                </span>
+                <span
+                  className={`py-1 px-3 rounded-full ${
+                    post.isVolunteer
+                      ? "bg-[#FBBC2E] text-black font-bold"
+                      : "bg-[#FF3B30] text-white font-bold"
+                  }`}>
+                  {post.isVolunteer ? "Volunteer" : "Paid"}
+                </span>
+              </div>
+
+              <p className="mt-4 text-[#496992] font-bold font-inter">
+                {post.caption}
+              </p>
+
+              {post.postPicRef && postImages[post.postId] ? (
+                <div className="mt-6">
+                  <img
+                    src={postImages[post.postId]}
+                    alt="Post"
+                    className="w-full rounded-lg shadow-md object-cover"
+                  />
+                </div>
+              ) : (
+                post.postPicRef && (
+                  <p className="text-gray-500 mt-4">Loading post image...</p>
+                )
               )}
             </div>
           ))
         )}
         {visibleUserPosts.length < getUserPosts().length && (
-           <button
-           onClick={() => setVisiblePosts((prev) => prev + 5)}
-           className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all">
-           Load More Posts
-         </button>
+          <button
+            onClick={() => setVisiblePosts((prev) => prev + 5)}
+            className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all">
+            Load More Posts
+          </button>
         )}
       </div>
     </div>
   );
 }
-
-
 
 // wprking ver dec 1
 // "use client";
@@ -505,10 +542,6 @@ export default function Profile({ postData, userData }) {
 //     </div>
 //   );
 // }
-
-
-
-
 
 // "use client";
 
