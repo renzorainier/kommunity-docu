@@ -27,7 +27,6 @@ export default function Feed({ postData, userData }) {
       .sort((a, b) => b.date.seconds - a.date.seconds);
   };
 
-
   const getRecentPosts = () => {
     const allPosts = getAllPosts();
     return allPosts.slice(0, visiblePosts);
@@ -114,15 +113,11 @@ export default function Feed({ postData, userData }) {
       });
 
       // Optimistic UI Update
-      const updatedPosts = getAllPosts().map((post) =>
-        post.postId === postId ? { ...post, isAvailable: !currentStatus } : post
-      );
-      setVisiblePosts(updatedPosts.slice(0, visiblePosts));
+      postData[date][postId].isAvailable = !currentStatus;
     } catch (error) {
       console.error("Error updating availability:", error);
     }
   };
-
 
   useEffect(() => {
     const recentPosts = getRecentPosts();
@@ -145,7 +140,8 @@ export default function Feed({ postData, userData }) {
       {recentPosts.map((post) => (
         <div
           key={post.postId}
-          className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden">
+          className="post bg-[#E0EAF6] p-6 rounded-lg shadow-lg mb-6 overflow-hidden"
+        >
           <div className="flex items-center space-x-4 mb-4">
             {profileImages[post.postId] ? (
               <img
@@ -175,7 +171,8 @@ export default function Feed({ postData, userData }) {
                 post.isAvailable
                   ? "bg-[#B3BBC5] text-white font-bold"
                   : "bg-red-100 text-red-800 font-bold"
-              }`}>
+              }`}
+            >
               {post.isAvailable ? "Available" : "Not Available"}
             </span>
             <span
@@ -183,7 +180,8 @@ export default function Feed({ postData, userData }) {
                 post.isVolunteer
                   ? "bg-[#FBBC2E] text-black font-bold"
                   : "bg-[#FF3B30] text-white font-bold"
-              }`}>
+              }`}
+            >
               {post.isVolunteer ? "Volunteer" : "Paid"}
             </span>
           </div>
@@ -209,13 +207,10 @@ export default function Feed({ postData, userData }) {
           {post.userID === userData.userID && (
             <button
               onClick={() =>
-                toggleAvailability(
-                  post.dateString,
-                  post.postId,
-                  post.isAvailable
-                )
+                toggleAvailability(post.dateString, post.postId, post.isAvailable)
               }
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all"
+            >
               Toggle Availability
             </button>
           )}
@@ -226,7 +221,8 @@ export default function Feed({ postData, userData }) {
         <div className="text-center mt-8">
           <button
             onClick={() => setVisiblePosts((prev) => prev + 5)}
-            className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all">
+            className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+          >
             Load More Posts
           </button>
         </div>
@@ -234,6 +230,7 @@ export default function Feed({ postData, userData }) {
     </div>
   );
 }
+
 
 // "use client";
 
