@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "./firebase";
-import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import { CgProfile } from "react-icons/cg";
 import { Menu, Transition } from "@headlessui/react";
@@ -22,46 +22,6 @@ export default function Profile({ postData, userData }) {
   const [postImages, setPostImages] = useState({});
   const [error, setError] = useState({});
   const [visiblePosts, setVisiblePosts] = useState(5);
-
-  const deletePost = async (date, postId) => {
-    try {
-      const postRef = doc(db, "posts/posts");
-      const fieldPath = `${date}.${postId}`;
-      await updateDoc(postRef, { [fieldPath]: null });
-
-      // Optimistic UI update
-      postData[date][postId] = null;
-      if (Object.keys(postData[date]).length === 0) delete postData[date];
-    } catch (error) {
-      console.error("Error deleting post:", error);
-    }
-  };
-
-  const toggleAvailability = async (date, postId, currentStatus) => {
-    try {
-      const postRef = doc(db, "posts/posts");
-      const fieldPath = `${date}.${postId}.isAvailable`;
-      await updateDoc(postRef, { [fieldPath]: !currentStatus });
-
-      // Optimistic UI update
-      postData[date][postId].isAvailable = !currentStatus;
-    } catch (error) {
-      console.error("Error updating availability:", error);
-    }
-  };
-
-  const toggleVolunteerPaidStatus = async (date, postId, currentStatus) => {
-    try {
-      const postRef = doc(db, "posts/posts");
-      const fieldPath = `${date}.${postId}.isVolunteer`;
-      await updateDoc(postRef, { [fieldPath]: !currentStatus });
-
-      // Optimistic UI update
-      postData[date][postId].isVolunteer = !currentStatus;
-    } catch (error) {
-      console.error("Error updating volunteer/paid status:", error);
-    }
-  };
 
   const getUserPosts = () => {
     if (!postData || !userData?.userID) return [];
