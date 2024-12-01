@@ -274,12 +274,11 @@ export default function Profile({ postData, userData }) {
           ))
         )}
         {visibleUserPosts.length < getUserPosts().length && (
-          <button
-            className="load-more bg-blue-600 text-white px-4 py-2 rounded-lg mt-4"
-            onClick={() => setVisiblePosts((prev) => prev + 5)}
-          >
-            Load More Posts
-          </button>
+           <button
+           onClick={() => setVisiblePosts((prev) => prev + 5)}
+           className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all">
+           Load More Posts
+         </button>
         )}
       </div>
     </div>
