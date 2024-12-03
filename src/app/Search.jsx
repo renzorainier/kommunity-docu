@@ -73,11 +73,12 @@ export default function Search({ postData, currentUser }) {
   }, [searchQuery, users]);
 
   const formatDate = (timestamp) => {
-    if (!timestamp?.seconds) return '';
-    const date = new Date(timestamp.seconds * 1000);
-    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    if (!timestamp || !timestamp.seconds) {
+      return "Unknown Date";
+    }
+    const dateObj = new Date(timestamp.seconds * 1000);
+    return dateObj.toLocaleString();
   };
-
   const getUserPosts = () => {
     if (!postData || !selectedUser) return [];
     const userPosts = Object.entries(postData)
