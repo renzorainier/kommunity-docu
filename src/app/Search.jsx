@@ -132,19 +132,20 @@ export default function Search({ postData, currentUser }) {
   if (!selectedUser) {
     return (
       <div className="p-6 bg-[#F8FAFB] min-h-screen">
-        {/* Search Input */}
-        <div className="relative mb-4">
-          <div className="flex items-center justify-center">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search"
-              className="w-[85%] max-w-md p-3 bg-[#E0EAF6] text-gray-500 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-[#B7CCE5] shadow-sm"
-            />
-          </div>
+      {/* Search Input */}
+      <div className="relative mb-4">
+        <div className="flex items-center justify-end">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search"
+            className="w-[85%] max-w-md p-3 bg-[#E0EAF6] text-gray-500 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-[#B7CCE5] shadow-sm"
+          />
         </div>
-        <hr className="my-4 border-gray-300" />
+      </div>
+      <hr className="my-4 border-gray-300" />
+ 
 
         {/* Recent Users */}
         <h2 className="text-lg font-bold text-gray-800 mb-4">Recent</h2>
