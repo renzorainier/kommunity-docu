@@ -178,15 +178,13 @@ export default function Search({ postData, currentUser }) {
   const userPosts = getUserPosts();
 
   return (
+    <div>
+       <Header userData={selectedUser} />
+
     <div className="p-6 bg-gray-50 min-h-screen">
-      <button
-        onClick={() => setSelectedUser(null)}
-        className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg shadow-md hover:bg-gray-400 transition mb-6"
-      >
-        Back
-      </button>
-      <Header userData={selectedUser} /> {/* Pass selectedUser as userData to the Header component */}
-   
+
+
+
       <div className="space-y-6">
         {userPosts.map((post) => (
           <div key={post.postId} className="bg-white p-6 rounded-lg shadow-md">
@@ -256,5 +254,7 @@ export default function Search({ postData, currentUser }) {
         </button>
       )}
     </div>
+    </div>
+
   );
 }
