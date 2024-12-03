@@ -167,13 +167,15 @@ export default function Feed({ postData, userData }) {
   }, [postData, visiblePosts]);
 
   const formatDate = (timestamp) => {
-    if (!timestamp || !timestamp.seconds) {
-      return "Unknown Date";
-    }
-    const dateObj = new Date(timestamp.seconds * 1000);
-    return dateObj.toLocaleString();
-  };
+    if (!timestamp?.seconds) return "Unknown Date";
 
+    const dateObj = new Date(timestamp.seconds * 1000);
+    let hour = dateObj.getHours() % 12 || 12;  // Convert to 12-hour format
+    const minute = dateObj.getMinutes().toString().padStart(2, '0');  // Ensure 2 digits for minutes
+    const ampm = dateObj.getHours() >= 12 ? 'PM' : 'AM';
+
+    return `${dateObj.getMonth() + 1}/${dateObj.getDate()}/${dateObj.getFullYear()}, ${hour}:${minute} ${ampm}`;
+  };
   const allPosts = getAllPosts();
   const recentPosts = getRecentPosts();
   return (
