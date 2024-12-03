@@ -1,7 +1,10 @@
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+
+  images: {
+    domains: ['firebasestorage.googleapis.com'], // Add this line
+  },
 
   webpack: (config, { isServer }) => {
     config.module.rules.push({
@@ -24,6 +27,32 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   reactStrictMode: true,
+
+//   webpack: (config, { isServer }) => {
+//     config.module.rules.push({
+//       test: /\.(wav|mp3|ogg|mp4)$/, // Handle sound files
+//       use: [
+//         {
+//           loader: 'file-loader',
+//           options: {
+//             publicPath: '/_next/static/sounds/',
+//             outputPath: 'static/sounds/',
+//             name: '[name].[ext]',
+//             esModule: false,
+//           },
+//         },
+//       ],
+//     });
+
+//     return config;
+//   },
+// };
+
+// module.exports = nextConfig;
 
 
 
