@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -28,12 +29,10 @@ export default function Search({ postData, currentUser }) {
           ...doc.data(),
         }));
 
-        // Exclude logged-in user from the list
         const filteredUsers = usersData.filter((user) => user.id !== currentUser?.id);
         setUsers(filteredUsers);
         setFilteredUsers(filteredUsers);
 
-        // Fetch profile images for users
         const profileImagePromises = filteredUsers.map(async (user) => {
           const profileImageRef = ref(storage, `images/${user.id}/`);
           try {
@@ -62,7 +61,6 @@ export default function Search({ postData, currentUser }) {
     fetchUsers();
   }, [currentUser]);
 
-  // Filter users based on the search query
   useEffect(() => {
     if (searchQuery === '') {
       setFilteredUsers(users);
@@ -74,14 +72,12 @@ export default function Search({ postData, currentUser }) {
     }
   }, [searchQuery, users]);
 
-  // Format Firestore timestamps
   const formatDate = (timestamp) => {
     if (!timestamp?.seconds) return '';
     const date = new Date(timestamp.seconds * 1000);
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   };
 
-  // Get posts for the selected user
   const getUserPosts = () => {
     if (!postData || !selectedUser) return [];
     const userPosts = Object.entries(postData)
@@ -96,7 +92,6 @@ export default function Search({ postData, currentUser }) {
     return userPosts.slice(0, visiblePosts);
   };
 
-  // Fetch post images from Firebase storage
   const fetchPostImages = async (posts) => {
     const postImagePromises = posts.map((post) => {
       if (post.postPicRef) {
@@ -147,7 +142,6 @@ export default function Search({ postData, currentUser }) {
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search"
               className="w-[85%] max-w-md p-3 bg-[#E0EAF6] text-gray-500 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-[#B7CCE5] shadow-sm"
-              style={{ marginLeft: '50px' }}
             />
           </div>
         </div>
@@ -161,7 +155,6 @@ export default function Search({ postData, currentUser }) {
               key={user.id}
               onClick={() => setSelectedUser(user)}
               className="flex flex-col items-center cursor-pointer"
-              style={{ width: '80px', minWidth: '80px' }}
             >
               <div className="relative">
                 {profileImages[user.id] ? (
@@ -174,12 +167,7 @@ export default function Search({ postData, currentUser }) {
                   <CgProfile size={64} className="text-gray-400 mx-auto" />
                 )}
               </div>
-              <span
-                className="block text-center mt-2 text-sm text-gray-700"
-                style={{ maxWidth: '70px', whiteSpace: 'normal', wordWrap: 'break-word', lineHeight: '1.2' }}
-              >
-                {user.name}
-              </span>
+              <span className="block text-center mt-2 text-sm text-gray-700">{user.name}</span>
             </li>
           ))}
         </ul>
@@ -202,56 +190,77 @@ export default function Search({ postData, currentUser }) {
       </h2>
       <div className="space-y-6">
         {userPosts.map((post) => (
-          <div
-            key={post.postId}
-            className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition"
-          >
+          <div key={post.postId} className="bg-white p-6 rounded-lg shadow-md">
+            {/* Post Content */}
             <div className="flex items-center space-x-4 mb-4">
-              <img
-                src={profileImages[selectedUser.id] || ''}
-                alt={`${selectedUser.name}'s profile`}
-                className="w-16 h-16 rounded-full object-cover"
-              />
+              {profileImages[post.postId] ? (
+                <img
+                  src={profileImages[post.postId]}
+                  alt="Profile"
+                  className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
+                />
+              ) : (
+                <CgProfile size={48} className="text-gray-400" />
+              )}
               <div>
                 <p className="text-lg text-[#496992] font-bold">{post.name}</p>
                 <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
               </div>
             </div>
-            <p className="text-[#496992] font-bold">{post.caption}</p>
-            {post.postPicRef && postImages[post.postId] && (
+
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              {post.category && (
+                <span className="bg-[#5856D6] text-white font-bold py-1 px-3 rounded-full">
+                  {post.category}
+                </span>
+              )}
+              <span
+                className={`py-1 px-3 rounded-full ${
+                  post.isAvailable
+                    ? 'bg-[#b3bbc5] text-white font-bold shadow-md'
+                    : 'bg-[#34c759] text-white font-bold shadow-md'
+                }`}
+              >
+                {post.isAvailable ? 'Available' : 'Completed'}
+              </span>
+              <span
+                className={`py-1 px-3 rounded-full ${
+                  post.isVolunteer
+                    ? 'bg-[#FBBC2E] text-black font-bold'
+                    : 'bg-[#FF3B30] text-white font-bold'
+                }`}
+              >
+                {post.isVolunteer ? 'Volunteer' : 'Paid'}
+              </span>
+            </div>
+
+            <p className="mt-4 text-[#496992] font-medium text-lg">{post.caption}</p>
+            {postImages[post.postId] && (
               <img
                 src={postImages[post.postId]}
                 alt="Post"
-                className="mt-4 w-full rounded-lg shadow-md"
+                className="mt-4 max-h-[600px] w-full object-contain"
               />
+            )}
+            {error[post.postId] && (
+              <p className="text-center text-sm text-red-500 mt-3">
+                Image could not load. Please check the URL.
+              </p>
             )}
           </div>
         ))}
       </div>
-
-      {/* Load more posts */}
       {userPosts.length > visiblePosts && (
         <button
-          onClick={() => setVisiblePosts(visiblePosts + 5)}
-          className="px-4 py-2 bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 transition"
+          onClick={() => setVisiblePosts((prev) => prev + 5)}
+          className="mt-6 block mx-auto px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-500 transition"
         >
-          Show More
+          Load More
         </button>
       )}
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 // 'use client';
@@ -284,10 +293,12 @@ export default function Search({ postData, currentUser }) {
 //           ...doc.data(),
 //         }));
 
+//         // Exclude logged-in user from the list
 //         const filteredUsers = usersData.filter((user) => user.id !== currentUser?.id);
 //         setUsers(filteredUsers);
 //         setFilteredUsers(filteredUsers);
 
+//         // Fetch profile images for users
 //         const profileImagePromises = filteredUsers.map(async (user) => {
 //           const profileImageRef = ref(storage, `images/${user.id}/`);
 //           try {
@@ -316,6 +327,7 @@ export default function Search({ postData, currentUser }) {
 //     fetchUsers();
 //   }, [currentUser]);
 
+//   // Filter users based on the search query
 //   useEffect(() => {
 //     if (searchQuery === '') {
 //       setFilteredUsers(users);
@@ -327,12 +339,14 @@ export default function Search({ postData, currentUser }) {
 //     }
 //   }, [searchQuery, users]);
 
+//   // Format Firestore timestamps
 //   const formatDate = (timestamp) => {
 //     if (!timestamp?.seconds) return '';
 //     const date = new Date(timestamp.seconds * 1000);
 //     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 //   };
 
+//   // Get posts for the selected user
 //   const getUserPosts = () => {
 //     if (!postData || !selectedUser) return [];
 //     const userPosts = Object.entries(postData)
@@ -347,6 +361,7 @@ export default function Search({ postData, currentUser }) {
 //     return userPosts.slice(0, visiblePosts);
 //   };
 
+//   // Fetch post images from Firebase storage
 //   const fetchPostImages = async (posts) => {
 //     const postImagePromises = posts.map((post) => {
 //       if (post.postPicRef) {
@@ -397,6 +412,7 @@ export default function Search({ postData, currentUser }) {
 //               onChange={(e) => setSearchQuery(e.target.value)}
 //               placeholder="Search"
 //               className="w-[85%] max-w-md p-3 bg-[#E0EAF6] text-gray-500 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-[#B7CCE5] shadow-sm"
+//               style={{ marginLeft: '50px' }}
 //             />
 //           </div>
 //         </div>
@@ -410,6 +426,7 @@ export default function Search({ postData, currentUser }) {
 //               key={user.id}
 //               onClick={() => setSelectedUser(user)}
 //               className="flex flex-col items-center cursor-pointer"
+//               style={{ width: '80px', minWidth: '80px' }}
 //             >
 //               <div className="relative">
 //                 {profileImages[user.id] ? (
@@ -422,7 +439,12 @@ export default function Search({ postData, currentUser }) {
 //                   <CgProfile size={64} className="text-gray-400 mx-auto" />
 //                 )}
 //               </div>
-//               <span className="block text-center mt-2 text-sm text-gray-700">{user.name}</span>
+//               <span
+//                 className="block text-center mt-2 text-sm text-gray-700"
+//                 style={{ maxWidth: '70px', whiteSpace: 'normal', wordWrap: 'break-word', lineHeight: '1.2' }}
+//               >
+//                 {user.name}
+//               </span>
 //             </li>
 //           ))}
 //         </ul>
@@ -445,72 +467,40 @@ export default function Search({ postData, currentUser }) {
 //       </h2>
 //       <div className="space-y-6">
 //         {userPosts.map((post) => (
-//           <div key={post.postId} className="bg-white p-6 rounded-lg shadow-md">
-//             {/* Post Content */}
+//           <div
+//             key={post.postId}
+//             className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition"
+//           >
 //             <div className="flex items-center space-x-4 mb-4">
-//               {profileImages[post.postId] ? (
-//                 <img
-//                   src={profileImages[post.postId]}
-//                   alt="Profile"
-//                   className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
-//                 />
-//               ) : (
-//                 <CgProfile size={48} className="text-gray-400" />
-//               )}
+//               <img
+//                 src={profileImages[selectedUser.id] || ''}
+//                 alt={`${selectedUser.name}'s profile`}
+//                 className="w-16 h-16 rounded-full object-cover"
+//               />
 //               <div>
 //                 <p className="text-lg text-[#496992] font-bold">{post.name}</p>
 //                 <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
 //               </div>
 //             </div>
-
-//             <div className="mt-2 flex flex-wrap items-center gap-2">
-//               {post.category && (
-//                 <span className="bg-[#5856D6] text-white font-bold py-1 px-3 rounded-full">
-//                   {post.category}
-//                 </span>
-//               )}
-//               <span
-//                 className={`py-1 px-3 rounded-full ${
-//                   post.isAvailable
-//                     ? 'bg-[#b3bbc5] text-white font-bold shadow-md'
-//                     : 'bg-[#34c759] text-white font-bold shadow-md'
-//                 }`}
-//               >
-//                 {post.isAvailable ? 'Available' : 'Completed'}
-//               </span>
-//               <span
-//                 className={`py-1 px-3 rounded-full ${
-//                   post.isVolunteer
-//                     ? 'bg-[#FBBC2E] text-black font-bold'
-//                     : 'bg-[#FF3B30] text-white font-bold'
-//                 }`}
-//               >
-//                 {post.isVolunteer ? 'Volunteer' : 'Paid'}
-//               </span>
-//             </div>
-
-//             <p className="mt-4 text-[#496992] font-medium text-lg">{post.caption}</p>
-//             {postImages[post.postId] && (
+//             <p className="text-[#496992] font-bold">{post.caption}</p>
+//             {post.postPicRef && postImages[post.postId] && (
 //               <img
 //                 src={postImages[post.postId]}
 //                 alt="Post"
-//                 className="mt-4 max-h-[600px] w-full object-contain"
+//                 className="mt-4 w-full rounded-lg shadow-md"
 //               />
-//             )}
-//             {error[post.postId] && (
-//               <p className="text-center text-sm text-red-500 mt-3">
-//                 Image could not load. Please check the URL.
-//               </p>
 //             )}
 //           </div>
 //         ))}
 //       </div>
+
+//       {/* Load more posts */}
 //       {userPosts.length > visiblePosts && (
 //         <button
-//           onClick={() => setVisiblePosts((prev) => prev + 5)}
-//           className="mt-6 block mx-auto px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-500 transition"
+//           onClick={() => setVisiblePosts(visiblePosts + 5)}
+//           className="px-4 py-2 bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 transition"
 //         >
-//           Load More
+//           Show More
 //         </button>
 //       )}
 //     </div>
