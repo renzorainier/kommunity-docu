@@ -156,7 +156,7 @@ export default function Search({ postData, currentUser }) {
 
         {/* Recent Users */}
         <h2 className="text-lg font-bold text-gray-800 mb-4">Recent</h2>
-        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <ul className="flex flex-wrap justify-start gap-6">
           {filteredUsers.map((user) => (
             <li
               key={user.id}
