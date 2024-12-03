@@ -5,6 +5,8 @@ import { doc, updateDoc,deleteDoc  } from "firebase/firestore";
 import { db } from "./firebase";
 import { CgProfile } from "react-icons/cg";
 import { Menu, Transition } from "@headlessui/react";
+import Image from 'next/image';
+
 import {
   FaEdit,
   FaTrashAlt,
@@ -295,11 +297,14 @@ export default function Feed({ postData, userData }) {
           {/* Post Content */}
           <div className="flex items-center space-x-4 mb-4">
             {profileImages[post.postId] ? (
-              <img
-                src={profileImages[post.postId]}
-                alt="Profile"
-                className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
-              />
+        <Image
+        src={profileImages[post.postId]}
+        alt="Profile"
+        className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
+        width={64} // Specify the width of the image
+        height={64} // Specify the height of the image
+      />
+
             ) : (
               <CgProfile size={48} className="text-gray-400" />
             )}
