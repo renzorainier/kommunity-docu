@@ -77,8 +77,18 @@ export default function Search({ postData, currentUser }) {
       return "Unknown Date";
     }
     const dateObj = new Date(timestamp.seconds * 1000);
-    return dateObj.toLocaleString();
+
+    // Format the date to display MM/DD/YYYY and HH:MM without seconds
+    return dateObj.toLocaleString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true, // Show time in 12-hour format with AM/PM
+    });
   };
+
   const getUserPosts = () => {
     if (!postData || !selectedUser) return [];
     const userPosts = Object.entries(postData)
