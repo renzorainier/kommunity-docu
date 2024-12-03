@@ -2,6 +2,7 @@
 
 import React from "react";
 import { FaFacebook, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
+import Image from "next/image"; // Import Image from next/image
 
 const Header = ({ userData }) => {
   if (!userData) return null;
@@ -16,15 +17,17 @@ const Header = ({ userData }) => {
       </div>
 
       {/* White Details Section */}
-      <div className="bg-white p-6 pt-2 -mt-16  ">
+      <div className="bg-white p-6 pt-2 -mt-16">
         {/* Profile Section */}
         <div className="flex items-center space-x-6">
           {/* Profile Picture */}
           <div className="relative -mt-20">
-            <img
+            <Image
               src={imageUrl}
               alt={`${name}'s profile`}
-              className="w-32 h-32 rounded-full object-cover border-4 border-white "
+              className="w-32 h-32 rounded-full object-cover border-4 border-white"
+              width={128}  // Specify the width
+              height={128} // Specify the height
             />
           </div>
 
