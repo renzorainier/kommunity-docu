@@ -30,6 +30,7 @@ export default function Search({ postData, currentUser }) {
         }));
 
         const filteredUsers = usersData.filter((user) => user.id !== currentUser?.id);
+
         setUsers(filteredUsers);
         setFilteredUsers(filteredUsers);
 
