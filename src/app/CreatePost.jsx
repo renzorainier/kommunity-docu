@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db, storage } from '@/app/firebase/config';
 import { ref, uploadBytes } from 'firebase/storage';
+import Image from 'next/image';
 
 function CreatePost({ userData }) {
   const [caption, setCaption] = useState('');
@@ -204,16 +205,21 @@ function CreatePost({ userData }) {
         />
       </div>
 
-      {imagePreview && (
-        <div className="mt-4">
-          <p className="text-gray-600 text-sm mb-2">Image Preview:</p>
-          <img
-            src={imagePreview}
-            alt="Preview"
-            className="w-full h-auto rounded-md shadow-md"
-          />
-        </div>
-      )}
+
+
+{imagePreview && (
+  <div className="mt-4">
+    <p className="text-gray-600 text-sm mb-2">Image Preview:</p>
+    <Image
+      src={imagePreview} // Provide the source for the image
+      alt="Preview"
+      width={500} // Set a fixed width (or responsive values)
+      height={300} // Set a fixed height (or responsive values)
+      className="w-full h-auto rounded-md shadow-md"
+    />
+  </div>
+)}
+
 
       {imageError && (
         <p className="text-red-500 text-sm mt-2">Please upload a valid image.</p>
