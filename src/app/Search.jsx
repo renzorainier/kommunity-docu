@@ -156,12 +156,12 @@ export default function Search({ postData, currentUser }) {
 
         {/* Recent Users */}
         <h2 className="text-lg font-bold text-gray-800 mb-4">Recent</h2>
-        <ul className="flex flex-wrap justify-start gap-6">
+        <ul className="flex overflow-x-auto gap-6 py-4 scrollbar-hidden">
           {filteredUsers.map((user) => (
             <li
               key={user.id}
               onClick={() => setSelectedUser(user)}
-              className="flex flex-col items-center cursor-pointer hover:bg-[#f3f4f6] p-4 rounded-lg transition duration-200 ease-in-out"
+              className="flex flex-col items-center cursor-pointer hover:bg-[#f3f4f6] p-1 rounded-lg transition duration-200 ease-in-out"
             >
               <div className="relative w-20 h-20">
                 {profileImages[user.id] ? (
