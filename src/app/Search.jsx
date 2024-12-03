@@ -156,30 +156,31 @@ export default function Search({ postData, currentUser }) {
 
         {/* Recent Users */}
         <h2 className="text-lg font-bold text-gray-800 mb-4">Recent</h2>
-        <ul className="flex space-x-4 overflow-x-auto">
+        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {filteredUsers.map((user) => (
             <li
               key={user.id}
               onClick={() => setSelectedUser(user)}
-              className="flex flex-col items-center cursor-pointer"
+              className="flex flex-col items-center cursor-pointer hover:bg-[#f3f4f6] p-4 rounded-lg transition duration-200 ease-in-out"
             >
-              <div className="relative">
+              <div className="relative w-20 h-20">
                 {profileImages[user.id] ? (
                   <img
                     src={profileImages[user.id]}
                     alt={`${user.name}'s profile`}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-300 shadow-sm"
+                    className="w-full h-full rounded-full object-cover border-2 border-gray-300 shadow-lg"
                   />
                 ) : (
                   <CgProfile size={64} className="text-gray-400 mx-auto" />
                 )}
               </div>
-              <span className="block text-center mt-2 text-sm text-gray-700">{user.name}</span>
+              <span className="block text-center mt-2 text-sm text-gray-700 truncate">{user.name}</span>
             </li>
           ))}
         </ul>
       </div>
     );
+
   }
 
   const userPosts = getUserPosts();
