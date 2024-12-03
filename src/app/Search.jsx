@@ -228,16 +228,9 @@ export default function Search({ postData, currentUser }) {
           </div>
         ))}
       </div>
+      
 
-      {/* Load more posts */}
-      {userPosts.length > visiblePosts && (
-        <button
-          onClick={() => setVisiblePosts(visiblePosts + 5)}
-          className="px-4 py-2 bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 transition"
-        >
-          Show More
-        </button>
-      )}
+
     </div>
   );
 }
