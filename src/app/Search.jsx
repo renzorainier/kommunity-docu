@@ -1,5 +1,4 @@
-
-'use client';
+ 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
@@ -193,17 +192,17 @@ export default function Search({ postData, currentUser }) {
           <div key={post.postId} className="bg-white p-6 rounded-lg shadow-md">
             {/* Post Content */}
             <div className="flex items-center space-x-4 mb-4">
-              {profileImages[post.postId] ? (
+              {profileImages[selectedUser.id] ? (
                 <img
-                  src={profileImages[post.postId]}
-                  alt="Profile"
+                  src={profileImages[selectedUser.id]}
+                  alt={`${selectedUser.name}'s profile`}
                   className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
                 />
               ) : (
                 <CgProfile size={48} className="text-gray-400" />
               )}
               <div>
-                <p className="text-lg text-[#496992] font-bold">{post.name}</p>
+                <p className="text-lg text-[#496992] font-bold">{selectedUser.name}</p>
                 <p className="text-sm text-gray-500">{formatDate(post.date)}</p>
               </div>
             </div>
@@ -239,28 +238,22 @@ export default function Search({ postData, currentUser }) {
               <img
                 src={postImages[post.postId]}
                 alt="Post"
-                className="mt-4 max-h-[600px] w-full object-contain"
+                className="w-full mt-4 rounded-lg object-cover"
               />
-            )}
-            {error[post.postId] && (
-              <p className="text-center text-sm text-red-500 mt-3">
-                Image could not load. Please check the URL.
-              </p>
             )}
           </div>
         ))}
       </div>
-      {userPosts.length > visiblePosts && (
-        <button
-          onClick={() => setVisiblePosts((prev) => prev + 5)}
-          className="mt-6 block mx-auto px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-500 transition"
-        >
-          Load More
-        </button>
-      )}
+      <button
+        onClick={() => setVisiblePosts(visiblePosts + 5)}
+        className="px-6 py-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+      >
+        Show More
+      </button>
     </div>
   );
 }
+
 
 
 // 'use client';
