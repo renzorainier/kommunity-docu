@@ -346,11 +346,14 @@ export default function Feed({ postData, userData }) {
 
           {post.postPicRef && postImages[post.postId] ? (
             <div className="mt-6">
-              <img
-                src={postImages[post.postId]}
-                alt="Post"
-                className="w-full rounded-lg shadow-md object-cover"
-              />
+            <Image
+  src={postImages[post.postId]}
+  alt="Post"
+  className="w-full rounded-lg shadow-md object-cover"
+  width={800} // Specify the width of the image
+  height={600} // Specify the height of the image
+/>
+
             </div>
           ) : (
             post.postPicRef && (
