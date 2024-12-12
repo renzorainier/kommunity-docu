@@ -22,28 +22,7 @@ export default function Feed({ postData, userData }) {
   const [error, setError] = useState({});
   const [visiblePosts, setVisiblePosts] = useState(5);
 
-  const deletePost = async (date, postId) => {
-    try {
-      const postRef = doc(db, "posts/posts");
-      const fieldPath = `${date}.${postId}`;
-
-      await updateDoc(postRef, {
-        [fieldPath]: null,
-      });
-
-      setLocalPostData((prev) => {
-        const updatedData = { ...prev };
-        delete updatedData[date][postId];
-        if (Object.keys(updatedData[date]).length === 0)
-          delete updatedData[date];
-        return updatedData;
-      });
-    } catch (error) {
-      console.error("Error deleting post:", error);
-    }
-  };
-
-  const getAllPosts = () => {
+  const getAllPosts = useCallback(() => {
     if (!postData) return [];
     return Object.entries(postData)
       .flatMap(([date, posts]) =>
@@ -55,12 +34,12 @@ export default function Feed({ postData, userData }) {
       )
       .filter((post) => post.date && post.date.seconds)
       .sort((a, b) => b.date.seconds - a.date.seconds);
-  };
+  }, [postData]);
 
   const getRecentPosts = useCallback(() => {
     const allPosts = getAllPosts();
     return allPosts.slice(0, visiblePosts);
-  }, [, visiblePosts, getAllPosts]);
+  }, [getAllPosts, visiblePosts]);
 
   const fetchImages = async (posts) => {
     const profileImagePromises = [];
@@ -129,6 +108,27 @@ export default function Feed({ postData, userData }) {
 
     setProfileImages((prev) => ({ ...prev, ...profileImageMap }));
     setPostImages((prev) => ({ ...prev, ...postImageMap }));
+  };
+
+  const deletePost = async (date, postId) => {
+    try {
+      const postRef = doc(db, "posts/posts");
+      const fieldPath = `${date}.${postId}`;
+
+      await updateDoc(postRef, {
+        [fieldPath]: null,
+      });
+
+      setLocalPostData((prev) => {
+        const updatedData = { ...prev };
+        delete updatedData[date][postId];
+        if (Object.keys(updatedData[date]).length === 0)
+          delete updatedData[date];
+        return updatedData;
+      });
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
   };
 
   const toggleAvailability = async (date, postId, currentStatus) => {
