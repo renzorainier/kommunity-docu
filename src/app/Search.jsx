@@ -258,9 +258,9 @@ export default function Search({ postData, currentUser }) {
                   <Image
                     src={postImages[post.postId]}
                     alt={`Post image for ${post.postId}`}
-                    className="w-full h-60 object-cover rounded-lg shadow-md"
-                    width={800} // Add width for optimization
-                    height={450} // Add height for optimization
+                    className="w-full rounded-lg shadow-md object-cover"
+                    width={800} // Specify the width of the image
+                    height={600} // Specify the height of the image
                   />
                 </div>
               )}
