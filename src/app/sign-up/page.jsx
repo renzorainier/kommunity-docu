@@ -11,13 +11,24 @@ import teen from "../img.png";
 import logo from "./search.png";
 
 const skillOptions = [
-  "Web Development",
-  "Graphic Design",
-  "Data Analysis",
-  "Content Writing",
-  "Marketing",
-  "Project Management",
-  "Software Testing",
+  'Animals', 'Baby', 'Carpentry', 'Gardening', 'Other', 'Education', 'Fitness', 'Photography',
+  'Cooking', 'Cleaning', 'Painting', 'Plumbing', 'Electrical', 'Landscaping', 'Mechanics',
+  'Technology', 'Programming', 'Design', 'Music', 'Writing', 'Translation', 'Tutoring',
+  'Repair', 'Transport', 'Travel', 'Event Planning', 'Marketing', 'Sales', 'Legal', 'Healthcare',
+  'Childcare', 'Elderly Care', 'Pet Care', 'Housekeeping', 'Personal Assistant', 'Delivery',
+  'Shopping', 'Social Media', 'Data Entry', 'Research', 'Customer Service', 'Consulting',
+  'Decorating', 'Sewing', 'Knitting', 'Weaving', 'Crafts', 'Woodworking', 'Metalworking',
+  'Welding', 'Cleaning Services', 'Pool Maintenance', 'Car Wash', 'Car Detailing',
+  'IT Support', 'Network Installation', 'Security Systems', 'Home Renovation', 'Interior Design',
+  'Exterior Design', 'Real Estate', 'Finance', 'Accounting', 'Tax Preparation', 'Investments',
+  'Insurance', 'Hairdressing', 'Barber', 'Makeup', 'Nails', 'Fashion Design', 'Modeling',
+  'Acting', 'Dancing', 'Event Hosting', 'Catering', 'Baking', 'Bartending', 'DJing',
+  'Entertainment', 'Gaming', 'Virtual Assistant', 'Surveying', 'Fitness Training',
+  'Yoga Instruction', 'Meditation Coaching', 'Life Coaching', 'Career Coaching',
+  'Business Strategy', 'Public Speaking', 'Writing Resumes', 'Content Creation',
+  'Blogging', 'Vlogging', 'Podcasting', 'Video Editing', 'Graphic Design',
+  'UI/UX Design', 'Animation', '3D Modeling', 'Game Design', 'App Development',
+  'Software Development'
 ];
 
 const Register = () => {
