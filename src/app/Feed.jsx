@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "./firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import { CgProfile } from "react-icons/cg";
 import { Menu, Transition } from "@headlessui/react";
@@ -27,14 +27,17 @@ export default function Feed({ postData, userData }) {
       const postRef = doc(db, "posts/posts");
       const fieldPath = `${date}.${postId}`;
 
+      // Update Firestore by setting the post to null (effectively deleting it)
       await updateDoc(postRef, {
         [fieldPath]: null,
       });
 
+      // Optimistic UI Update
       setLocalPostData((prev) => {
         const updatedData = { ...prev };
         delete updatedData[date][postId];
-        if (Object.keys(updatedData[date]).length === 0) delete updatedData[date];
+        if (Object.keys(updatedData[date]).length === 0)
+          delete updatedData[date];
         return updatedData;
       });
     } catch (error) {
@@ -42,24 +45,24 @@ export default function Feed({ postData, userData }) {
     }
   };
 
-  const getAllPosts = useCallback(() => {
+  const getAllPosts = () => {
     if (!postData) return [];
     return Object.entries(postData)
       .flatMap(([date, posts]) =>
         Object.entries(posts).map(([postId, postDetails]) => ({
           postId,
-          dateString: date,
+          dateString: date, // Include date string
           ...postDetails,
         }))
       )
       .filter((post) => post.date && post.date.seconds)
       .sort((a, b) => b.date.seconds - a.date.seconds);
-  }, [postData]);
+  };
 
-  const getRecentPosts = useCallback(() => {
+  const getRecentPosts = () => {
     const allPosts = getAllPosts();
     return allPosts.slice(0, visiblePosts);
-  }, [getAllPosts, visiblePosts]);
+  };
 
   const fetchImages = async (posts) => {
     const profileImagePromises = [];
@@ -160,6 +163,10 @@ export default function Feed({ postData, userData }) {
     }
   };
 
+  // useEffect(() => {
+  //   const recentPosts = getRecentPosts();
+  //   fetchImages(recentPosts);
+  // }, [postData, visiblePosts]);
   useEffect(() => {
     const recentPosts = getRecentPosts();
     fetchImages(recentPosts);
@@ -169,18 +176,16 @@ export default function Feed({ postData, userData }) {
     if (!timestamp?.seconds) return "Unknown Date";
 
     const dateObj = new Date(timestamp.seconds * 1000);
-    let hour = dateObj.getHours() % 12 || 12;
-    const minute = dateObj.getMinutes().toString().padStart(2, "0");
+    let hour = dateObj.getHours() % 12 || 12; // Convert to 12-hour format
+    const minute = dateObj.getMinutes().toString().padStart(2, "0"); // Ensure 2 digits for minutes
     const ampm = dateObj.getHours() >= 12 ? "PM" : "AM";
 
     return `${
       dateObj.getMonth() + 1
     }/${dateObj.getDate()}/${dateObj.getFullYear()}, ${hour}:${minute} ${ampm}`;
   };
-
   const allPosts = getAllPosts();
   const recentPosts = getRecentPosts();
-
   return (
     <div className="feed max-w-3xl mx-auto p-4 bg-[#F8FBFF] min-h-screen">
       {recentPosts.map((post) => (
