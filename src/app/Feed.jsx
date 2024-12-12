@@ -60,7 +60,7 @@ export default function Feed({ postData, userData }) {
   const getRecentPosts = useCallback(() => {
     const allPosts = getAllPosts();
     return allPosts.slice(0, visiblePosts);
-  }, [postData, visiblePosts]);
+  }, [, visiblePosts, getAllPosts]);
 
   const fetchImages = async (posts) => {
     const profileImagePromises = [];
