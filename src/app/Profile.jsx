@@ -16,6 +16,7 @@ import {
   FaHandshake,
 } from "react-icons/fa";
 import Header from "./Header";
+import Image from 'next/image';
 
 export default function Profile({ postData, userData }) {
   const [profileImages, setProfileImages] = useState({});
@@ -141,7 +142,7 @@ export default function Profile({ postData, userData }) {
 
   useEffect(() => {
     fetchImages(visibleUserPosts);
-  }, [postData, visiblePosts]);
+  }, [postData, visiblePosts, visibleUserPosts]);
 
   const formatDate = (timestamp) => {
     if (!timestamp?.seconds) return "Unknown Date";
@@ -256,15 +257,18 @@ export default function Profile({ postData, userData }) {
               {/* Post details */}
               {/* Post Content */}
               <div className="flex items-center space-x-4 mb-4">
-                {profileImages[post.postId] ? (
-                  <img
-                    src={profileImages[post.postId]}
-                    alt="Profile"
-                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
-                  />
-                ) : (
-                  <CgProfile size={48} className="text-gray-400" />
-                )}
+              {profileImages[post.postId] ? (
+  <Image
+    src={profileImages[post.postId]}
+    alt="Profile"
+    className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 shadow-md"
+    width={64}  // Add a width for optimization
+    height={64} // Add a height for optimization
+  />
+) : (
+  <CgProfile size={48} className="text-gray-400" />
+)}
+
                 <div>
                   <p className="text-lg text-[#496992] font-bold font-inter">
                     {post.name}
@@ -302,20 +306,22 @@ export default function Profile({ postData, userData }) {
               <p className="mt-4 text-[#496992] font-bold font-inter">
                 {post.caption}
               </p>
-
               {post.postPicRef && postImages[post.postId] ? (
-                <div className="mt-6">
-                 <img
-                     src={postImages[post.postId]}
-                    alt="Post"
-                    className="w-full rounded-lg shadow-md object-cover"
-                  />
-                </div>
-              ) : (
-                post.postPicRef && (
-                  <p className="text-gray-500 mt-4">Loading post image...</p>
-                )
-              )}
+  <div className="mt-6">
+    <Image
+      src={postImages[post.postId]}
+      alt="Post"
+      className="w-full rounded-lg shadow-md object-cover"
+      width={800}  // Add width for optimization
+      height={600} // Add height for optimization
+    />
+  </div>
+) : (
+  post.postPicRef && (
+    <p className="text-gray-500 mt-4">Loading post image...</p>
+  )
+)}
+
             </div>
           ))
         )}

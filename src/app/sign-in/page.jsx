@@ -30,23 +30,22 @@ const SignIn = () => {
   };
 
   return (
-
     <div className="min-h-screen flex flex-col items-center justify-between bg-[#F8FBFF] px-6 py-10">
       {/* Logo Section */}
-      <div className="flex flex-col items-center ">
+      <div className="flex flex-col items-center mb-10">
         <Image
           src={logo} // Logo image
           width={220}
           height={200}
           alt="KommUnity Logo"
         />
-        <h1 className=" text-6xl font-bold text-gray-700 mt-4 ">KommUnity</h1>
+        <h1 className="text-4xl md:text-6xl font-bold text-gray-700 mt-4">KommUnity</h1>
       </div>
 
       {/* Login Header */}
-      <div className="w-full flex flex-col items-start pl-8 mt-0">
-        <h2 className="top-[400px] w-[350px] flex  text-2xl font-extrabold text-gray-700">Log In</h2>
-        <p className="text-gray-600 text-sm mt-0 font-roboto-mono">
+      <div className="w-full flex flex-col items-center md:items-start px-6 md:px-8 mb-6">
+        <h2 className="text-2xl font-extrabold text-gray-700 mb-2">Log In</h2>
+        <p className="text-gray-600 text-sm text-center md:text-left">
           By continuing, you are agreeing to our{" "}
           <a href="/terms" className="text-blue-500 hover:underline">
             Terms of Service
@@ -59,7 +58,7 @@ const SignIn = () => {
       </div>
 
       {/* Google Sign-In Button */}
-      <div className="w-full mt-6">
+      <div className="w-full flex justify-center mt-6">
         {showGoogleError && (
           <p className="text-red-500 text-center mb-4 text-sm">
             Error with Google Sign-In. Please try again.
@@ -67,7 +66,7 @@ const SignIn = () => {
         )}
         <button
           onClick={handleGoogleSignIn}
-          className="absolute left-[50%] transform -translate-x-[50%] top-[550px] w-[350px] flex items-center justify-center py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-[#F8FBFF]  font-roboto-mono"
+          className="w-[350px] md:w-[400px] flex items-center justify-center py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-[#F8FBFF] font-roboto-mono"
           disabled={googleLoading}
         >
           <Image
@@ -83,7 +82,7 @@ const SignIn = () => {
 
       {/* Footer Section */}
       <div className="text-center mt-6">
-        <p className="text-gray-600 text-sm absolute left-[30%] transform -translate-x-[45%] top-[650px] font-roboto-mono">
+        <p className="text-gray-600 text-sm font-roboto-mono">
           Need an account?{" "}
           <a href="/sign-up" className="text-blue-500 hover:underline">
             Sign up
@@ -92,6 +91,7 @@ const SignIn = () => {
       </div>
     </div>
   );
+
 };
 
 export default SignIn;

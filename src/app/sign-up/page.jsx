@@ -164,56 +164,58 @@ const Register = () => {
     <>
       {!formData.email ? (
         // Initial Sign-Up View
+
         <div className="min-h-screen flex flex-col items-center justify-between bg-[#F8FBFF] px-6 py-10">
-          <div className="flex flex-col items-center">
-            <Image src={teen} width={220} height={200} alt="KommUnity Logo" />
-            <h1 className="text-6xl font-bold text-gray-700 mt-4">KommUnity</h1>
-          </div>
+  {/* Logo Section */}
+  <div className="flex flex-col items-center mb-10">
+    <Image src={teen} width={220} height={200} alt="KommUnity Logo" />
+    <h1 className="text-4xl md:text-6xl font-bold text-gray-700 mt-4">KommUnity</h1>
+  </div>
 
-          {/* Sign Up Header */}
-          <div className="w-full flex flex-col items-start pl-8 mt-0">
-            <h2 className="text-2xl font-extrabold text-gray-700 ">Sign Up</h2>
-            <p className="text-gray-600 text-sm mt-0 font-roboto-mono">
-              By continuing, you are agreeing to our{" "}
-              <a href="/terms" className="text-blue-500 hover:underline ">
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a href="/privacy" className="text-blue-500 hover:underline">
-                Privacy Policy
-              </a>
-              .
-            </p>
-          </div>
+  {/* Sign Up Header */}
+  <div className="w-full flex flex-col items-center md:items-start px-6 md:px-8 mb-6">
+    <h2 className="text-2xl font-extrabold text-gray-700 mb-2">Sign Up</h2>
+    <p className="text-gray-600 text-sm text-center md:text-left">
+      By continuing, you are agreeing to our{" "}
+      <a href="/terms" className="text-blue-500 hover:underline">
+        Terms of Service
+      </a>{" "}
+      and{" "}
+      <a href="/privacy" className="text-blue-500 hover:underline">
+        Privacy Policy
+      </a>.
+    </p>
+  </div>
 
-          {/* Google Sign-up Button */}
-          <div className="w-full mt-6">
-            <button
-              onClick={handleGoogleSignIn}
-              className="absolute left-[50%] transform -translate-x-[50%] top-[550px] w-[350px] flex items-center justify-center py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-[#F8FBFF] font-roboto-mono "
-              disabled={loading}
-            >
-              <Image
-                src={logo}
-                width={20}
-                height={20}
-                alt="Google Icon"
-                className="mr-2"
-              />
-              {loading ? "Signing up with Google..." : "Continue with Google"}
-            </button>
-          </div>
+  {/* Google Sign-up Button */}
+  <div className="w-full flex justify-center mt-6">
+    <button
+      onClick={handleGoogleSignIn}
+      className="w-[350px] md:w-[400px] flex items-center justify-center py-3 bg-white text-gray-800 border border-gray-300 rounded-full shadow-md hover:bg-[#F8FBFF] font-roboto-mono"
+      disabled={loading}
+    >
+      <Image
+        src={logo}
+        width={20}
+        height={20}
+        alt="Google Icon"
+        className="mr-2"
+      />
+      {loading ? "Signing up with Google..." : "Continue with Google"}
+    </button>
+  </div>
 
-          {/* Footer Section */}
-          <div className="text-center mt-6">
-            <p className="text-gray-600 text-sm absolute left-[30%] transform -translate-x-[35%] top-[650px] font-roboto-mono">
-              Already have an account?{" "}
-              <a href="/sign-in" className="text-blue-500 hover:underline">
-                Log In
-              </a>
-            </p>
-          </div>
-        </div>
+  {/* Footer Section */}
+  <div className="text-center mt-6">
+    <p className="text-gray-600 text-sm font-roboto-mono">
+      Already have an account?{" "}
+      <a href="/sign-in" className="text-blue-500 hover:underline">
+        Log In
+      </a>
+    </p>
+  </div>
+</div>
+
       ) : (
         // Registration Form
         <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4 py-8">
