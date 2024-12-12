@@ -7,6 +7,7 @@ import Head from 'next/head.js';
 
 
 export default function Home() {
+  const [activeComponent, setActiveComponent] = useState('attendance'); // State for toggling components
 
   return (
     <>
