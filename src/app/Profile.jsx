@@ -142,7 +142,7 @@ export default function Profile({ postData, userData }) {
 
   useEffect(() => {
     fetchImages(visibleUserPosts);
-  }, [postData, visiblePosts, visibleUserPosts]);
+  }, [postData, visiblePosts, ]);
 
   const formatDate = (timestamp) => {
     if (!timestamp?.seconds) return "Unknown Date";
